@@ -52,7 +52,7 @@
         display:flex;
         justify-content:space-between;
         align-items:center;
-        padding:6px 16px;
+        padding:8px 16px;
         font-size:13px;
     }
     .nav-left {
@@ -73,9 +73,16 @@
         background:#020617;
     }
     .nav-right {
-        font-size:12px;
-        color:var(--text-main);
         font-variant-numeric:tabular-nums;
+        display:flex;
+        align-items:center;
+        justify-content:flex-end;
+    }
+    #clock {
+        font-size:24px;
+        font-weight:600;
+        color:var(--text-main);
+        white-space:nowrap;
     }
 
     /* Floating top button */
@@ -110,7 +117,12 @@
     header h2 {
         font-size:14px;
         color:var(--text-muted);
-        margin:0;
+        margin:4px 0 0;
+    }
+    #today-line {
+        margin-top:4px;
+        font-size:13px;
+        color:var(--text-muted);
     }
 
     /* Gantt / semester bar */
@@ -171,7 +183,7 @@
 
     /* Updates / News panel */
     #updates {
-        margin-bottom:16px;
+        margin-bottom:12px;
     }
     #updates details {
         background:var(--card);
@@ -247,6 +259,53 @@
         font-size:10px;
         color:var(--text-muted);
         margin-bottom:2px;
+    }
+
+    /* Global Notes panel */
+    #notes {
+        margin-bottom:16px;
+    }
+    #notes details {
+        background:var(--card);
+        border-radius:14px;
+        border:1px solid var(--border);
+        overflow:hidden;
+        box-shadow:0 10px 30px rgba(0,0,0,0.4);
+        font-size:13px;
+    }
+    #notes summary {
+        padding:10px 16px;
+        cursor:pointer;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        list-style:none;
+    }
+    #notes summary::-webkit-details-marker { display:none; }
+    #notes .notes-title { font-size:13px; font-weight:600; }
+    #notes .notes-subtitle { font-size:11px; color:var(--text-muted); }
+    #notes .chevron { font-size:14px; opacity:0.8; transition:0.2s; }
+    #notes details[open] .chevron { transform:rotate(90deg); }
+    #notes .notes-body {
+        border-top:1px solid var(--border);
+        padding:10px 16px 12px;
+    }
+    #global-notes {
+        width:100%;
+        min-height:70px;
+        border-radius:8px;
+        border:1px solid #374151;
+        background:#020617;
+        color:var(--text-main);
+        padding:6px 8px;
+        font-family:inherit;
+        font-size:13px;
+        resize:vertical;
+    }
+    #notes .notes-hint {
+        font-size:11px;
+        color:var(--text-muted);
+        margin-top:4px;
     }
 
     /* Assignments / Due list */
@@ -396,6 +455,30 @@
         margin-bottom:3px;
     }
 
+    /* Week notes */
+    .week-notes {
+        margin-top:6px;
+        padding-top:6px;
+        border-top:1px dashed #374151;
+        font-size:11px;
+    }
+    .week-notes-label {
+        margin-bottom:4px;
+        color:#e5e7eb;
+    }
+    .week-notes textarea {
+        width:100%;
+        min-height:50px;
+        border-radius:6px;
+        border:1px solid #374151;
+        background:#020617;
+        color:var(--text-main);
+        padding:4px 6px;
+        font-family:inherit;
+        font-size:12px;
+        resize:vertical;
+    }
+
     /* Course themes */
     .course-gd details.course {
         border-left:3px solid var(--gd-accent);
@@ -434,6 +517,7 @@
         .main-nav { padding:6px 8px; }
         .nav-left { gap:10px; }
         #semester-gantt { font-size:10px; }
+        #clock { font-size:16px; }
     }
 
     /* Print styles */
@@ -459,21 +543,24 @@
         }
         header h1 { font-size:20px; }
         header h2 { font-size:12px; }
+        #today-line { font-size:11px; }
 
         #semester-gantt {
             padding:0 16px 4px;
         }
-        #updates, #assignments {
+        #updates, #assignments, #notes {
             padding:0 16px 8px;
         }
         #updates details,
-        #assignments details {
+        #assignments details,
+        #notes details {
             box-shadow:none;
             background:#ffffff;
             border-color:#d1d5db;
         }
         #updates .updates-body,
-        #assignments .assign-body {
+        #assignments .assign-body,
+        #notes .notes-body {
             padding:8px 10px 10px;
         }
 
@@ -503,6 +590,11 @@
             border-color:#d1d5db;
             color:#4b5563;
         }
+        .week-notes textarea {
+            background:#ffffff;
+            border-color:#d1d5db;
+            color:#111827;
+        }
         .page-break {
             page-break-before:always;
             border:none;
@@ -518,6 +610,7 @@
 <nav class="main-nav">
     <div class="nav-left">
         <a href="#updates">Updates</a>
+        <a href="#notes">Notes</a>
         <a href="#assignments">Assignments</a>
         <a href="#gd">Graphic Design</a>
         <a href="#hw">House Wiring</a>
@@ -534,6 +627,7 @@
 
 <header>
     <h1>Mr. Burke — Classes Dashboard</h1>
+    <div id="today-line">Today: <span id="today-string"></span></div>
     <h2>Graphic Design & House Wiring • Weeks 1–19 (Semester ends Fri, Dec 19)</h2>
 </header>
 
@@ -563,6 +657,23 @@
                 <button id="update-btn" type="button">Post Update</button>
             </div>
             <div id="updates-list"></div>
+        </div>
+    </details>
+</section>
+
+<!-- GLOBAL NOTES -->
+<section id="notes">
+    <details>
+        <summary>
+            <div>
+                <div class="notes-title">Global Notes</div>
+                <div class="notes-subtitle">Use for planning, evaluation notes, or anything you want to remember later.</div>
+            </div>
+            <span class="chevron">▶</span>
+        </summary>
+        <div class="notes-body">
+            <textarea id="global-notes" placeholder="Type general notes here. These are auto-saved in this browser."></textarea>
+            <div class="notes-hint">Notes are stored locally in this browser only and persist between visits unless you clear site data.</div>
         </div>
     </details>
 </section>
@@ -869,7 +980,7 @@
     </div>
     </details>
 
-    <!-- WEEK 19 (aligned to finals week) -->
+    <!-- WEEK 19 (GD finals) -->
     <details class="week">
     <summary class="week-summary">
         <div>
@@ -955,7 +1066,7 @@
         </div>
         </details>
 
-        <!-- FRI — FINAL SUBMISSION (Dec 19) -->
+        <!-- FRI — FINAL SUBMISSION -->
         <details class="day-details">
         <summary class="day-summary"><span class="summary-title">Friday (Final Day)</span><span class="chevron">▶</span></summary>
         <div class="body day">
@@ -1232,7 +1343,7 @@
     </div>
     </details>
 
-    <!-- WEEK 19 (finals / closure for HW) -->
+    <!-- WEEK 19 (HW finals) -->
     <details class="week">
     <summary class="week-summary">
         <div>
@@ -1318,7 +1429,7 @@
         </div>
         </details>
 
-        <!-- FRI — FINAL SUBMISSION (Dec 19) -->
+        <!-- FRI — FINAL SUBMISSION -->
         <details class="day-details">
         <summary class="day-summary"><span class="summary-title">Friday (Final Day)</span><span class="chevron">▶</span></summary>
         <div class="body day">
@@ -1354,19 +1465,35 @@
 </div>
 
 <script>
-/* ---------------------- Clock (12-hour with AM/PM) ---------------------- */
+/* ---------------------- Clock + Today line (12-hour) ---------------------- */
 (function() {
     const clockEl = document.getElementById('clock');
-    if (!clockEl) return;
+    const todayEl = document.getElementById('today-string');
+    if (!clockEl || !todayEl) return;
+
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
     function pad(n){ return n < 10 ? '0' + n : n; }
-    function tick() {
-        const now = new Date();
+
+    function formatDateTime(now) {
+        const d = days[now.getDay()];
+        const m = months[now.getMonth()];
+        const day = now.getDate();
         let h = now.getHours();
-        const m = now.getMinutes();
+        const mins = pad(now.getMinutes());
         const ampm = h >= 12 ? 'PM' : 'AM';
         h = h % 12;
         if (h === 0) h = 12;
-        clockEl.textContent = h + ':' + pad(m) + ' ' + ampm;
+        const timePart = h + ':' + mins + ' ' + ampm;
+        return d + ', ' + m + ' ' + day + ' — ' + timePart;
+    }
+
+    function tick() {
+        const now = new Date();
+        const str = formatDateTime(now);
+        clockEl.textContent = str;
+        todayEl.textContent = str;
     }
     tick();
     setInterval(tick, 1000);
@@ -1382,14 +1509,13 @@
     const totalWeeks = 19;
     const endDate = new Date('2025-12-19T23:59:59');
     const startDate = new Date(endDate);
-    startDate.setDate(startDate.getDate() - (totalWeeks * 7) + 1); // approx Mon of Week 1
+    startDate.setDate(startDate.getDate() - (totalWeeks * 7) + 1);
     const today = new Date();
 
     function clamp(num, min, max) {
         return Math.min(Math.max(num, min), max);
     }
 
-    // Build week cells with labels
     for (let w = 1; w <= totalWeeks; w++) {
         const div = document.createElement('div');
         div.className = 'gantt-week-cell';
@@ -1406,7 +1532,6 @@
     progressEl.style.width = percent + '%';
     markerEl.style.left = percent + '%';
 
-    // Approx current week index
     const daysElapsed = msElapsed / (1000 * 60 * 60 * 24);
     let currentWeek = Math.floor(daysElapsed / 7) + 1;
     currentWeek = clamp(currentWeek, 1, totalWeeks);
@@ -1482,11 +1607,26 @@
     renderUpdates();
 })();
 
+/* ---------------------- Global Notes (auto-save) ---------------------- */
+(function() {
+    const STORAGE_KEY = 'mb_global_notes_v1';
+    const area = document.getElementById('global-notes');
+    if (!area) return;
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved !== null) area.value = saved;
+    } catch {}
+    area.addEventListener('input', () => {
+        try {
+            localStorage.setItem(STORAGE_KEY, area.value);
+        } catch {}
+    });
+})();
+
 /* ---------------------- Skeleton Week Builder (Weeks 1–16) ---------------------- */
 (function() {
     const days = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
 
-    // Unit labels (rough groupings; adjust in code if desired)
     const gdUnitLabels = {
         1:'Orientation & Tools',
         2:'Design Elements',
@@ -1641,6 +1781,39 @@
 
         weekBody.appendChild(wrapper);
     });
+})();
+
+/* ---------------------- Week Notes (per week, auto-save) ---------------------- */
+(function() {
+    function initWeekNotes(courseId, prefix) {
+        const courseSection = document.getElementById(courseId);
+        if (!courseSection) return;
+        const weekBodies = courseSection.querySelectorAll('.week > .body');
+        weekBodies.forEach((weekBody, index) => {
+            const notesDiv = document.createElement('div');
+            notesDiv.className = 'week-notes';
+            const label = document.createElement('div');
+            label.className = 'week-notes-label';
+            label.textContent = 'Week Notes (auto-saved for this week)';
+            const textarea = document.createElement('textarea');
+            const storageKey = prefix + (index + 1);
+            try {
+                const saved = localStorage.getItem(storageKey);
+                if (saved !== null) textarea.value = saved;
+            } catch {}
+            textarea.addEventListener('input', () => {
+                try {
+                    localStorage.setItem(storageKey, textarea.value);
+                } catch {}
+            });
+            notesDiv.appendChild(label);
+            notesDiv.appendChild(textarea);
+            weekBody.appendChild(notesDiv);
+        });
+    }
+
+    initWeekNotes('gd', 'mb_gd_week_note_');
+    initWeekNotes('hw', 'mb_hw_week_note_');
 })();
 
 /* ---------------------- Auto-open details on print ---------------------- */
