@@ -9,8 +9,8 @@
     :root {
         --bg:#050509;
         --bg-alt:#0b0b11;
-        --card:#13131c;
-        --card-soft:#181824;
+        --card:#111827;
+        --card-soft:#171a26;
         --border:#26263a;
         --accent:#3b82f6;
         --text-main:#f9fafb;
@@ -46,8 +46,8 @@
         left:0;
         right:0;
         z-index:100;
-        background:rgba(10,10,18,0.96);
-        backdrop-filter: blur(10px);
+        background:rgba(5,6,12,0.97);
+        backdrop-filter: blur(12px);
         border-bottom:1px solid #1f2937;
         display:flex;
         justify-content:space-between;
@@ -79,10 +79,11 @@
         justify-content:flex-end;
     }
     #clock {
-        font-size:24px;
+        font-size:28px;
         font-weight:600;
         color:var(--text-main);
         white-space:nowrap;
+        text-shadow:0 0 8px rgba(15,23,42,0.8);
     }
 
     /* Floating top button */
@@ -95,7 +96,7 @@
         height:38px;
         border-radius:999px;
         border:1px solid #4b5563;
-        background:rgba(15,23,42,0.92);
+        background:rgba(15,23,42,0.95);
         color:#e5e7eb;
         display:flex;
         align-items:center;
@@ -155,19 +156,20 @@
         font-size:9px;
         text-align:center;
         line-height:18px;
-        color:#6b7280;
+        color:#9ca3af;
     }
     .gantt-week-cell:last-child {
         border-right:none;
     }
     .gantt-week-cell.current {
-        background:rgba(59,130,246,0.15);
-        color:#e5e7eb;
+        background:rgba(59,130,246,0.25);
+        color:#f9fafb;
+        font-weight:600;
     }
     .gantt-progress {
         position:absolute;
         inset:0;
-        background:linear-gradient(90deg, rgba(59,130,246,0.25), rgba(34,197,94,0.2));
+        background:linear-gradient(90deg, rgba(59,130,246,0.3), rgba(34,197,94,0.25));
         width:0%;
         pointer-events:none;
     }
@@ -177,7 +179,7 @@
         width:2px;
         height:24px;
         background:#facc15;
-        box-shadow:0 0 6px rgba(250,204,21,0.8);
+        box-shadow:0 0 6px rgba(250,204,21,0.9);
         pointer-events:none;
     }
 
@@ -310,7 +312,7 @@
 
     /* Assignments / Due list */
     #assignments {
-        margin-bottom:20px;
+        margin-bottom:16px;
     }
     #assignments details {
         background:var(--card);
@@ -352,6 +354,85 @@
         padding-left:16px;
         font-size:11px;
         color:var(--text-muted);
+    }
+
+    /* QR section */
+    #qr-section {
+        background:#0b1020;
+        border-radius:14px;
+        border:1px solid #1f2937;
+        padding:18px 16px 20px;
+        margin-bottom:18px;
+        box-shadow:0 10px 28px rgba(0,0,0,0.45);
+    }
+    #qr-section h2 {
+        margin:0 0 4px;
+        font-size:17px;
+    }
+    #qr-section p {
+        margin:0 0 10px;
+        font-size:12px;
+        color:var(--text-muted);
+    }
+    .qr-grid {
+        display:flex;
+        flex-wrap:wrap;
+        gap:18px;
+        justify-content:center;
+        margin-top:6px;
+    }
+    .qr-card {
+        background:#020617;
+        border-radius:12px;
+        border:1px solid #273549;
+        padding:10px 14px 12px;
+        text-align:center;
+        width:220px;
+    }
+    .qr-card h3 {
+        margin:4px 0 6px;
+        font-size:14px;
+    }
+    .qr-card span {
+        display:block;
+        font-size:11px;
+        color:var(--text-muted);
+        margin-bottom:6px;
+    }
+    .qr-img {
+        width:180px;
+        height:180px;
+        image-rendering: crisp-edges;
+        filter:brightness(1.25) contrast(1.35);
+        background:#ffffff;
+        border-radius:10px;
+        border:2px solid #000000;
+    }
+    .qr-link {
+        margin-top:8px;
+        font-size:12px;
+    }
+    .qr-link a {
+        color:#93c5fd;
+        text-decoration:underline;
+    }
+
+    /* Music toggle */
+    #music-controls {
+        margin-top:14px;
+        text-align:center;
+    }
+    #music-toggle-btn {
+        padding:6px 12px;
+        font-size:13px;
+        background:#1b2538;
+        color:#e5e7eb;
+        border:1px solid #2a3650;
+        border-radius:999px;
+        cursor:pointer;
+    }
+    #music-toggle-btn:hover {
+        background:#111827;
     }
 
     /* Collapsibles */
@@ -517,7 +598,8 @@
         .main-nav { padding:6px 8px; }
         .nav-left { gap:10px; }
         #semester-gantt { font-size:10px; }
-        #clock { font-size:16px; }
+        #clock { font-size:20px; }
+        .qr-card { width:100%; }
     }
 
     /* Print styles */
@@ -528,7 +610,8 @@
             padding:0;
         }
         .main-nav,
-        .floating-top {
+        .floating-top,
+        #music-controls {
             display:none !important;
         }
         .shell {
@@ -545,10 +628,11 @@
         header h2 { font-size:12px; }
         #today-line { font-size:11px; }
 
-        #semester-gantt {
-            padding:0 16px 4px;
-        }
-        #updates, #assignments, #notes {
+        #semester-gantt,
+        #updates,
+        #assignments,
+        #notes,
+        #qr-section {
             padding:0 16px 8px;
         }
         #updates details,
@@ -612,6 +696,7 @@
         <a href="#updates">Updates</a>
         <a href="#notes">Notes</a>
         <a href="#assignments">Assignments</a>
+        <a href="#qr-section">QR / Music</a>
         <a href="#gd">Graphic Design</a>
         <a href="#hw">House Wiring</a>
         <a href="#top">Top</a>
@@ -678,7 +763,7 @@
     </details>
 </section>
 
-<!-- ASSIGNMENTS / DUE LIST (manual, simple) -->
+<!-- ASSIGNMENTS / DUE LIST -->
 <section id="assignments">
     <details>
         <summary>
@@ -693,28 +778,61 @@
                 <div class="assign-col">
                     <h4>Today</h4>
                     <ul>
-                        <!-- Example: <li>GD: Phase 2 checkpoints</li> -->
+                        <!-- e.g. <li>GD: Phase 2 checkpoints</li> -->
                     </ul>
                 </div>
                 <div class="assign-col">
                     <h4>This Week</h4>
-                    <ul>
-                    </ul>
+                    <ul></ul>
                 </div>
                 <div class="assign-col">
                     <h4>Upcoming</h4>
                     <ul>
-                        <!-- Example: <li>Week 18: Capstone presentations</li> -->
+                        <!-- e.g. <li>Week 18: Capstone presentations</li> -->
                     </ul>
                 </div>
                 <div class="assign-col">
                     <h4>Past Due / Late</h4>
-                    <ul>
-                    </ul>
+                    <ul></ul>
                 </div>
             </div>
         </div>
     </details>
+</section>
+
+<!-- QR CODES + MUSIC SECTION -->
+<section id="qr-section">
+    <h2>QR Access & Music</h2>
+    <p>Students can scan these codes to open the dashboard or submit their work. The button below toggles background music.</p>
+
+    <div class="qr-grid">
+        <div class="qr-card">
+            <h3>Dashboard</h3>
+            <span>Scan to open this class dashboard.</span>
+            <img src="qrcode_dashboard.png" alt="Dashboard QR code" class="qr-img">
+            <div class="qr-link">
+                <a href="https://dmburke1982-oss.github.io" target="_blank">Open dashboard link</a>
+            </div>
+        </div>
+
+        <div class="qr-card">
+            <h3>Assignment Submission</h3>
+            <span>Scan to open the submission portal.</span>
+            <img src="qrcode_assignments.png" alt="Assignment submission QR code" class="qr-img">
+            <div class="qr-link">
+                <a href="https://forms.gle/K3isYts15QYBc63V6" target="_blank">Open submission form</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="music-controls">
+        <button id="music-toggle-btn" type="button" onclick="toggleMusic()">Toggle Music</button>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7a8148e0d7.mp3?filename=calm-lofi-ambient-110080.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
 </section>
 
 <!-- ====================================================== -->
@@ -734,7 +852,7 @@
 
 <div class="body" id="gd-weeks-container">
 
-    <!-- Skeleton weeks 1–16 will be injected here by JS -->
+    <!-- Skeleton weeks 1–16 injected by JS -->
     <div id="gd-skeleton-anchor"></div>
 
     <!-- WEEK 17 (filled) -->
@@ -1082,10 +1200,15 @@
             <div class="block-label">Teacher Moves</div>
             <div class="block">Verify submissions as they arrive, record completion, and note any students needing an extension.</div>
 
-            <div class="block-label">Final Submission Link</div>
-            <div class="block">
-                <a href="https://YOUR_GD_FINAL_SUBMISSION_LINK_HERE" target="_blank">
-                    Submit your Graphic Design final (PDF, image, or link)
+            <div style="margin-top:20px;padding:12px;border-radius:10px;background:#101420;border:1px solid #1f2333;">
+                <h4 style="margin:0 0 8px;font-size:14px;color:#84cc16;">Final Submission</h4>
+                <p style="font-size:12px;color:#cbd5e1;margin-top:0;margin-bottom:10px;">
+                    Submit your final project (PDF, image, Google Drive link, or written reflection):
+                </p>
+                <a href="https://forms.gle/K3isYts15QYBc63V6"
+                   target="_blank"
+                   style="display:inline-block;padding:8px 12px;font-size:13px;background:#1e293b;color:white;border-radius:6px;text-decoration:none;">
+                   Submit Final Project
                 </a>
             </div>
         </div>
@@ -1118,7 +1241,7 @@
 
 <div class="body" id="hw-weeks-container">
 
-    <!-- Skeleton weeks 1–16 will be injected here by JS -->
+    <!-- Skeleton weeks 1–16 injected by JS -->
     <div id="hw-skeleton-anchor"></div>
 
     <!-- WEEK 17 (filled) -->
@@ -1445,10 +1568,15 @@
             <div class="block-label">Teacher Moves</div>
             <div class="block">Verify submissions, finalize grades, and document evidence for evaluation.</div>
 
-            <div class="block-label">Final Submission Link</div>
-            <div class="block">
-                <a href="https://YOUR_HW_FINAL_SUBMISSION_LINK_HERE" target="_blank">
-                    Submit your House Wiring final (photo set, PDF, or link)
+            <div style="margin-top:20px;padding:12px;border-radius:10px;background:#101420;border:1px solid #1f2333;">
+                <h4 style="margin:0 0 8px;font-size:14px;color:#84cc16;">Final Submission</h4>
+                <p style="font-size:12px;color:#cbd5e1;margin-top:0;margin-bottom:10px;">
+                    Submit your final project (photo set, PDF, Google Drive link, or written reflection):
+                </p>
+                <a href="https://forms.gle/K3isYts15QYBc63V6"
+                   target="_blank"
+                   style="display:inline-block;padding:8px 12px;font-size:13px;background:#1e293b;color:white;border-radius:6px;text-decoration:none;">
+                   Submit Final Project
                 </a>
             </div>
         </div>
@@ -1465,7 +1593,7 @@
 </div>
 
 <script>
-/* ---------------------- Clock + Today line (12-hour) ---------------------- */
+/* Clock + Today line */
 (function() {
     const clockEl = document.getElementById('clock');
     const todayEl = document.getElementById('today-string');
@@ -1499,7 +1627,7 @@
     setInterval(tick, 1000);
 })();
 
-/* ---------------------- Gantt / Semester bar ---------------------- */
+/* Gantt / Semester bar */
 (function() {
     const weeksEl = document.getElementById('gantt-weeks');
     const progressEl = document.getElementById('gantt-progress');
@@ -1542,7 +1670,7 @@
     }
 })();
 
-/* ---------------------- Updates / News ---------------------- */
+/* Updates / News */
 (function() {
     const STORAGE_KEY = 'mb_updates_v1';
     const textarea = document.getElementById('update-text');
@@ -1607,7 +1735,7 @@
     renderUpdates();
 })();
 
-/* ---------------------- Global Notes (auto-save) ---------------------- */
+/* Global Notes (auto-save) */
 (function() {
     const STORAGE_KEY = 'mb_global_notes_v1';
     const area = document.getElementById('global-notes');
@@ -1623,7 +1751,7 @@
     });
 })();
 
-/* ---------------------- Skeleton Week Builder (Weeks 1–16) ---------------------- */
+/* Skeleton Week Builder (Weeks 1–16) */
 (function() {
     const days = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
 
@@ -1689,7 +1817,11 @@
         const body = document.createElement('div');
         body.className = 'body';
 
-        days.forEach(d => {
+        const labels = ['WAL','Instruction','Practice','Success Criteria','Teacher Moves'];
+
+        const daysArr = days;
+
+        daysArr.forEach(d => {
             const dayDetails = document.createElement('details');
             dayDetails.className = 'day-details';
 
@@ -1711,7 +1843,6 @@
             h4.textContent = coursePrefix + ' Week ' + weekNumber + ' — ' + d;
             dayBodyWrap.appendChild(h4);
 
-            const labels = ['WAL','Instruction','Practice','Success Criteria','Teacher Moves'];
             labels.forEach(label => {
                 const blLabel = document.createElement('div');
                 blLabel.className = 'block-label';
@@ -1742,7 +1873,7 @@
     }
 })();
 
-/* ---------------------- Week Checklists (all weeks) ---------------------- */
+/* Week Checklists (all weeks) */
 (function() {
     const weekBodies = document.querySelectorAll('.week > .body');
     weekBodies.forEach(weekBody => {
@@ -1783,7 +1914,7 @@
     });
 })();
 
-/* ---------------------- Week Notes (per week, auto-save) ---------------------- */
+/* Week Notes (per week, auto-save) */
 (function() {
     function initWeekNotes(courseId, prefix) {
         const courseSection = document.getElementById(courseId);
@@ -1816,7 +1947,7 @@
     initWeekNotes('hw', 'mb_hw_week_note_');
 })();
 
-/* ---------------------- Auto-open details on print ---------------------- */
+/* Auto-open details on print */
 (function() {
     const openStates = new WeakMap();
 
@@ -1844,6 +1975,17 @@
     window.addEventListener('beforeprint', beforePrint);
     window.addEventListener('afterprint', afterPrint);
 })();
+
+/* Music toggle */
+function toggleMusic() {
+    const music = document.getElementById('bg-music');
+    if (!music) return;
+    if (music.paused) {
+        music.play();
+    } else {
+        music.pause();
+    }
+}
 </script>
 
 </body>
