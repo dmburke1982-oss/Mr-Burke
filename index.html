@@ -10,11 +10,11 @@
         --bg:#050509;
         --bg-alt:#0b0b11;
         --card:#111827;
-        --card-soft:#171a26;
-        --border:#26263a;
+        --card-soft:#181824;
+        --border:#374151;
         --accent:#3b82f6;
         --text-main:#f9fafb;
-        --text-muted:#9ca3af;
+        --text-muted:#cbd5e1;
 
         --gd-accent:#3b82f6;
         --gd-soft:rgba(59,130,246,0.16);
@@ -46,8 +46,8 @@
         left:0;
         right:0;
         z-index:100;
-        background:rgba(5,6,12,0.97);
-        backdrop-filter: blur(12px);
+        background:rgba(10,10,18,0.97);
+        backdrop-filter: blur(10px);
         border-bottom:1px solid #1f2937;
         display:flex;
         justify-content:space-between;
@@ -69,7 +69,7 @@
     }
     .nav-left a:hover {
         color:var(--text-main);
-        border-color:#374151;
+        border-color:#4b5563;
         background:#020617;
     }
     .nav-right {
@@ -83,7 +83,6 @@
         font-weight:600;
         color:var(--text-main);
         white-space:nowrap;
-        text-shadow:0 0 8px rgba(15,23,42,0.8);
     }
 
     /* Floating top button */
@@ -96,14 +95,14 @@
         height:38px;
         border-radius:999px;
         border:1px solid #4b5563;
-        background:rgba(15,23,42,0.95);
+        background:rgba(15,23,42,0.92);
         color:#e5e7eb;
         display:flex;
         align-items:center;
         justify-content:center;
         font-size:18px;
         text-decoration:none;
-        box-shadow:0 10px 25px rgba(0,0,0,0.5);
+        box-shadow:0 10px 25px rgba(0,0,0,0.6);
     }
     .floating-top:hover { background:#111827; }
 
@@ -157,19 +156,19 @@
         text-align:center;
         line-height:18px;
         color:#9ca3af;
+        background:transparent;
     }
     .gantt-week-cell:last-child {
         border-right:none;
     }
     .gantt-week-cell.current {
         background:rgba(59,130,246,0.25);
-        color:#f9fafb;
-        font-weight:600;
+        color:#e5e7eb;
     }
     .gantt-progress {
         position:absolute;
         inset:0;
-        background:linear-gradient(90deg, rgba(59,130,246,0.3), rgba(34,197,94,0.25));
+        background:linear-gradient(90deg, rgba(59,130,246,0.35), rgba(34,197,94,0.3));
         width:0%;
         pointer-events:none;
     }
@@ -192,7 +191,7 @@
         border-radius:14px;
         border:1px solid var(--border);
         overflow:hidden;
-        box-shadow:0 10px 30px rgba(0,0,0,0.45);
+        box-shadow:0 10px 30px rgba(0,0,0,0.55);
     }
     #updates summary {
         padding:12px 18px;
@@ -222,7 +221,7 @@
         width:100%;
         min-height:50px;
         border-radius:8px;
-        border:1px solid #374151;
+        border:1px solid #4b5563;
         background:#020617;
         color:var(--text-main);
         padding:6px 8px;
@@ -252,7 +251,7 @@
     }
     .update-item {
         border-radius:8px;
-        border:1px solid #27272f;
+        border:1px solid #4b5563;
         background:#020617;
         padding:6px 8px;
         font-size:12px;
@@ -272,7 +271,7 @@
         border-radius:14px;
         border:1px solid var(--border);
         overflow:hidden;
-        box-shadow:0 10px 30px rgba(0,0,0,0.4);
+        box-shadow:0 10px 30px rgba(0,0,0,0.45);
         font-size:13px;
     }
     #notes summary {
@@ -296,7 +295,7 @@
         width:100%;
         min-height:70px;
         border-radius:8px;
-        border:1px solid #374151;
+        border:1px solid #4b5563;
         background:#020617;
         color:var(--text-main);
         padding:6px 8px;
@@ -312,14 +311,14 @@
 
     /* Assignments / Due list */
     #assignments {
-        margin-bottom:16px;
+        margin-bottom:20px;
     }
     #assignments details {
         background:var(--card);
         border-radius:14px;
         border:1px solid var(--border);
         overflow:hidden;
-        box-shadow:0 10px 30px rgba(0,0,0,0.35);
+        box-shadow:0 10px 30px rgba(0,0,0,0.4);
         font-size:12px;
     }
     #assignments summary {
@@ -356,82 +355,67 @@
         color:var(--text-muted);
     }
 
-    /* QR section */
-    #qr-section {
-        background:#0b1020;
-        border-radius:14px;
-        border:1px solid #1f2937;
-        padding:18px 16px 20px;
-        margin-bottom:18px;
-        box-shadow:0 10px 28px rgba(0,0,0,0.45);
+    /* QR / music section */
+    #qr-music {
+        background:#050814;
+        border:1px solid #4b5563;
+        border-radius:16px;
+        padding:20px;
+        margin:16px 0 20px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.55);
+        text-align:center;
     }
-    #qr-section h2 {
-        margin:0 0 4px;
-        font-size:17px;
+    #qr-music h2 {
+        margin:0 0 6px;
+        font-size:18px;
     }
-    #qr-section p {
-        margin:0 0 10px;
-        font-size:12px;
+    #qr-music p {
+        margin:0 0 14px;
+        font-size:13px;
         color:var(--text-muted);
     }
-    .qr-grid {
+    .qr-row {
         display:flex;
         flex-wrap:wrap;
-        gap:18px;
         justify-content:center;
-        margin-top:6px;
+        gap:24px;
+        margin-top:8px;
     }
-    .qr-card {
-        background:#020617;
-        border-radius:12px;
-        border:1px solid #273549;
-        padding:10px 14px 12px;
-        text-align:center;
-        width:220px;
+    .qr-block {
+        min-width:180px;
     }
-    .qr-card h3 {
-        margin:4px 0 6px;
+    .qr-block h3 {
         font-size:14px;
+        margin:0 0 6px;
     }
-    .qr-card span {
-        display:block;
-        font-size:11px;
-        color:var(--text-muted);
-        margin-bottom:6px;
-    }
-    .qr-img {
+    .qr-block img {
         width:180px;
         height:180px;
-        image-rendering: crisp-edges;
+        image-rendering:crisp-edges;
         filter:brightness(1.25) contrast(1.35);
-        background:#ffffff;
-        border-radius:10px;
-        border:2px solid #000000;
     }
-    .qr-link {
-        margin-top:8px;
-        font-size:12px;
+    .submit-link-main {
+        margin-top:16px;
+        font-size:13px;
     }
-    .qr-link a {
+    .submit-link-main a {
         color:#93c5fd;
         text-decoration:underline;
     }
 
-    /* Music toggle */
-    #music-controls {
-        margin-top:14px;
-        text-align:center;
+    .music-toggle {
+        margin-top:16px;
     }
-    #music-toggle-btn {
-        padding:6px 12px;
+    .music-toggle button {
+        padding:8px 12px;
         font-size:13px;
-        background:#1b2538;
+        background:#1b1f2d;
         color:#e5e7eb;
-        border:1px solid #2a3650;
-        border-radius:999px;
+        border:1px solid #4b5563;
+        border-radius:8px;
         cursor:pointer;
     }
-    #music-toggle-btn:hover {
+    .music-toggle button:hover {
         background:#111827;
     }
 
@@ -442,7 +426,7 @@
         border-radius:14px;
         margin-bottom:12px;
         overflow:hidden;
-        box-shadow:0 10px 30px rgba(0,0,0,0.4);
+        box-shadow:0 10px 30px rgba(0,0,0,0.45);
     }
     details.week, details.day-details {
         box-shadow:none;
@@ -486,8 +470,8 @@
         margin-bottom:2px;
     }
     .block {
-        background:rgba(15,23,42,0.9);
-        border:1px dashed rgba(75,85,99,0.7);
+        background:rgba(15,23,42,0.98);
+        border:1px dashed rgba(148,163,184,0.8);
         border-radius:6px;
         padding:5px 7px;
         font-size:12px;
@@ -501,24 +485,24 @@
         margin-bottom:4px;
         padding:4px 6px;
         border-radius:6px;
-        border:1px dashed #4b5563;
+        border:1px dashed #64748b;
         font-size:11px;
-        color:#9ca3af;
-        background:rgba(15,23,42,0.7);
+        color:#e5e7eb;
+        background:rgba(15,23,42,0.95);
     }
 
     /* Week checklists */
     .week-checklists {
         margin-top:8px;
         padding-top:8px;
-        border-top:1px dashed #374151;
+        border-top:1px dashed #4b5563;
         font-size:11px;
     }
     .week-checklists details {
         margin-bottom:4px;
-        background:rgba(15,23,42,0.7);
+        background:rgba(15,23,42,0.9);
         border-radius:8px;
-        border:1px solid #374151;
+        border:1px solid #4b5563;
         box-shadow:none;
     }
     .week-checklists summary {
@@ -540,7 +524,7 @@
     .week-notes {
         margin-top:6px;
         padding-top:6px;
-        border-top:1px dashed #374151;
+        border-top:1px dashed #4b5563;
         font-size:11px;
     }
     .week-notes-label {
@@ -551,7 +535,7 @@
         width:100%;
         min-height:50px;
         border-radius:6px;
-        border:1px solid #374151;
+        border:1px solid #4b5563;
         background:#020617;
         color:var(--text-main);
         padding:4px 6px;
@@ -568,10 +552,10 @@
         color:var(--gd-accent);
     }
     .course-gd .day {
-        background:linear-gradient(120deg, var(--gd-soft), rgba(15,23,42,0.96));
+        background:linear-gradient(120deg, var(--gd-soft), rgba(15,23,42,0.98));
     }
     .course-gd .block {
-        border-color:rgba(59,130,246,0.6);
+        border-color:rgba(59,130,246,0.7);
     }
 
     .course-hw details.course {
@@ -581,15 +565,15 @@
         color:var(--hw-accent);
     }
     .course-hw .day {
-        background:linear-gradient(120deg, var(--hw-soft), rgba(15,23,42,0.96));
+        background:linear-gradient(120deg, var(--hw-soft), rgba(15,23,42,0.98));
     }
     .course-hw .block {
-        border-color:rgba(34,197,94,0.6);
+        border-color:rgba(34,197,94,0.7);
     }
 
     .page-break {
         margin:24px 0;
-        border-top:1px dashed #374151;
+        border-top:1px dashed #4b5563;
     }
 
     @media (max-width:640px) {
@@ -598,8 +582,8 @@
         .main-nav { padding:6px 8px; }
         .nav-left { gap:10px; }
         #semester-gantt { font-size:10px; }
-        #clock { font-size:20px; }
-        .qr-card { width:100%; }
+        #clock { font-size:18px; }
+        .qr-row { flex-direction:column; align-items:center; }
     }
 
     /* Print styles */
@@ -611,7 +595,7 @@
         }
         .main-nav,
         .floating-top,
-        #music-controls {
+        .music-toggle {
             display:none !important;
         }
         .shell {
@@ -632,7 +616,7 @@
         #updates,
         #assignments,
         #notes,
-        #qr-section {
+        #qr-music {
             padding:0 16px 8px;
         }
         #updates details,
@@ -696,7 +680,7 @@
         <a href="#updates">Updates</a>
         <a href="#notes">Notes</a>
         <a href="#assignments">Assignments</a>
-        <a href="#qr-section">QR / Music</a>
+        <a href="#qr-music">QR + Music</a>
         <a href="#gd">Graphic Design</a>
         <a href="#hw">House Wiring</a>
         <a href="#top">Top</a>
@@ -778,60 +762,60 @@
                 <div class="assign-col">
                     <h4>Today</h4>
                     <ul>
-                        <!-- e.g. <li>GD: Phase 2 checkpoints</li> -->
                     </ul>
                 </div>
                 <div class="assign-col">
                     <h4>This Week</h4>
-                    <ul></ul>
+                    <ul>
+                    </ul>
                 </div>
                 <div class="assign-col">
                     <h4>Upcoming</h4>
                     <ul>
-                        <!-- e.g. <li>Week 18: Capstone presentations</li> -->
                     </ul>
                 </div>
                 <div class="assign-col">
                     <h4>Past Due / Late</h4>
-                    <ul></ul>
+                    <ul>
+                    </ul>
                 </div>
             </div>
         </div>
     </details>
 </section>
 
-<!-- QR CODES + MUSIC SECTION -->
-<section id="qr-section">
-    <h2>QR Access & Music</h2>
-    <p>Students can scan these codes to open the dashboard or submit their work. The button below toggles background music.</p>
+<!-- QR CODES + MUSIC -->
+<section id="qr-music">
+    <h2>Quick Access</h2>
+    <p>Scan to open this dashboard or submit assignments. QR codes are higher-contrast for easier scanning.</p>
 
-    <div class="qr-grid">
-        <div class="qr-card">
-            <h3>Dashboard</h3>
-            <span>Scan to open this class dashboard.</span>
-            <img src="qrcode_dashboard.png" alt="Dashboard QR code" class="qr-img">
-            <div class="qr-link">
-                <a href="https://dmburke1982-oss.github.io" target="_blank">Open dashboard link</a>
-            </div>
+    <div class="qr-row">
+        <div class="qr-block">
+            <h3 style="color:#60a5fa;">Dashboard QR</h3>
+            <!-- Save the first QR image in the same folder as this HTML with this filename -->
+            <img src="qrcode_dmburke1982-oss.github.io.png" alt="Dashboard QR Code">
         </div>
-
-        <div class="qr-card">
-            <h3>Assignment Submission</h3>
-            <span>Scan to open the submission portal.</span>
-            <img src="qrcode_assignments.png" alt="Assignment submission QR code" class="qr-img">
-            <div class="qr-link">
-                <a href="https://forms.gle/K3isYts15QYBc63V6" target="_blank">Open submission form</a>
-            </div>
+        <div class="qr-block">
+            <h3 style="color:#4ade80;">Assignment Submission QR</h3>
+            <!-- Save the second QR image in the same folder as this HTML with this filename -->
+            <img src="qrcode_docs.google.com (1).png" alt="Assignment Submission QR Code">
         </div>
     </div>
 
-    <div id="music-controls">
-        <button id="music-toggle-btn" type="button" onclick="toggleMusic()">Toggle Music</button>
+    <div class="submit-link-main">
+        Direct submission portal:
+        <a href="https://forms.gle/K3isYts15QYBc63V6" target="_blank">
+            Submit Assignment (Google Form)
+        </a>
     </div>
 
+    <div class="music-toggle">
+        <button type="button" onclick="toggleMusic()">Toggle Music</button>
+    </div>
+
+    <!-- Provide your own MP3 file named class_theme.mp3 in the same folder -->
     <audio id="bg-music" loop>
-        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7a8148e0d7.mp3?filename=calm-lofi-ambient-110080.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
+        <source src="class_theme.mp3" type="audio/mpeg">
     </audio>
 </section>
 
@@ -852,7 +836,7 @@
 
 <div class="body" id="gd-weeks-container">
 
-    <!-- Skeleton weeks 1–16 injected by JS -->
+    <!-- Skeleton weeks 1–16 will be injected here by JS -->
     <div id="gd-skeleton-anchor"></div>
 
     <!-- WEEK 17 (filled) -->
@@ -1200,15 +1184,10 @@
             <div class="block-label">Teacher Moves</div>
             <div class="block">Verify submissions as they arrive, record completion, and note any students needing an extension.</div>
 
-            <div style="margin-top:20px;padding:12px;border-radius:10px;background:#101420;border:1px solid #1f2333;">
-                <h4 style="margin:0 0 8px;font-size:14px;color:#84cc16;">Final Submission</h4>
-                <p style="font-size:12px;color:#cbd5e1;margin-top:0;margin-bottom:10px;">
-                    Submit your final project (PDF, image, Google Drive link, or written reflection):
-                </p>
-                <a href="https://forms.gle/K3isYts15QYBc63V6"
-                   target="_blank"
-                   style="display:inline-block;padding:8px 12px;font-size:13px;background:#1e293b;color:white;border-radius:6px;text-decoration:none;">
-                   Submit Final Project
+            <div class="block-label">Final Submission Link</div>
+            <div class="block">
+                <a href="https://forms.gle/K3isYts15QYBc63V6" target="_blank">
+                    Submit your Graphic Design final (PDF, image, or link)
                 </a>
             </div>
         </div>
@@ -1241,7 +1220,7 @@
 
 <div class="body" id="hw-weeks-container">
 
-    <!-- Skeleton weeks 1–16 injected by JS -->
+    <!-- Skeleton weeks 1–16 will be injected here by JS -->
     <div id="hw-skeleton-anchor"></div>
 
     <!-- WEEK 17 (filled) -->
@@ -1568,15 +1547,10 @@
             <div class="block-label">Teacher Moves</div>
             <div class="block">Verify submissions, finalize grades, and document evidence for evaluation.</div>
 
-            <div style="margin-top:20px;padding:12px;border-radius:10px;background:#101420;border:1px solid #1f2333;">
-                <h4 style="margin:0 0 8px;font-size:14px;color:#84cc16;">Final Submission</h4>
-                <p style="font-size:12px;color:#cbd5e1;margin-top:0;margin-bottom:10px;">
-                    Submit your final project (photo set, PDF, Google Drive link, or written reflection):
-                </p>
-                <a href="https://forms.gle/K3isYts15QYBc63V6"
-                   target="_blank"
-                   style="display:inline-block;padding:8px 12px;font-size:13px;background:#1e293b;color:white;border-radius:6px;text-decoration:none;">
-                   Submit Final Project
+            <div class="block-label">Final Submission Link</div>
+            <div class="block">
+                <a href="https://forms.gle/K3isYts15QYBc63V6" target="_blank">
+                    Submit your House Wiring final (photo set, PDF, or link)
                 </a>
             </div>
         </div>
@@ -1593,7 +1567,7 @@
 </div>
 
 <script>
-/* Clock + Today line */
+/* Clock + Today line (12-hour) */
 (function() {
     const clockEl = document.getElementById('clock');
     const todayEl = document.getElementById('today-string');
@@ -1817,11 +1791,7 @@
         const body = document.createElement('div');
         body.className = 'body';
 
-        const labels = ['WAL','Instruction','Practice','Success Criteria','Teacher Moves'];
-
-        const daysArr = days;
-
-        daysArr.forEach(d => {
+        days.forEach(d => {
             const dayDetails = document.createElement('details');
             dayDetails.className = 'day-details';
 
@@ -1843,6 +1813,7 @@
             h4.textContent = coursePrefix + ' Week ' + weekNumber + ' — ' + d;
             dayBodyWrap.appendChild(h4);
 
+            const labels = ['WAL','Instruction','Practice','Success Criteria','Teacher Moves'];
             labels.forEach(label => {
                 const blLabel = document.createElement('div');
                 blLabel.className = 'block-label';
@@ -1981,7 +1952,7 @@ function toggleMusic() {
     const music = document.getElementById('bg-music');
     if (!music) return;
     if (music.paused) {
-        music.play();
+        music.play().catch(() => {});
     } else {
         music.pause();
     }
