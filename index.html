@@ -3,70 +3,774 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Dashboard — Mr. Burke</title>
+    <title>Mr. Burke — Class Dashboard (Weeks 17–18)</title>
     <style>
         :root {
-            --bg: #0f0f0f;
-            --card: #1a1a1a;
-            --text-main: #f1f1f1;
-            --text-muted: #b5b5b5;
+            --bg: #050509;
+            --bg-alt: #0b0b11;
+            --card: #13131c;
+            --card-soft: #181824;
+            --border: #26263a;
             --accent: #3b82f6;
-            --accent-hover: #60a5fa;
-            --border: #2a2a2a;
+            --accent-soft: rgba(59,130,246,0.18);
+            --accent-2: #22c55e;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+        }
+        * {
+            box-sizing: border-box;
         }
         body {
-            font-family: Arial, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             margin: 0;
-            padding: 60px;
-            background: var(--bg);
-            text-align: center;
+            padding: 32px 16px 48px;
+            background: radial-gradient(circle at top, #111827 0, #020617 50%, #000000 100%);
             color: var(--text-main);
         }
-        h1 {
-            margin-bottom: 10px;
-            font-size: 42px;
-            font-weight: 700;
+        .shell {
+            max-width: 1100px;
+            margin: 0 auto;
         }
-        h2 {
-            margin-top: 0;
-            margin-bottom: 50px;
-            font-size: 20px;
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        header h1 {
+            font-size: 34px;
+            margin: 0 0 6px;
+            letter-spacing: 0.04em;
+        }
+        header h2 {
+            font-size: 16px;
+            margin: 0 0 4px;
             font-weight: 400;
             color: var(--text-muted);
         }
-        .link-box {
+        header p {
+            font-size: 13px;
+            margin: 0;
+            color: var(--text-muted);
+        }
+
+        /* Collapsible styling */
+        details {
+            background: var(--card);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            margin-bottom: 10px;
+            box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+            overflow: hidden;
+        }
+        details[open] {
+            background: var(--card-soft);
+            border-color: var(--accent-soft);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        .summary-main {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-width: 350px;
-            margin: 0 auto;
+            gap: 2px;
         }
-        a {
-            display: block;
-            padding: 20px;
-            background: var(--card);
+        .summary-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .summary-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .summary-tag {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            border: 1px solid rgba(148,163,184,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .chevron {
+            margin-left: 10px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        details[open] .chevron {
+            transform: rotate(90deg);
+        }
+
+        .details-body {
+            border-top: 1px solid var(--border);
+            padding: 10px 16px 14px;
+        }
+
+        /* Layout for weeks and days */
+        .weeks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 10px;
+        }
+        .week-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .days-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Day content */
+        .day-inner {
+            padding: 10px 10px 6px;
             border-radius: 10px;
-            text-decoration: none;
-            font-size: 22px;
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            transition: background 0.2s, transform 0.2s;
+            border: 1px solid rgba(31,41,55,0.8);
+            background: radial-gradient(circle at top left, rgba(37,99,235,0.16), rgba(15,23,42,0.9));
         }
-        a:hover {
-            background: var(--accent);
-            transform: translateY(-3px);
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+        .day-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .day-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .block {
+            margin-bottom: 6px;
+        }
+        .block-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        .block-body {
+            min-height: 18px;
+            font-size: 12px;
+            padding: 4px 6px;
+            border-radius: 6px;
+            background: rgba(15,23,42,0.8);
+            border: 1px dashed rgba(75,85,99,0.7);
+        }
+
+        /* Small screen tweaks */
+        @media (max-width: 640px) {
+            body { padding: 20px 10px 32px; }
+            header h1 { font-size: 26px; }
+            .day-inner { padding: 8px 8px 4px; }
         }
     </style>
 </head>
 <body>
+<div class="shell">
 
-    <h1>Mr. Burke</h1>
-    <h2>Class Dashboard</h2>
+    <header>
+        <h1>Mr. Burke</h1>
+        <h2>Graphic Design & House Wiring • Weeks 17–18</h2>
+        <p>Single-file, collapsible dashboard with daily teaching blocks (WAL / Instruction / Practice / Success Criteria / Teacher Moves).</p>
+    </header>
 
-    <div class="link-box">
-        <a href="graphic_design.html">Graphic Design</a>
-        <a href="house_wiring.html">House Wiring</a>
-    </div>
+    <!-- GRAPHIC DESIGN -->
+    <details open>
+        <summary>
+            <div class="summary-main">
+                <div class="summary-title">Graphic Design</div>
+                <div class="summary-subtitle">Week 17–18 • Capstone and end-of-semester work</div>
+            </div>
+            <div>
+                <span class="summary-tag">Course</span>
+                <span class="chevron">▶</span>
+            </div>
+        </summary>
+        <div class="details-body">
 
+            <div class="weeks-grid">
+
+                <!-- GD Week 17 -->
+                <details open>
+                    <summary>
+                        <div class="summary-main">
+                            <div class="summary-title">Week 17</div>
+                            <div class="summary-subtitle">Graphic Design • Mon–Fri</div>
+                        </div>
+                        <div>
+                            <span class="summary-tag">Week 17</span>
+                            <span class="chevron">▶</span>
+                        </div>
+                    </summary>
+                    <div class="details-body">
+                        <div class="days-grid">
+
+                            <!-- GD W17 Mon -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Monday</div>
+                                        <div class="summary-subtitle">Graphic Design • Week 17</div>
+                                    </div>
+                                    <div>
+                                        <span class="summary-tag">Day</span>
+                                        <span class="chevron">▶</span>
+                                    </div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header">
+                                            <div class="day-name">Monday</div>
+                                            <div class="day-meta">GD • W17</div>
+                                        </div>
+                                        <div class="block">
+                                            <div class="block-label">WAL (We Are Learning)</div>
+                                            <div class="block-body"></div>
+                                        </div>
+                                        <div class="block">
+                                            <div class="block-label">Instruction</div>
+                                            <div class="block-body"></div>
+                                        </div>
+                                        <div class="block">
+                                            <div class="block-label">Practice</div>
+                                            <div class="block-body"></div>
+                                        </div>
+                                        <div class="block">
+                                            <div class="block-label">Success Criteria</div>
+                                            <div class="block-body"></div>
+                                        </div>
+                                        <div class="block">
+                                            <div class="block-label">Teacher Moves</div>
+                                            <div class="block-body"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- GD W17 Tue -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Tuesday</div>
+                                        <div class="summary-subtitle">Graphic Design • Week 17</div>
+                                    </div>
+                                    <div>
+                                        <span class="summary-tag">Day</span>
+                                        <span class="chevron">▶</span>
+                                    </div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header">
+                                            <div class="day-name">Tuesday</div>
+                                            <div class="day-meta">GD • W17</div>
+                                        </div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- GD W17 Wed -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Wednesday</div>
+                                        <div class="summary-subtitle">Graphic Design • Week 17</div>
+                                    </div>
+                                    <div>
+                                        <span class="summary-tag">Day</span>
+                                        <span class="chevron">▶</span>
+                                    </div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header">
+                                            <div class="day-name">Wednesday</div>
+                                            <div class="day-meta">GD • W17</div>
+                                        </div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- GD W17 Thu -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Thursday</div>
+                                        <div class="summary-subtitle">Graphic Design • Week 17</div>
+                                    </div>
+                                    <div>
+                                        <span class="summary-tag">Day</span>
+                                        <span class="chevron">▶</span>
+                                    </div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header">
+                                            <div class="day-name">Thursday</div>
+                                            <div class="day-meta">GD • W17</div>
+                                        </div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- GD W17 Fri -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Friday</div>
+                                        <div class="summary-subtitle">Graphic Design • Week 17</div>
+                                    </div>
+                                    <div>
+                                        <span class="summary-tag">Day</span>
+                                        <span class="chevron">▶</span>
+                                    </div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header">
+                                            <div class="day-name">Friday</div>
+                                            <div class="day-meta">GD • W17</div>
+                                        </div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                        </div>
+                    </div>
+                </details>
+
+                <!-- GD Week 18 -->
+                <details>
+                    <summary>
+                        <div class="summary-main">
+                            <div class="summary-title">Week 18</div>
+                            <div class="summary-subtitle">Graphic Design • Mon–Fri</div>
+                        </div>
+                        <div>
+                            <span class="summary-tag">Week 18</span>
+                            <span class="chevron">▶</span>
+                        </div>
+                    </summary>
+                    <div class="details-body">
+                        <div class="days-grid">
+
+                            <!-- Repeat same pattern for GD Week 18, Mon–Fri -->
+                            <!-- Mon -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Monday</div>
+                                        <div class="summary-subtitle">Graphic Design • Week 18</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Monday</div><div class="day-meta">GD • W18</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- Tue -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Tuesday</div>
+                                        <div class="summary-subtitle">Graphic Design • Week 18</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Tuesday</div><div class="day-meta">GD • W18</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- Wed -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Wednesday</div>
+                                        <div class="summary-subtitle">Graphic Design • Week 18</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Wednesday</div><div class="day-meta">GD • W18</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- Thu -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Thursday</div>
+                                        <div class="summary-subtitle">Graphic Design • Week 18</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Thursday</div><div class="day-meta">GD • W18</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- Fri -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Friday</div>
+                                        <div class="summary-subtitle">Graphic Design • Week 18</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Friday</div><div class="day-meta">GD • W18</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                        </div>
+                    </div>
+                </details>
+
+            </div>
+        </div>
+    </details>
+
+    <!-- HOUSE WIRING -->
+    <details>
+        <summary>
+            <div class="summary-main">
+                <div class="summary-title">House Wiring</div>
+                <div class="summary-subtitle">Week 17–18 • Labs, diagrams, and capstone work</div>
+            </div>
+            <div>
+                <span class="summary-tag">Course</span>
+                <span class="chevron">▶</span>
+            </div>
+        </summary>
+        <div class="details-body">
+
+            <div class="weeks-grid">
+
+                <!-- HW Week 17 -->
+                <details>
+                    <summary>
+                        <div class="summary-main">
+                            <div class="summary-title">Week 17</div>
+                            <div class="summary-subtitle">House Wiring • Mon–Fri</div>
+                        </div>
+                        <div>
+                            <span class="summary-tag">Week 17</span>
+                            <span class="chevron">▶</span>
+                        </div>
+                    </summary>
+                    <div class="details-body">
+                        <div class="days-grid">
+
+                            <!-- HW W17 Mon -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Monday</div>
+                                        <div class="summary-subtitle">House Wiring • Week 17</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Monday</div><div class="day-meta">HW • W17</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- HW W17 Tue -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Tuesday</div>
+                                        <div class="summary-subtitle">House Wiring • Week 17</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Tuesday</div><div class="day-meta">HW • W17</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- HW W17 Wed -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Wednesday</div>
+                                        <div class="summary-subtitle">House Wiring • Week 17</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Wednesday</div><div class="day-meta">HW • W17</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- HW W17 Thu -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Thursday</div>
+                                        <div class="summary-subtitle">House Wiring • Week 17</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Thursday</div><div class="day-meta">HW • W17</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- HW W17 Fri -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Friday</div>
+                                        <div class="summary-subtitle">House Wiring • Week 17</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Friday</div><div class="day-meta">HW • W17</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                        </div>
+                    </div>
+                </details>
+
+                <!-- HW Week 18 -->
+                <details>
+                    <summary>
+                        <div class="summary-main">
+                            <div class="summary-title">Week 18</div>
+                            <div class="summary-subtitle">House Wiring • Mon–Fri</div>
+                        </div>
+                        <div>
+                            <span class="summary-tag">Week 18</span>
+                            <span class="chevron">▶</span>
+                        </div>
+                    </summary>
+                    <div class="details-body">
+                        <div class="days-grid">
+
+                            <!-- HW W18 Mon -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Monday</div>
+                                        <div class="summary-subtitle">House Wiring • Week 18</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Monday</div><div class="day-meta">HW • W18</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- HW W18 Tue -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Tuesday</div>
+                                        <div class="summary-subtitle">House Wiring • Week 18</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Tuesday</div><div class="day-meta">HW • W18</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- HW W18 Wed -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Wednesday</div>
+                                        <div class="summary-subtitle">House Wiring • Week 18</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Wednesday</div><div class="day-meta">HW • W18</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- HW W18 Thu -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Thursday</div>
+                                        <div class="summary-subtitle">House Wiring • Week 18</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Thursday</div><div class="day-meta">HW • W18</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- HW W18 Fri -->
+                            <details>
+                                <summary>
+                                    <div class="summary-main">
+                                        <div class="summary-title">Friday</div>
+                                        <div class="summary-subtitle">House Wiring • Week 18</div>
+                                    </div>
+                                    <div><span class="summary-tag">Day</span><span class="chevron">▶</span></div>
+                                </summary>
+                                <div class="details-body">
+                                    <div class="day-inner">
+                                        <div class="day-header"><div class="day-name">Friday</div><div class="day-meta">HW • W18</div></div>
+                                        <div class="block"><div class="block-label">WAL (We Are Learning)</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Instruction</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Practice</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Success Criteria</div><div class="block-body"></div></div>
+                                        <div class="block"><div class="block-label">Teacher Moves</div><div class="block-body"></div></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                        </div>
+                    </div>
+                </details>
+
+            </div>
+        </div>
+    </details>
+
+</div>
 </body>
 </html>
