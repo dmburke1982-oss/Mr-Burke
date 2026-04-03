@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GD Video Resource — ACE Practice · Mr. Burke</title>
+<link rel="stylesheet" href="./assets/tailwind.local.css"/>
+<link rel="stylesheet" href="./assets/classroom-base.css"/>
+<style>
+  body { font-family: var(--app-sans); background: #020617; }
+</style>
+</head>
+<body class="min-h-screen text-slate-100">
+  <header class="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/85 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="w-11 h-11 rounded-2xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 hover:bg-slate-800 transition flex items-center justify-center" aria-label="Back to hub">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </a>
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-black uppercase tracking-[0.3em] text-indigo-300">Graphic Design Resource</span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-black tracking-tight text-white">ACE Practice Video Resource Page</h1>
+          <p class="text-sm text-slate-400 font-medium">One place for certification practice playback, reminders, and quick course links.</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="video-gd-library.html" class="px-4 py-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 text-sm font-bold text-purple-300 transition">Video Library</a>
+        <a href="https://www.gmetrix.net/" target="_blank" rel="noreferrer" class="px-4 py-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/20 text-sm font-bold text-indigo-300 transition">GMetrix</a>
+        <a href="https://support.gmetrix.net/support/home" target="_blank" rel="noreferrer" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-sm font-bold text-slate-200 transition">Support</a>
+        <a href="https://support.gmetrix.net/support/solutions/folders/67000581285" target="_blank" rel="noreferrer" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-sm font-bold text-slate-200 transition">Study Guide</a>
+        <a href="planner.html#checkpointTracker" class="px-4 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 text-sm font-bold text-emerald-300 transition">Checkpoints</a>
+        <a href="gd-slides.html" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-sm font-bold text-slate-200 transition">Daily Slides</a>
+        <a href="gd-workbook.html" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-sm font-bold text-slate-200 transition">Student Workbook</a>
+        <a href="planner.html" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-sm font-bold text-slate-200 transition">Lesson Planner</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8 md:py-10 space-y-8">
+    <section class="grid grid-cols-1 xl:grid-cols-[minmax(0,1.7fr)_minmax(320px,1fr)] gap-6">
+      <div class="bg-slate-950 border border-slate-800 rounded-[2rem] p-5 md:p-7 shadow-2xl shadow-black/20">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-[0.35em] text-slate-500 mb-2">Certification Playback</p>
+            <h2 class="text-2xl font-black tracking-tight text-white">ACE Practice Test 2026</h2>
+            <p class="text-sm text-slate-400 mt-1">Expected bundled file (optional): <span class="text-indigo-300 font-semibold">ACE Practice Test 2026.mp4</span></p>
+            <p class="text-xs text-slate-500 mt-2">If the MP4 is not stored beside this page, use <span class="font-bold text-slate-200">Choose Local Video</span> and open a local copy for this browser session.</p>
+            <p class="text-xs text-slate-500 mt-2">Need setup help? Use the portal first for account creation and code redemption, then sign into SMS with the same credentials.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300">Use with GMetrix notes</span>
+            <span class="px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-xs font-bold text-indigo-300">Certification prep</span>
+          </div>
+        </div>
+
+        <div class="rounded-[1.75rem] overflow-hidden border border-slate-800 bg-black">
+          <video id="player" class="w-full aspect-video bg-black" controls preload="metadata">
+            <source id="playerSource" src="./media/ace-practice-test-2026.mkv" type="video/x-matroska" />
+            Your browser does not support HTML video. Use the button below to open the file directly.
+          </video>
+        </div>
+
+        <div class="mt-5 flex flex-wrap gap-3">
+          <a href="ACE%20Practice%20Test%202026.mp4" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-black transition shadow-lg shadow-indigo-900/30">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M5 7v14h14v-5"/></svg>
+            Open Expected File
+          </a>
+          <label class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-slate-200 text-sm font-bold transition cursor-pointer">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M20 16.5A3.5 3.5 0 0 1 16.5 20h-9A3.5 3.5 0 0 1 4 16.5"/></svg>
+            Choose Local Video
+            <input id="filePicker" type="file" accept="video/*,.mkv,.mp4,.webm,.mov,.m4v" class="hidden"/>
+          </label>
+          <button id="resetVideo" type="button" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-200 text-sm font-bold transition">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 2v6h6"/><path d="M21 12a9 9 0 0 0-15.55-6.36L3 8"/></svg>
+            Reset to Default
+          </button>
+        </div>
+
+        <div class="mt-5 rounded-2xl bg-slate-900/80 border border-slate-800 p-4">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <div>
+              <p class="text-xs font-black uppercase tracking-[0.35em] text-slate-500 mb-1">Playback Status</p>
+              <p id="statusText" class="text-sm text-slate-300 font-medium">Using the default file path. If the player is blank, make sure the MP4 file is in the same folder as this page, or choose a local file manually.</p>
+            </div>
+            <span id="sourceBadge" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-xs font-bold text-indigo-300">Default source active</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <section class="bg-slate-950 border border-slate-800 rounded-[2rem] p-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.35em] text-slate-500 mb-3">Browser Note</p>
+          <h3 class="text-xl font-black text-white mb-4">MKV support can vary</h3>
+          <div class="space-y-3 text-sm text-slate-300">
+            <div class="flex items-start gap-3"><span class="w-2 h-2 rounded-full bg-indigo-500 mt-1.5 shrink-0"></span><p>Some browsers do not play MKV files even when the file is present.</p></div>
+            <div class="flex items-start gap-3"><span class="w-2 h-2 rounded-full bg-indigo-500 mt-1.5 shrink-0"></span><p>Use <span class="font-bold text-white">Choose Local Video</span> for a converted MP4/WebM version when you want in-page playback.</p></div>
+            <div class="flex items-start gap-3"><span class="w-2 h-2 rounded-full bg-indigo-500 mt-1.5 shrink-0"></span><p>The <span class="font-bold text-white">Open Expected File</span> button is still useful when you want to launch the saved MKV in your normal desktop player.</p></div>
+          </div>
+        </section>
+
+        <section class="bg-slate-950 border border-slate-800 rounded-[2rem] p-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.35em] text-slate-500 mb-3">Quick Launch</p>
+          <h3 class="text-xl font-black text-white mb-4">Certification shortcuts</h3>
+          <div class="space-y-3">
+            <a href="https://www.gmetrix.net/" target="_blank" rel="noreferrer" class="flex items-center justify-between rounded-2xl bg-slate-900 border border-slate-800 px-4 py-3 text-sm font-bold text-slate-200 hover:border-indigo-500/40 hover:text-white transition">
+              <span class="flex items-center gap-3"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Open GMetrix Login</span>
+              <span class="text-indigo-300">↗</span>
+            </a>
+            <a href="planner.html#checkpointTracker" class="flex items-center justify-between rounded-2xl bg-slate-900 border border-slate-800 px-4 py-3 text-sm font-bold text-slate-200 hover:border-emerald-500/40 hover:text-white transition">
+              <span class="flex items-center gap-3"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h11"/></svg>Open Checkpoint Tracker</span>
+              <span class="text-emerald-300">→</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="bg-slate-950 border border-slate-800 rounded-[2rem] p-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.35em] text-slate-500 mb-3">Suggested Use</p>
+          <h3 class="text-xl font-black text-white mb-4">Certification lesson flow</h3>
+          <div class="space-y-3 text-sm text-slate-300">
+            <div class="rounded-2xl bg-slate-900 border border-slate-800 p-4">
+              <p class="text-indigo-300 font-black text-sm mb-1">Before viewing</p>
+              <p>Open the workbook or GMetrix notes so students can capture shortcuts, tools, and workflow tips in real time.</p>
+            </div>
+            <div class="rounded-2xl bg-slate-900 border border-slate-800 p-4">
+              <p class="text-indigo-300 font-black text-sm mb-1">During viewing</p>
+              <p>Pause at key tool demonstrations and require students to predict the next command or menu path before resuming.</p>
+            </div>
+            <div class="rounded-2xl bg-slate-900 border border-slate-800 p-4">
+              <p class="text-indigo-300 font-black text-sm mb-1">After viewing</p>
+              <p>Send students into timed GMetrix practice or a quick mock task to immediately reinforce the video content.</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <a href="https://www.gmetrix.net/" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest transition shadow-lg shadow-emerald-900/30">Launch Portal</a>
+                <a href="https://support.gmetrix.net/support/solutions/folders/67000581285" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 text-[10px] font-black uppercase tracking-widest transition">Open Study Guide</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-slate-950 border border-slate-800 rounded-[2rem] p-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.35em] text-slate-500 mb-3">Quick Links</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <a href="gd-slides.html" class="rounded-2xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 p-4 transition">
+              <p class="text-sm font-black text-white">Open slides</p>
+              <p class="text-xs text-slate-400 mt-1">Return to presentation mode.</p>
+            </a>
+            <a href="gd-workbook.html" class="rounded-2xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 p-4 transition">
+              <p class="text-sm font-black text-white">Open workbook</p>
+              <p class="text-xs text-slate-400 mt-1">Daily prompts and ACE practice support.</p>
+            </a>
+            <a href="planner.html" class="rounded-2xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 p-4 transition">
+              <p class="text-sm font-black text-white">Open planner</p>
+              <p class="text-xs text-slate-400 mt-1">Review sequence and daily focus.</p>
+            </a>
+            <a href="https://support.gmetrix.net/support/home" target="_blank" rel="noreferrer" class="rounded-2xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 p-4 transition">
+              <p class="text-sm font-black text-white">Support center</p>
+              <p class="text-xs text-slate-400 mt-1">Current official help articles and troubleshooting.</p>
+            </a>
+            <a href="https://support.gmetrix.net/support/solutions/folders/67000581285" target="_blank" rel="noreferrer" class="rounded-2xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 p-4 transition">
+              <p class="text-sm font-black text-white">Study Guide help</p>
+              <p class="text-xs text-slate-400 mt-1">Objectives, quick review, and study-guide articles.</p>
+            </a>
+            <a href="index.html" class="rounded-2xl bg-slate-900 border border-slate-800 hover:border-indigo-500/40 p-4 transition">
+              <p class="text-sm font-black text-white">Back to hub</p>
+              <p class="text-xs text-slate-400 mt-1">All course tools in one place.</p>
+            </a>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+<script>
+  const defaultSrc = 'ACE%20Practice%20Test%202026.mp4';
+  const player = document.getElementById('player');
+  const source = document.getElementById('playerSource');
+  const picker = document.getElementById('filePicker');
+  const resetButton = document.getElementById('resetVideo');
+  const statusText = document.getElementById('statusText');
+  const sourceBadge = document.getElementById('sourceBadge');
+  let objectUrl = '';
+
+  const badgeBaseClass = 'inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold';
+
+  function setStatus(message, badgeText) {
+    statusText.textContent = message;
+    sourceBadge.textContent = badgeText;
+  }
+
+  function setBadgeClass(kind = 'default') {
+    const map = {
+      default: `${badgeBaseClass} bg-indigo-500/10 border-indigo-500/20 text-indigo-300`,
+      local: `${badgeBaseClass} bg-emerald-500/10 border-emerald-500/20 text-emerald-300`,
+      error: `${badgeBaseClass} bg-red-500/10 border-red-500/20 text-red-400`
+    };
+    sourceBadge.className = map[kind] || map.default;
+  }
+
+  function handleDefaultMissing() {
+    setStatus(
+      'Video file not found. Ensure "ACE Practice Test 2026.mp4" is in the same folder as this HTML file, or use "Choose Local Video" to select the file manually.',
+      'File not found'
+    );
+    setBadgeClass('error');
+  }
+
+  function loadSource(src, type) {
+    source.setAttribute('src', src);
+    if (type) source.setAttribute('type', type);
+    player.load();
+  }
+
+  player.addEventListener('error', () => {
+    if (!objectUrl) handleDefaultMissing();
+  });
+
+  picker.addEventListener('change', (event) => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(file);
+    loadSource(objectUrl, file.type || 'video/*');
+    setStatus(`Playing local file: ${file.name}`, 'Local file active');
+    setBadgeClass('local');
+  });
+
+  resetButton.addEventListener('click', () => {
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = '';
+    picker.value = '';
+    loadSource(defaultSrc, 'video/mp4');
+    setStatus('Using the default file path. If the player is blank, make sure the MP4 file is in the same folder as this page, or choose a local file manually.', 'Default source active');
+    setBadgeClass('default');
+  });
+
+  loadSource(defaultSrc, 'video/mp4');
+  setBadgeClass('default');
+</script>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GD Workbook — Campaign & ACE · Mr. Burke</title>
+<link rel="stylesheet" href="./assets/tailwind.local.css"/>
+<link rel="stylesheet" href="./assets/classroom-base.css"/>
+<style>
+  body { font-family: var(--app-sans); }
+  @media print {
+    .no-print { display: none !important; }
+    .page { page-break-after: always; box-shadow: none !important; }
+    body { background: white !important; }
+    .page-container { padding: 0 !important; }
+  }
+</style>
+</head>
+<body class="bg-gray-200 text-gray-900 min-h-screen">
+
+<!-- CONTROLS -->
+<div class="no-print fixed top-4 right-4 z-50 flex gap-3">
+  <a href="index.html" class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2.5 rounded-lg shadow font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+    Hub
+  </a>
+  <a href="video-gd.html" class="flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-900 px-4 py-2.5 rounded-lg shadow font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="9 7 17 12 9 17 9 7"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+    Video Page
+  </a>
+  <a href="https://www.gmetrix.net/" target="_blank" rel="noreferrer" class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 rounded-lg shadow font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    GMetrix
+  </a>
+  <a href="https://support.gmetrix.net/support/home" target="_blank" rel="noreferrer" class="flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-900 px-4 py-2.5 rounded-lg shadow font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>
+    Support
+  </a>
+  <a href="https://support.gmetrix.net/support/solutions/folders/67000581285" target="_blank" rel="noreferrer" class="flex items-center gap-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 px-4 py-2.5 rounded-lg shadow font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Study Guide
+  </a>
+  <a href="planner.html#checkpointTracker" class="flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-900 px-4 py-2.5 rounded-lg shadow font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h11"/></svg>
+    Checkpoints
+  </a>
+  <button onclick="window.print()" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg shadow-xl font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Print Workbook
+  </button>
+</div>
+
+<div class="no-print max-w-4xl mx-auto pt-24 px-4">
+  <div class="rounded-2xl border border-indigo-200 bg-indigo-50 px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-sm">
+    <div>
+      <p class="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-700 mb-1">Teacher Shortcuts</p>
+      <p class="text-sm font-semibold text-gray-900">Open the ACE video page, launch the GMetrix portal or Study Guide, and jump to checkpoints before students begin certification practice.</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <a href="video-gd.html" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="9 7 17 12 9 17 9 7"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+        Video Resource
+      </a>
+      <a href="https://www.gmetrix.net/" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg font-bold text-sm transition">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        GMetrix
+      </a>
+      <a href="planner.html#checkpointTracker" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h11"/></svg>
+        Checkpoints
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-4xl mx-auto py-8 px-4 space-y-8 page-container">
+
+  <!-- COVER PAGE -->
+  <div class="page bg-white p-12 shadow-md min-h-[10in] flex flex-col justify-center items-center border-t-8 border-indigo-600">
+    <div class="w-20 h-20 rounded-full bg-indigo-100 border-4 border-indigo-500 flex items-center justify-center mb-8">
+      <svg width="36" height="36" fill="none" stroke="#4f46e5" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    </div>
+    <h1 class="text-5xl font-black uppercase tracking-widest text-center mb-2">Graphic Design</h1>
+    <h2 class="text-2xl font-bold text-gray-500 mb-10">Campaign & Certification Workbook</h2>
+    <p class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-10">GD 1 & 2 · Weeks 12–18 · Spring 2026</p>
+    <div class="w-full max-w-md space-y-5 text-lg">
+      <div>
+        <label class="block font-bold mb-1 text-indigo-700">Student Name:</label>
+        <input type="text" class="w-full border-b-4 border-gray-300 outline-none p-2 bg-gray-50 focus:border-indigo-500"/>
+      </div>
+      <div>
+        <label class="block font-bold mb-1 text-indigo-700">Class Period:</label>
+        <input type="text" class="w-full border-b-4 border-gray-300 outline-none p-2 bg-gray-50 focus:border-indigo-500"/>
+      </div>
+      <div>
+        <label class="block font-bold mb-1 text-indigo-700">Date:</label>
+        <input type="text" class="w-full border-b-4 border-gray-300 outline-none p-2 bg-gray-50 focus:border-indigo-500"/>
+      </div>
+    </div>
+
+  <!-- GMETRIX QUICK REFERENCE -->
+  <div class="page bg-white p-8 shadow-md min-h-[10.5in] flex flex-col">
+    <div class="border-b-4 border-indigo-600 pb-4 mb-6">
+      <h2 class="text-3xl font-black uppercase text-indigo-900">GMetrix Certification Platform</h2>
+      <p class="font-bold text-gray-500">Setup, testing, and score tracking</p>
+    </div>
+
+    <div class="mb-6">
+      <h3 class="font-bold text-base uppercase mb-3 text-indigo-800">One-Time Setup Checklist</h3>
+      <div class="grid grid-cols-1 gap-2">
+        <label class="flex items-center gap-3 p-3 bg-indigo-50 rounded border border-indigo-200">
+          <input type="checkbox" class="w-5 h-5 accent-indigo-600"/>
+          <span class="text-sm"><strong>Create Account:</strong> gmetrix.net → Sign up here → use your school email as your User ID</span>
+        </label>
+        <label class="flex items-center gap-3 p-3 bg-indigo-50 rounded border border-indigo-200">
+          <input type="checkbox" class="w-5 h-5 accent-indigo-600"/>
+          <span class="text-sm"><strong>Redeem Code:</strong> click the light-blue key icon → enter the access code with dashes → Redeem Code</span>
+        </label>
+        <label class="flex items-center gap-3 p-3 bg-indigo-50 rounded border border-indigo-200">
+          <input type="checkbox" class="w-5 h-5 accent-indigo-600"/>
+          <span class="text-sm"><strong>SMS Login:</strong> open GMetrix SMS v6 → sign in with the same account credentials</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h3 class="font-bold text-base uppercase mb-3 text-indigo-800">Testing Modes</h3>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="p-4 bg-green-50 border-2 border-green-400 rounded-xl">
+          <p class="font-black text-green-800 text-sm mb-2">🟢 Training Mode</p>
+          <ul class="text-xs space-y-1">
+            <li>• No time limit</li>
+            <li>• Use the lightbulb for step-by-step help</li>
+            <li>• Questions can be retried</li>
+            <li>• Best for learning and targeted review</li>
+          </ul>
+        </div>
+        <div class="p-4 bg-red-50 border-2 border-red-400 rounded-xl">
+          <p class="font-black text-red-800 text-sm mb-2">🔴 Testing Mode</p>
+          <ul class="text-xs space-y-1">
+            <li>• Timed to match exam conditions</li>
+            <li>• No help text available</li>
+            <li>• No question retries</li>
+            <li>• Best for baseline and exam practice</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h3 class="font-bold text-base uppercase mb-3 text-indigo-800">Daily Practice Workflow</h3>
+      <div class="space-y-2">
+        <div class="flex items-center gap-3 p-2 bg-gray-50 rounded"><span class="font-black text-indigo-600 w-6">1.</span><span class="text-sm">Open GMetrix SMS v6 → Sign in</span></div>
+        <div class="flex items-center gap-3 p-2 bg-gray-50 rounded"><span class="font-black text-indigo-600 w-6">2.</span><span class="text-sm">New Test → Adobe → Photoshop → Select Training or Testing Mode</span></div>
+        <div class="flex items-center gap-3 p-2 bg-gray-50 rounded"><span class="font-black text-indigo-600 w-6">3.</span><span class="text-sm">Save before the period ends (maximum 15 saves per test)</span></div>
+        <div class="flex items-center gap-3 p-2 bg-gray-50 rounded"><span class="font-black text-indigo-600 w-6">4.</span><span class="text-sm">Use Resume Test to continue saved work next class</span></div>
+        <div class="flex items-center gap-3 p-2 bg-gray-50 rounded"><span class="font-black text-indigo-600 w-6">5.</span><span class="text-sm">Use Completed Tests to view scores and review missed questions</span></div>
+      </div>
+    </div>
+
+    <div class="flex-grow">
+      <h3 class="font-bold text-base uppercase mb-3 text-indigo-800">Score Tracking Log</h3>
+      <table class="w-full border-collapse text-xs">
+        <thead>
+          <tr class="bg-indigo-900 text-white">
+            <th class="p-2 border border-indigo-700 text-left">Date</th>
+            <th class="p-2 border border-indigo-700 text-left">Test Focus</th>
+            <th class="p-2 border border-indigo-700 text-left">Mode</th>
+            <th class="p-2 border border-indigo-700 text-left">Score %</th>
+            <th class="p-2 border border-indigo-700 text-left">Pass/Fail</th>
+            <th class="p-2 border border-indigo-700 text-left">Weak Domain</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-indigo-50"><td class="p-2 border">4/9</td><td class="p-2 border">Setup Baseline</td><td class="p-2 border">Training</td><td class="p-2 border"></td><td class="p-2 border"></td><td class="p-2 border"></td></tr>
+          <tr><td class="p-2 border">4/17</td><td class="p-2 border">Practice Baseline</td><td class="p-2 border">Testing</td><td class="p-2 border"></td><td class="p-2 border"></td><td class="p-2 border"></td></tr>
+          <tr class="bg-indigo-50"><td class="p-2 border">4/21</td><td class="p-2 border">Layers / Masks</td><td class="p-2 border">Training</td><td class="p-2 border"></td><td class="p-2 border"></td><td class="p-2 border"></td></tr>
+          <tr><td class="p-2 border">4/27</td><td class="p-2 border">Typography</td><td class="p-2 border">Training</td><td class="p-2 border"></td><td class="p-2 border"></td><td class="p-2 border"></td></tr>
+          <tr class="bg-indigo-50"><td class="p-2 border">4/29</td><td class="p-2 border">Practice Exam</td><td class="p-2 border">Testing</td><td class="p-2 border"></td><td class="p-2 border"></td><td class="p-2 border"></td></tr>
+          <tr><td class="p-2 border">5/1</td><td class="p-2 border">Targeted Review</td><td class="p-2 border">Training</td><td class="p-2 border"></td><td class="p-2 border"></td><td class="p-2 border"></td></tr>
+          <tr class="bg-indigo-50"><td class="p-2 border">5/6–5/7</td><td class="p-2 border">Official Exam</td><td class="p-2 border">Live</td><td class="p-2 border"></td><td class="p-2 border"></td><td class="p-2 border"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CAMPAIGN PLANNING SHEET -->
+  <div class="page bg-white p-8 sm:p-12 shadow-md min-h-[10.5in]">
+    <div class="border-b-4 border-indigo-600 pb-4 mb-6">
+      <h2 class="text-3xl font-black uppercase">Campaign Planning Worksheet</h2>
+      <p class="font-bold text-gray-500">Album Cover Launch Identity</p>
+    </div>
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <div class="space-y-4">
+        <div><label class="font-bold text-xs text-gray-500 uppercase tracking-wide block mb-1">Album / Artist Name</label><input type="text" class="w-full border-b-2 border-gray-300 outline-none py-1 focus:border-indigo-500"/></div>
+        <div><label class="font-bold text-xs text-gray-500 uppercase tracking-wide block mb-1">Target Audience</label><input type="text" class="w-full border-b-2 border-gray-300 outline-none py-1 focus:border-indigo-500"/></div>
+        <div><label class="font-bold text-xs text-gray-500 uppercase tracking-wide block mb-1">Message or Mood</label><input type="text" class="w-full border-b-2 border-gray-300 outline-none py-1 focus:border-indigo-500"/></div>
+      </div>
+      <div class="space-y-4">
+        <div><label class="font-bold text-xs text-gray-500 uppercase tracking-wide block mb-1">Visual Style</label><input type="text" class="w-full border-b-2 border-gray-300 outline-none py-1 focus:border-indigo-500"/></div>
+        <div><label class="font-bold text-xs text-gray-500 uppercase tracking-wide block mb-1">Color Palette Ideas</label><input type="text" class="w-full border-b-2 border-gray-300 outline-none py-1 focus:border-indigo-500"/></div>
+        <div><label class="font-bold text-xs text-gray-500 uppercase tracking-wide block mb-1">Typography / Symbols</label><input type="text" class="w-full border-b-2 border-gray-300 outline-none py-1 focus:border-indigo-500"/></div>
+      </div>
+    </div>
+    <h3 class="font-bold text-base uppercase mb-2">Album Cover Concept Sketch</h3>
+    <div class="relative border-2 border-dashed border-gray-400 bg-gray-50 h-64 w-full mb-4">
+      <canvas id="planSketch" class="w-full h-full cursor-crosshair touch-none absolute inset-0"></canvas>
+      <button onclick="clearSketch('planSketch')" class="no-print absolute bottom-2 right-2 bg-white border border-gray-300 px-3 py-1 rounded shadow hover:bg-gray-100 text-sm font-medium flex items-center gap-1 z-10">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 20H7L3 16l9-9 8 8-2 2z"/><path d="M6 11l5-5"/></svg> Clear
+      </button>
+    </div>
+    <div class="bg-indigo-50 p-4 border-l-4 border-indigo-600 mt-4 grid grid-cols-2 gap-4">
+      <div>
+        <h4 class="font-bold text-sm mb-2 text-indigo-800">Design Consistency Check</h4>
+        <label class="flex items-center gap-2 text-sm mb-1"><input type="checkbox" class="w-4 h-4 accent-indigo-600"/> Clear concept direction</label>
+        <label class="flex items-center gap-2 text-sm mb-1"><input type="checkbox" class="w-4 h-4 accent-indigo-600"/> Strong visual style</label>
+        <label class="flex items-center gap-2 text-sm mb-1"><input type="checkbox" class="w-4 h-4 accent-indigo-600"/> Album cover draft started</label>
+        <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="w-4 h-4 accent-indigo-600"/> One matching merch idea</label>
+      </div>
+      <div>
+        <label class="font-bold text-xs text-gray-500 uppercase tracking-wide block mb-1">Matching Merch Item</label>
+        <input type="text" class="w-full border-b-2 border-gray-300 outline-none py-1 bg-transparent focus:border-indigo-500"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAILY PAGES -->
+  <div id="dailyPages"></div>
+
+</div>
+
+<script>
+const schedule = [
+  { day:"Wed 4/1",  title:"Campaign Planning",      task:"Campaign piece planning & brand identity intro",                                            aceQ:"What is the primary benefit of organizing layers with Groups in Photoshop?",                              aceA:"It keeps complex files manageable and makes targeting specific elements easier." },
+  { day:"Thu 4/2",  title:"Album Cover Studio",     task:"Album cover production studio",                                                            aceQ:"What does a 300dpi resolution setting ensure for print output?",                                          aceA:"Sufficient pixel density for sharp, professional-quality printed images." },
+  { day:"Mon 4/6",  title:"Merch Production",       task:"Merchandise and sticker production",                                                       aceQ:"What is essential for creating die-cut sticker artwork?",                                                 aceA:"Vector outlines/paths that define clean cut edges at any scale." },
+  { day:"Tue 4/7",  title:"Consistency Check",      task:"Consistency check across pieces",                                                          aceQ:"How should fitness professionals approach behavior change with clients?",                                  aceA:"B) Motivational interviewing and goal-setting strategies" },
+  { day:"Wed 4/8",  title:"Export Checkpoint",      task:"Export and checkpoint submission",                                                         aceQ:"What is the primary benefit of the 'Save as PSD' workflow?",                                             aceA:"Preserves layers and non-destructive edits for future changes." },
+  { day:"Thu 4/9",  title:"GMetrix Setup & Baseline", task:"Account setup in gmetrix.net, redeem access code, launch GMetrix SMS, and complete a Photoshop Training Mode baseline.", aceQ:"How do Adjustment Layers differ from direct image adjustments?", aceA:"Adjustment Layers apply edits non-destructively and can be re-edited." },
+  { day:"Fri 4/10", title:"Peer Critique",          task:"Peer critique on promotional graphics",                                                    aceQ:"What is the primary function of the Layers Panel?",                                                      aceA:"Controls layer visibility, blending modes, opacity, and stacking order." },
+  { day:"Mon 4/13", title:"Revision Studio",        task:"Revision studio based on feedback",                                                        aceQ:"Why use a Layer Mask instead of the Eraser Tool?",                                                       aceA:"Layer Masks allow non-destructive, reversible hiding/revealing of pixels." },
+  { day:"Tue 4/14", title:"Final Revisions",        task:"Final revisions, export check, and reflection",                                            aceQ:"What is the best practice for organizing a complex Photoshop file?",                                     aceA:"Group related layers and use clear, descriptive names for each layer." },
+  { day:"Wed 4/15", title:"File Organization",      task:"Asset collection and file organization",                                                   aceQ:"What defines a Raster image?",                                                                          aceA:"It is composed of a fixed grid of individual pixels." },
+  { day:"Thu 4/16", title:"Portfolio Layout",       task:"Portfolio layout preparation",                                                             aceQ:"How can you automate repetitive tasks in Photoshop?",                                                    aceA:"By recording and playing back Actions (Window > Actions)." },
+  { day:"Fri 4/17", title:"ACE Baseline",           task:"GMetrix Practice & ACE Baseline Test — Video Q1-Q8 (0:03-2:10)",                          aceQ:"What does Content-Aware Fill do?",                                                                      aceA:"Automatically removes objects and fills the area using surrounding texture." },
+  { day:"Mon 4/20", title:"Layout Review",          task:"Layout review & distribute Supplementary Study Guide",                                     aceQ:"Which tool automatically snaps to high-contrast edges?",                                                 aceA:"The Magnetic Lasso Tool." },
+  { day:"Tue 4/21", title:"Layers/Masks Practice",  task:"GMetrix Practice: Layers/Masks — Video Q9-Q16 (2:11-4:18)",                               aceQ:"Which tool is best for selecting complex areas like hair?",                                              aceA:"Quick Selection Tool combined with Select and Mask workspace." },
+  { day:"Wed 4/22", title:"Concept Expansion",      task:"Concept expansion for target audiences",                                                   aceQ:"How do you correct lens distortion non-destructively?",                                                  aceA:"Convert to Smart Object, then use the Lens Correction filter as a Smart Filter." },
+  { day:"Thu 4/23", title:"Refinement Studio",      task:"Refinement studio work",                                                                   aceQ:"What is required to apply a Smart Filter?",                                                             aceA:"The layer must be converted to a Smart Object first." },
+  { day:"Mon 4/27", title:"Typography Practice",    task:"GMetrix Practice: Adjustments/Typography — Video Q17-Q25 (4:19-6:42)",                    aceQ:"Where do you manage saved color swatches?",                                                             aceA:"The Swatches Panel (Window > Swatches)." },
+  { day:"Tue 4/28", title:"Peer Check",             task:"Peer check and refinement studio",                                                         aceQ:"Which adjustment layer controls tonal range using a histogram?",                                         aceA:"Levels Adjustment Layer." },
+  { day:"Wed 4/29", title:"Practice Exam",          task:"GMetrix Practice Exam — Video Q26-Q33 (6:43-8:50) & Answer Key",                          aceQ:"Which adjustment allows targeted control of highlights, midtones, and shadows via a diagonal line?",     aceA:"Curves Adjustment Layer." },
+  { day:"Thu 4/30", title:"Export Packaging",       task:"Proofing, formatting, and export packaging",                                               aceQ:"How should you non-destructively adjust specific skin tones?",                                          aceA:"Use a Hue/Saturation Adjustment Layer with a targeted layer mask." },
+  { day:"Fri 5/1",  title:"Targeted Review",       task:"Targeted Review: GMetrix weak areas & Video Answer Key deep dive",                         aceQ:"Which tool removes blemishes by sampling surrounding texture automatically?",                             aceA:"Spot Healing Brush Tool." },
+  { day:"Mon 5/4",  title:"Final Submission",       task:"Final project submission and packaging",                                                   aceQ:"What is Frequency Separation?",                                                                         aceA:"Separating an image's texture from color/tone layers for precise retouching." },
+  { day:"Tue 5/5",  title:"Exam Strategy",          task:"Exam strategy and final testing interface review",                                         aceQ:"Why assign a Color Profile to a document?",                                                             aceA:"To ensure consistent color representation across different devices and outputs." },
+  { day:"Wed 5/6",  title:"EXAM DAY 1",             task:"GD1: Official Practice Exam | GD2: Adobe Photoshop Certification Exam",                   aceQ:"Which resampling method best preserves sharpness when reducing image size?",                             aceA:"Bicubic Sharper.", exam:true },
+  { day:"Thu 5/7",  title:"EXAM DAY 2",             task:"GD1: Finish Practice | GD2: Finish Certification",                                        aceQ:"What is the primary use of the Liquify filter?",                                                        aceA:"Selective, non-linear distortion and manipulation of image pixels.", exam:true },
+  { day:"Fri 5/8",  title:"Exam Reflection",        task:"Written reflection on design process and exam experience",                                 aceQ:"How can you sync color palettes across Adobe applications?",                                             aceA:"Using Creative Cloud Libraries shared across the Creative Suite." },
+  { day:"Mon 5/11", title:"Portfolio Sharing",      task:"Peer sharing and documentation of final portfolio",                                        aceQ:"How do you reduce image noise non-destructively?",                                                       aceA:"Convert to Smart Object, then apply Reduce Noise as a Smart Filter." },
+  { day:"Tue 5/12", title:"Industry Pathways",      task:"Industry exploration and professional pathways",                                           aceQ:"How do you selectively hide part of an Adjustment Layer's effect?",                                      aceA:"Paint black on its layer mask to conceal the effect in that area." },
+  { day:"Wed 5/13", title:"Workspace Archive",      task:"Digital workspace cleanup, archive, and backup",                                           aceQ:"What does the Pen Tool create?",                                                                        aceA:"Precise vector paths that can be converted to selections or shapes." },
+  { day:"Thu 5/14", title:"Semester Wrap-Up",       task:"Semester wrap-up",                                                                         aceQ:"What is the main advantage of vector graphics over raster graphics?",                                   aceA:"They scale infinitely without losing quality or sharpness." }
+];
+
+const container = document.getElementById('dailyPages');
+
+schedule.forEach((data, index) => {
+  const page = document.createElement('div');
+  page.className = 'page bg-white p-8 sm:p-12 shadow-md min-h-[10.5in] flex flex-col';
+
+  const examBorder = data.exam ? 'border-indigo-600' : 'border-indigo-600';
+  const headerBg = data.exam ? 'bg-indigo-900' : '';
+
+  page.innerHTML = `
+    <!-- Header -->
+    <div class="flex justify-between items-end border-b-4 ${examBorder} pb-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-black uppercase ${data.exam ? 'text-indigo-700' : 'text-indigo-900'}">${data.title}</h2>
+        <p class="font-bold text-gray-500 text-lg">${data.day}</p>
+      </div>
+      ${data.exam ? '<span class="text-xs font-black uppercase tracking-widest bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full border border-indigo-200">EXAM DAY</span>' : ''}
+    </div>
+    <!-- Objective -->
+    <div class="mb-6">
+      <h3 class="font-bold text-base mb-2 flex items-center gap-2">
+        <svg width="18" height="18" fill="none" stroke="#4f46e5" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Today's Objective
+      </h3>
+      <div class="p-4 bg-indigo-50 border border-indigo-200 rounded-lg text-base font-medium">${data.task}</div>
+    </div>
+    <!-- ACE Practice -->
+    <div class="bg-slate-800 text-white p-6 rounded-xl mb-6 shadow-inner">
+      <h3 class="font-bold text-xs text-indigo-300 uppercase tracking-widest mb-3">ACE / Photoshop Certification Practice</h3>
+      <p class="font-semibold text-lg leading-snug mb-5">${data.aceQ}</p>
+      <div class="border-t border-slate-600 pt-4">
+        <span class="text-xs text-slate-400 block mb-1">Correct Answer:</span>
+        <p class="text-emerald-400 font-bold text-base">${data.aceA}</p>
+      </div>
+      <div class="mt-4 rounded-lg bg-slate-900/60 border border-slate-700 px-3 py-2 text-[11px] text-slate-300 leading-relaxed">Save and resume carefully: GMetrix practice tests can be resumed a maximum of 15 times before submission is required. Use Completed Tests to review score reports and missed questions.</div>
+      <div class="no-print mt-4 pt-4 border-t border-slate-600/80 flex flex-wrap gap-2">
+        <a href="https://www.gmetrix.net/" target="_blank" rel="noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-[10px] font-black uppercase tracking-widest text-slate-200 transition">Portal</a>
+        <a href="https://support.gmetrix.net/support/home" target="_blank" rel="noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-[10px] font-black uppercase tracking-widest text-slate-200 transition">Support</a>
+        <a href="https://support.gmetrix.net/support/solutions/folders/67000581285" target="_blank" rel="noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-[10px] font-black uppercase tracking-widest text-indigo-200 transition">Study Guide</a>
+      </div>
+    </div>
+    <!-- Reflection -->
+    <div class="flex-grow flex flex-col mb-10">
+      <h3 class="font-bold text-base mb-2 uppercase border-b-2 border-gray-300 pb-2 text-indigo-900">Daily Reflection & Notes</h3>
+      <textarea
+        class="w-full flex-grow min-h-48 border-2 border-gray-200 p-4 rounded-lg outline-none focus:border-indigo-500 resize-none text-base"
+        style="background-image:repeating-linear-gradient(transparent,transparent 31px,#f3f4f6 31px,#f3f4f6 32px);line-height:32px;padding-top:6px"
+      ></textarea>
+    </div>
+    <!-- Footer -->
+    <div class="mt-auto border-t-2 border-gray-900 pt-3 flex justify-between text-xs text-gray-400 font-bold uppercase">
+      <span>Graphic Design 1 &amp; 2</span>
+      <span>Page ${index+1} of ${schedule.length}</span>
+    </div>
+  `;
+  container.appendChild(page);
+});
+
+// Planning sketch canvas
+const canvases = {};
+requestAnimationFrame(() => initCanvas('planSketch'));
+
+function initCanvas(id) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  const container = canvas.parentElement;
+  canvas.width = container.offsetWidth * 2;
+  canvas.height = container.offsetHeight * 2;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(2, 2);
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#1f2937';
+  ctx.lineWidth = 2;
+  canvases[id] = { canvas, ctx, drawing: false };
+
+  const getPos = (e) => {
+    const r = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return [src.clientX - r.left, src.clientY - r.top];
+  };
+  canvas.addEventListener('mousedown', e => { const [x,y]=getPos(e); ctx.beginPath(); ctx.moveTo(x,y); canvases[id].drawing=true; });
+  canvas.addEventListener('mousemove', e => { if (!canvases[id].drawing) return; const [x,y]=getPos(e); ctx.lineTo(x,y); ctx.stroke(); });
+  canvas.addEventListener('mouseup', () => canvases[id].drawing=false);
+  canvas.addEventListener('mouseleave', () => canvases[id].drawing=false);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); const [x,y]=getPos(e); ctx.beginPath(); ctx.moveTo(x,y); canvases[id].drawing=true; }, {passive:false});
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!canvases[id].drawing) return; const [x,y]=getPos(e); ctx.lineTo(x,y); ctx.stroke(); }, {passive:false});
+  canvas.addEventListener('touchend', () => canvases[id].drawing=false);
+}
+
+function clearSketch(id) {
+  const c = canvases[id];
+  if (!c) return;
+  c.ctx.clearRect(0, 0, c.canvas.width, c.canvas.height);
+}
+</script>
+</body>
+</html>

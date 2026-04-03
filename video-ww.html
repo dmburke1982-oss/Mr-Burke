@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WW Video Resource — Basic Box · Mr. Burke</title>
+<link rel="stylesheet" href="./assets/tailwind.local.css"/>
+<link rel="stylesheet" href="./assets/classroom-base.css"/>
+<style>
+  body { font-family: var(--app-sans); background: #09090b; }
+</style>
+</head>
+<body class="min-h-screen text-zinc-100">
+  <header class="sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/85 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="w-11 h-11 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 hover:bg-zinc-800 transition flex items-center justify-center" aria-label="Back to hub">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </a>
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[10px] font-black uppercase tracking-[0.3em] text-amber-300">Woodworking Resource</span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-black tracking-tight text-white">Basic Box Video Resource Page</h1>
+          <p class="text-sm text-zinc-400 font-medium">Central playback page for the instructional build video and pacing support.</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="video-ww-library.html" class="px-4 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 text-sm font-bold text-amber-300 transition">Video Library</a>
+        <a href="planner.html#checkpointTracker" class="px-4 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 text-sm font-bold text-emerald-300 transition">Checkpoints</a>
+        <a href="ww-slides.html" class="px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 text-sm font-bold text-zinc-200 transition">Daily Slides</a>
+        <a href="ww-workbook.html" class="px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 text-sm font-bold text-zinc-200 transition">Student Workbook</a>
+        <a href="planner.html" class="px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 text-sm font-bold text-zinc-200 transition">Lesson Planner</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8 md:py-10 space-y-8">
+    <section class="grid grid-cols-1 xl:grid-cols-[minmax(0,1.7fr)_minmax(320px,1fr)] gap-6">
+      <div class="bg-zinc-950 border border-zinc-800 rounded-[2rem] p-5 md:p-7 shadow-2xl shadow-black/20">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-[0.35em] text-zinc-500 mb-2">Classroom Playback</p>
+            <h2 class="text-2xl font-black tracking-tight text-white">How to Make a Basic Box</h2>
+            <p class="text-sm text-zinc-400 mt-1">Expected bundled file (optional): <span class="text-amber-300 font-semibold">How to make a basic box.webm</span></p>
+            <p class="text-xs text-zinc-500 mt-2">If the folder does not include that WebM file, this page still works. Use <span class="font-bold text-zinc-200">Choose Local Video</span> to open a copy from this device for the current session.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-bold text-zinc-300">Use full-screen on projector</span>
+            <span class="px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-bold text-amber-300">WebM ready</span>
+          </div>
+        </div>
+
+        <div class="rounded-[1.75rem] overflow-hidden border border-zinc-800 bg-black">
+          <video id="player" class="w-full aspect-video bg-black" controls preload="metadata">
+            <source id="playerSource" src="./media/basic-box.mp4" type="video/mp4" />
+            Your browser does not support HTML video. Use the button below to open the file directly.
+          </video>
+        </div>
+
+        <div class="mt-5 flex flex-wrap gap-3">
+          <a href="How%20to%20make%20a%20basic%20box.webm" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-sm font-black transition shadow-lg shadow-amber-900/30">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M5 7v14h14v-5"/></svg>
+            Open Expected File
+          </a>
+          <label class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 text-zinc-200 text-sm font-bold transition cursor-pointer">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M20 16.5A3.5 3.5 0 0 1 16.5 20h-9A3.5 3.5 0 0 1 4 16.5"/></svg>
+            Choose Local Video
+            <input id="filePicker" type="file" accept="video/*,.webm,.mp4,.mov,.m4v" class="hidden"/>
+          </label>
+          <button id="resetVideo" type="button" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-200 text-sm font-bold transition">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 2v6h6"/><path d="M21 12a9 9 0 0 0-15.55-6.36L3 8"/></svg>
+            Reset to Default
+          </button>
+        </div>
+
+        <div class="mt-5 rounded-2xl bg-zinc-900/80 border border-zinc-800 p-4">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <div>
+              <p class="text-xs font-black uppercase tracking-[0.35em] text-zinc-500 mb-1">Playback Status</p>
+              <p id="statusText" class="text-sm text-zinc-300 font-medium">Using the default file path. If the player is blank, choose a local file for this session.</p>
+            </div>
+            <span id="sourceBadge" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-bold text-amber-300">Default source active</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <section class="bg-zinc-950 border border-zinc-800 rounded-[2rem] p-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.35em] text-zinc-500 mb-3">Quick Launch</p>
+          <h3 class="text-xl font-black text-white mb-4">Teacher shortcuts</h3>
+          <div class="space-y-3">
+            <a href="planner.html#checkpointTracker" class="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold text-zinc-200 hover:border-emerald-500/40 hover:text-white transition">
+              <span class="flex items-center gap-3"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h11"/></svg>Open Checkpoint Tracker</span>
+              <span class="text-emerald-300">→</span>
+            </a>
+            <a href="planner.html" class="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold text-zinc-200 hover:border-amber-500/40 hover:text-white transition">
+              <span class="flex items-center gap-3"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Open Lesson Planner</span>
+              <span class="text-amber-300">→</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="bg-zinc-950 border border-zinc-800 rounded-[2rem] p-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.35em] text-zinc-500 mb-3">Suggested Pacing</p>
+          <h3 class="text-xl font-black text-white mb-4">Video cue points</h3>
+          <div class="space-y-3">
+            <div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+              <p class="text-amber-300 font-black text-sm mb-1">0:00–1:45</p>
+              <p class="text-sm text-zinc-300">Intro, constraints, and staggered workflow.</p>
+            </div>
+            <div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+              <p class="text-amber-300 font-black text-sm mb-1">1:45–5:15</p>
+              <p class="text-sm text-zinc-300">Sketches, cut list approval, material prep, and table saw workflow split.</p>
+            </div>
+            <div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+              <p class="text-amber-300 font-black text-sm mb-1">5:15–14:00</p>
+              <p class="text-sm text-zinc-300">Rabbets, grooves, dry fit, bottom panel sizing, and glue-up.</p>
+            </div>
+            <div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+              <p class="text-amber-300 font-black text-sm mb-1">14:00–18:00</p>
+              <p class="text-sm text-zinc-300">Lid lip, friction fit adjustments, and final prep steps.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-zinc-950 border border-zinc-800 rounded-[2rem] p-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.35em] text-zinc-500 mb-3">Teacher Notes</p>
+          <h3 class="text-xl font-black text-white mb-4">Best use in class</h3>
+          <div class="space-y-3 text-sm text-zinc-300">
+            <div class="flex items-start gap-3"><span class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0"></span><p>Project the video page instead of opening raw files so students always have the same navigation path.</p></div>
+            <div class="flex items-start gap-3"><span class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0"></span><p>Use the local file picker when the video file is stored on a laptop, USB drive, or shared desktop instead of the same folder as the site.</p></div>
+            <div class="flex items-start gap-3"><span class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0"></span><p>Keep the workbook open on another tab for the same cue points and practice prompts.</p></div>
+          </div>
+        </section>
+
+        <section class="bg-zinc-950 border border-zinc-800 rounded-[2rem] p-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.35em] text-zinc-500 mb-3">Quick Links</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a href="ww-slides.html" class="rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 p-4 transition">
+              <p class="text-sm font-black text-white">Open slides</p>
+              <p class="text-xs text-zinc-400 mt-1">Return to presentation mode.</p>
+            </a>
+            <a href="ww-workbook.html" class="rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 p-4 transition">
+              <p class="text-sm font-black text-white">Open workbook</p>
+              <p class="text-xs text-zinc-400 mt-1">Student prompts and sketch pages.</p>
+            </a>
+            <a href="planner.html" class="rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 p-4 transition">
+              <p class="text-sm font-black text-white">Open planner</p>
+              <p class="text-xs text-zinc-400 mt-1">Check the day sequence and notes.</p>
+            </a>
+            <a href="index.html" class="rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 p-4 transition">
+              <p class="text-sm font-black text-white">Back to hub</p>
+              <p class="text-xs text-zinc-400 mt-1">All course tools in one place.</p>
+            </a>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+<script>
+  const defaultSrc = 'How%20to%20make%20a%20basic%20box.webm';
+  const player = document.getElementById('player');
+  const source = document.getElementById('playerSource');
+  const picker = document.getElementById('filePicker');
+  const resetButton = document.getElementById('resetVideo');
+  const statusText = document.getElementById('statusText');
+  const sourceBadge = document.getElementById('sourceBadge');
+  const badgeBaseClass = 'inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold';
+  let objectUrl = '';
+
+  function setStatus(message, badgeText) {
+    statusText.textContent = message;
+    sourceBadge.textContent = badgeText;
+  }
+
+  function setBadgeClass(kind = 'default') {
+    const map = {
+      default: `${badgeBaseClass} bg-amber-500/10 border-amber-500/20 text-amber-300`,
+      local: `${badgeBaseClass} bg-emerald-500/10 border-emerald-500/20 text-emerald-300`,
+      error: `${badgeBaseClass} bg-red-500/10 border-red-500/20 text-red-400`
+    };
+    sourceBadge.className = map[kind] || map.default;
+  }
+
+  function handleDefaultMissing() {
+    setStatus(
+      'Video file not found in this folder. Choose a local video for this session or add the expected WebM file beside this page.',
+      'File not found'
+    );
+    setBadgeClass('error');
+  }
+
+  function loadSource(src, type) {
+    source.setAttribute('src', src);
+    if (type) source.setAttribute('type', type);
+    player.load();
+  }
+
+  player.addEventListener('error', () => {
+    if (!objectUrl) handleDefaultMissing();
+  });
+
+  picker.addEventListener('change', (event) => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(file);
+    loadSource(objectUrl, file.type || 'video/*');
+    setStatus(`Playing local file: ${file.name}`, 'Local file active');
+    setBadgeClass('local');
+  });
+
+  resetButton.addEventListener('click', () => {
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = '';
+    picker.value = '';
+    loadSource(defaultSrc, 'video/webm');
+    setStatus('Using the default file path. If the player is blank, choose a local file for this session.', 'Default source active');
+    setBadgeClass('default');
+  });
+
+  loadSource(defaultSrc, 'video/webm');
+  setBadgeClass('default');
+</script>
+</body>
+</html>

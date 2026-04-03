@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GD Video Library — ACE Certification · Mr. Burke</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="stylesheet" href="./assets/tailwind.local.css" />
+  <link rel="stylesheet" href="./assets/classroom-base.css" />
+  <style>
+    :root {
+      --indigo: #6366f1;
+      --indigo-dim: #312e81;
+      --indigo-glow: rgba(99,102,241,0.12);
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --card: #16161f;
+      --border: rgba(255,255,255,0.07);
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --radius: 1rem;
+    }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; min-height:100vh; }
+
+    .shell { max-width: 1100px; margin: 0 auto; padding: 0 1rem 3rem; }
+
+    /* Top bar */
+    .top-bar {
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(10,10,15,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+    }
+    .top-bar-title { font-weight: 900; font-size: 0.95rem; color: var(--text); }
+    .top-bar-sub   { font-size: 0.7rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      color: var(--muted); font-size: 0.75rem; font-weight: 700; text-decoration: none;
+      padding: 0.35rem 0.75rem; border-radius: 0.6rem; border: 1px solid var(--border);
+      background: var(--card); transition: color 0.15s, border-color 0.15s;
+    }
+    .back-link:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+    /* Badges */
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 0.2rem 0.6rem; border-radius: 9999px;
+      font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.18em;
+    }
+    .badge-indigo  { background: var(--indigo-glow); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
+    .badge-slate   { background: rgba(100,116,139,0.12); color: var(--muted); border: 1px solid rgba(100,116,139,0.2); }
+    .badge-emerald { background: rgba(52,211,153,0.1); color: #34d399; border: 1px solid rgba(52,211,153,0.2); }
+    .badge-amber   { background: rgba(245,158,11,0.1); color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }
+    .badge-red     { background: rgba(248,113,113,0.1); color: #f87171; border: 1px solid rgba(248,113,113,0.2); }
+
+    /* Page intro */
+    .page-intro { padding: 1.75rem 0 1.25rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .page-kicker { font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; color: var(--indigo); margin-bottom: 0.4rem; }
+    .page-title  { font-size: 1.7rem; font-weight: 900; color: var(--text); line-height: 1.15; margin: 0 0 0.5rem; }
+    .page-desc   { font-size: 0.82rem; color: var(--muted); line-height: 1.6; max-width: 680px; }
+
+    /* Player card */
+    .player-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 0.75rem;
+    }
+    .player-header {
+      padding: 1rem 1.25rem 0.75rem;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .player-meta-title { font-weight: 900; font-size: 1rem; color: var(--text); margin-bottom: 0.2rem; }
+    .player-meta-sub   { font-size: 0.72rem; color: var(--muted); }
+    .player-wrap { position: relative; background: #000; }
+    .player-wrap video { display: block; width: 100%; max-height: 480px; background: #000; }
+    .player-footer { padding: 0.75rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+    .source-badge { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: var(--muted); }
+    .source-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink:0; }
+    .source-dot.ok  { background: #34d399; }
+    .source-dot.alt { background: #f59e0b; }
+    .source-dot.err { background: #f87171; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 0.85rem; border-radius: 0.6rem; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text); font-size: 0.72rem; font-weight: 700;
+      cursor: pointer; text-decoration: none; transition: border-color 0.15s, background 0.15s;
+    }
+    .btn:hover { border-color: rgba(255,255,255,0.18); background: var(--card); }
+    .btn-indigo { background: var(--indigo-glow); border-color: rgba(99,102,241,0.3); color: #a5b4fc; }
+    .btn-indigo:hover { background: rgba(99,102,241,0.2); border-color: rgba(99,102,241,0.5); }
+
+    /* Chapters */
+    .chapters-wrap { border-top: 1px solid var(--border); }
+    .chapters-head {
+      padding: 0.65rem 1.25rem; display: flex; align-items: center; gap: 0.6rem;
+      cursor: pointer; user-select: none;
+    }
+    .chapters-head:hover { background: rgba(255,255,255,0.02); }
+    .chapters-head-label { font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); flex:1; }
+    .chapters-toggle { font-size: 0.8rem; color: var(--muted); transition: transform 0.2s; }
+    .chapters-toggle.open { transform: rotate(180deg); }
+    .chapters-list { display: none; padding: 0 0.75rem 0.75rem; }
+    .chapters-list.open { display: block; }
+    .chapter-item {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.5rem 0.5rem; border-radius: 0.6rem; cursor: pointer;
+      transition: background 0.12s;
+    }
+    .chapter-item:hover { background: rgba(255,255,255,0.04); }
+    .chapter-item.active { background: var(--indigo-glow); }
+    .chapter-tc {
+      font-size: 0.68rem; font-weight: 900; font-family: ui-monospace, monospace;
+      color: #818cf8; flex-shrink: 0; min-width: 3rem; padding-top: 0.1rem;
+    }
+    .chapter-body { flex: 1; min-width: 0; }
+    .chapter-title { font-size: 0.8rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .chapter-note  { font-size: 0.7rem; color: var(--muted); margin-top: 0.15rem; line-height: 1.4; }
+
+    /* Teacher notes */
+    .notes-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1rem 1.25rem; margin-top: 0.75rem;
+    }
+    .notes-kicker { font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 0.6rem; }
+    .notes-body { font-size: 0.8rem; color: #94a3b8; line-height: 1.65; }
+    .notes-body strong { color: var(--text); font-weight: 700; }
+
+    /* Browser note */
+    .browser-note {
+      background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.18);
+      border-radius: 0.75rem; padding: 0.85rem 1rem; margin-bottom: 0.75rem;
+      display: flex; gap: 0.75rem; align-items: flex-start;
+    }
+    .browser-note-icon { flex-shrink:0; margin-top:0.05rem; }
+    .browser-note-text { font-size: 0.75rem; color: #94a3b8; line-height: 1.55; }
+    .browser-note-text strong { color: var(--text); }
+
+    /* Audio player card */
+    .audio-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 0.75rem;
+    }
+    .audio-header {
+      padding: 1rem 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .audio-player-wrap { padding: 1rem 1.25rem; }
+    .audio-player-wrap audio { width: 100%; height: 40px; accent-color: var(--indigo); }
+
+    /* Chapter progress bar */
+    .progress-chapters { display: flex; gap: 2px; margin-bottom: 0.75rem; height: 4px; border-radius: 2px; overflow: hidden; background: rgba(255,255,255,0.07); }
+    .progress-seg { flex: 1; background: rgba(99,102,241,0.25); border-radius: 1px; transition: background 0.2s; cursor: pointer; }
+    .progress-seg:hover { background: rgba(99,102,241,0.5); }
+    .progress-seg.done  { background: rgba(99,102,241,0.7); }
+
+    /* Section divider */
+    .section-head { margin: 1.75rem 0 0.75rem; display: flex; align-items: center; gap: 0.6rem; }
+    .section-head-label { font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.25em; color: var(--muted); }
+    .section-head-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* Quick links */
+    .quick-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+
+    /* Cert resources grid */
+    .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 0.75rem; }
+    .cert-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 0.875rem;
+      padding: 1rem 1.1rem; transition: border-color 0.15s;
+    }
+    .cert-card:hover { border-color: rgba(99,102,241,0.25); }
+    .cert-card-title { font-weight: 800; font-size: 0.82rem; color: var(--text); margin-bottom: 0.25rem; }
+    .cert-card-sub   { font-size: 0.68rem; color: var(--muted); margin-bottom: 0.6rem; }
+    .cert-link { display: inline-flex; align-items: center; gap: 0.3rem; color: #818cf8; font-size:0.72rem; font-weight:700; text-decoration:none; }
+    .cert-link:hover { text-decoration: underline; }
+
+    @media (max-width:640px) {
+      .page-title { font-size: 1.3rem; }
+      .player-header { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="./index.html" class="back-link">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    Hub
+  </a>
+  <div>
+    <div class="top-bar-sub">Graphic Design</div>
+    <div class="top-bar-title">Video &amp; Audio Library</div>
+  </div>
+  <div style="flex:1"></div>
+  <a href="./video-gd.html" class="btn">ACE Video Player</a>
+  <a href="https://www.gmetrix.net/" class="btn btn-indigo" target="_blank" rel="noopener">GMetrix Login</a>
+  <a href="./planner.html?course=graphic-design" class="btn">Planner</a>
+</div>
+
+<div class="shell">
+
+  <!-- PAGE INTRO -->
+  <div class="page-intro">
+    <div class="page-kicker">Graphic Design · ACE Certification · Weeks 12–18</div>
+    <h1 class="page-title">Video &amp; Audio Resource Library</h1>
+    <p class="page-desc">
+      Two locally-available resources for ACE Photoshop certification prep: the ACE Practice Test video (MKV)
+      and the complete 63-minute Photoshop Certification Audio Course (streaming).
+      Both include chapter markers and teacher pacing notes for 48-minute periods.
+    </p>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem">
+      <span class="badge badge-indigo">ACE Certification Prep</span>
+      <span class="badge badge-slate">2 Local Resources</span>
+      <span class="badge badge-emerald">Chapter Markers</span>
+      <span class="badge badge-amber">63-min Audio Course</span>
+    </div>
+  </div>
+
+  <!-- MKV browser note -->
+  <div class="browser-note">
+    <div class="browser-note-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+    <div class="browser-note-text">
+      <strong>MKV browser note:</strong> The ACE Practice Test file is in MKV format (Matroska container).
+      Most Chromium-based browsers (Chrome, Edge, Brave) play MKV natively. Firefox and Safari may not.
+      If the player shows no video, use the <strong>Convert &amp; Download</strong> button to convert to MP4 in-browser,
+      or use VLC / QuickTime to play the file directly.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       VIDEO 1 — ACE Practice Test (MKV)
+  ════════════════════════════════════════════ -->
+  <div class="section-head">
+    <span class="section-head-label">Video Resource 1 · ACE Practice Test</span>
+    <span class="section-head-line"></span>
+  </div>
+
+  <div class="player-card" id="card-ace">
+    <div class="player-header">
+      <div>
+        <div class="player-meta-title">ACE Practice Test 2026 — Adobe Certified Expert in Photoshop</div>
+        <div class="player-meta-sub">Certification Prep · 12:25 · MKV · 17 MB</div>
+        <div style="margin-top:0.5rem;display:flex;gap:0.4rem;flex-wrap:wrap">
+          <span class="badge badge-indigo">ACE Prep</span>
+          <span class="badge badge-slate">12:25</span>
+          <span class="badge badge-red">MKV — Chrome / Edge only</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;flex-shrink:0">
+        <label class="btn btn-indigo">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Pick file
+          <input type="file" accept="video/*,.mkv" class="file-picker" data-video="ace-vid" style="display:none" />
+        </label>
+        <button class="btn" onclick="resetVideo('ace-vid','./media/ace-practice-test-2026.mkv')">Reset</button>
+      </div>
+    </div>
+
+    <div class="player-wrap">
+      <video id="ace-vid" controls preload="metadata" src="./media/ace-practice-test-2026.mkv">
+        Your browser does not support this video format. Try Chrome or Edge, or use the Pick file button to load an MP4 version.
+      </video>
+    </div>
+
+    <!-- Fallback message (shown via JS if error) -->
+    <div id="ace-fallback" style="display:none;padding:1rem 1.25rem;background:rgba(248,113,113,0.06);border-top:1px solid rgba(248,113,113,0.15)">
+      <div style="font-size:0.75rem;color:#fca5a5;line-height:1.55">
+        <strong style="color:#f87171">MKV playback not supported in this browser.</strong>
+        Use Chrome, Edge, or Brave — or open the file directly in VLC.
+        You can also use the "Pick file" button to load an MP4 version if available.
+        <br>Original file: <code style="font-family:monospace">media/ace-practice-test-2026.mkv</code>
+      </div>
+    </div>
+
+    <div class="player-footer">
+      <div class="source-badge">
+        <span class="source-dot ok" id="ace-vid-dot"></span>
+        <span id="ace-vid-status">Local file · media/ace-practice-test-2026.mkv</span>
+      </div>
+      <a href="https://www.gmetrix.net/" target="_blank" rel="noopener" class="btn btn-indigo" style="margin-left:auto">
+        GMetrix Login
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+
+    <!-- CHAPTERS -->
+    <div class="chapters-wrap">
+      <div class="chapters-head" onclick="toggleChapters('ch-ace')">
+        <span class="chapters-head-label">Chapter Markers &amp; Lesson Pacing</span>
+        <svg class="chapters-toggle open" id="ch-ace-toggle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="chapters-list open" id="ch-ace">
+        <div class="chapter-item active" onclick="seekVideo('ace-vid',0,this)">
+          <span class="chapter-tc">0:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Exam Overview — Format, Domains &amp; Expectations</div>
+            <div class="chapter-note">What the ACE test looks like. Show before any GMetrix practice session.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('ace-vid',90,this)">
+          <span class="chapter-tc">1:30</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Domain 1 — Setting Up Documents &amp; Color</div>
+            <div class="chapter-note">Color modes, resolution, canvas setup. Pair with GMetrix study guide section 1.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('ace-vid',210,this)">
+          <span class="chapter-tc">3:30</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Domain 2 — Organizing Layers &amp; Selections</div>
+            <div class="chapter-note">Layers panel, selection tools, masks. Core Photoshop competency segment.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('ace-vid',390,this)">
+          <span class="chapter-tc">6:30</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Domain 3 — Adjustments, Retouching &amp; Repair</div>
+            <div class="chapter-note">Adjustment layers, healing brush, clone stamp. Pause for student GMetrix practice.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('ace-vid',555,this)">
+          <span class="chapter-tc">9:15</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Domain 4 — Typography &amp; Creative Tools</div>
+            <div class="chapter-note">Type tools, shape layers, blending modes. Pair with portfolio project work.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('ace-vid',690,this)">
+          <span class="chapter-tc">11:30</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Exam Strategy &amp; Practice Tips</div>
+            <div class="chapter-note">Test-taking strategy segment. Show on practice exam day (Week 15–16).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes-card" style="border-radius:0;border-left:0;border-right:0;border-bottom:0;margin-top:0">
+      <div class="notes-kicker">Teacher Notes</div>
+      <div class="notes-body">
+        <strong>Suggested lesson flow:</strong><br>
+        <strong>Before viewing:</strong> Have students open GMetrix and log in. Review the domain list on the board.
+        Tell students to write down one thing they're unsure about for each domain.<br><br>
+        <strong>During:</strong> Pause at 3:30 and 6:30 for quick pair-share checks.
+        At 9:15 have students open their current portfolio project for comparison.<br><br>
+        <strong>After viewing:</strong> Students complete one GMetrix domain practice.
+        Log attempts in the Checkpoint Tracker.
+        <br><br>
+        <strong>48-min breakdown:</strong> 0:00–1:30 warm-up discussion (5 min) → play 1:30–6:30 (5 min) → GMetrix domain 1–2 practice (15 min) → play 6:30–end (6 min) → GMetrix domain 3–4 practice (15 min) → exit ticket (2 min).
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       AUDIO — 63-min Photoshop Certification Course
+  ════════════════════════════════════════════ -->
+  <div class="section-head">
+    <span class="section-head-label">Audio Resource 2 · 63-min Photoshop Certification Course</span>
+    <span class="section-head-line"></span>
+  </div>
+
+  <div class="audio-card" id="card-audio">
+    <div class="audio-header">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.75rem;flex-wrap:wrap">
+        <div>
+          <div class="player-meta-title">Adobe Photoshop Certification Complete Course</div>
+          <div class="player-meta-sub">8 Chapters · 63 min · MP3 · 192 kbps · Streaming</div>
+          <div style="margin-top:0.5rem;display:flex;gap:0.4rem;flex-wrap:wrap">
+            <span class="badge badge-indigo">Audio Course</span>
+            <span class="badge badge-slate">63 min</span>
+            <span class="badge badge-emerald">Streaming</span>
+            <span class="badge badge-amber">8 Chapters</span>
+          </div>
+        </div>
+        <a href="https://cdn1.genspark.ai/user-upload-image/audio_merge/results/merged_audio.d0a70f57.mp3"
+           download="Photoshop-Certification-Course.mp3"
+           class="btn btn-indigo">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="15" x2="12" y2="3"/><path d="m17 10-5 5-5-5"/></svg>
+          Download MP3
+        </a>
+      </div>
+    </div>
+
+    <div class="audio-player-wrap">
+      <!-- Chapter progress visualization -->
+      <div id="audio-progress-segs" class="progress-chapters"></div>
+      <audio id="audio-course" controls preload="none"
+             src="https://cdn1.genspark.ai/user-upload-image/audio_merge/results/merged_audio.d0a70f57.mp3">
+        Your browser does not support audio playback.
+      </audio>
+      <div id="audio-status" style="font-size:0.68rem;color:var(--muted);margin-top:0.5rem">
+        Streaming from cloud — internet connection required. Download the MP3 for offline use.
+      </div>
+    </div>
+
+    <!-- CHAPTERS -->
+    <div class="chapters-wrap">
+      <div class="chapters-head" onclick="toggleChapters('ch-audio')">
+        <span class="chapters-head-label">8 Course Chapters</span>
+        <svg class="chapters-toggle open" id="ch-audio-toggle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="chapters-list open" id="ch-audio">
+
+        <!-- Chapter data: [startSec, title, note, duration] -->
+        <div class="chapter-item active" onclick="seekAudio(0,this)">
+          <span class="chapter-tc" style="color:#818cf8">0:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Ch 1 — Understanding Certification</div>
+            <div class="chapter-note">Exam structure, domains overview, scoring. Use as orientation on Week 12 intro day. (10:55)</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekAudio(655,this)">
+          <span class="chapter-tc" style="color:#818cf8">10:55</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Ch 2 — Interface &amp; Workspace</div>
+            <div class="chapter-note">Panels, workspaces, preferences, shortcuts. Assign as homework or warm-up listen. (10:28)</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekAudio(1283,this)">
+          <span class="chapter-tc" style="color:#818cf8">21:23</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Ch 3 Part 1 — Document Setup</div>
+            <div class="chapter-note">File formats, resolution, color settings. Pair with Domain 1 GMetrix practice. (5:54)</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekAudio(1638,this)">
+          <span class="chapter-tc" style="color:#818cf8">27:17</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Ch 3 Part 2 — Document Setup (cont.)</div>
+            <div class="chapter-note">Artboards, smart objects, export formats. (3:31)</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekAudio(1849,this)">
+          <span class="chapter-tc" style="color:#818cf8">30:49</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Ch 4 — Layers &amp; Selections</div>
+            <div class="chapter-note">Layer types, blending, selection tools, masks. Core chapter — most exam weight. (9:03)</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekAudio(2393,this)">
+          <span class="chapter-tc" style="color:#818cf8">39:52</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Ch 5 — Adjustments &amp; Masks</div>
+            <div class="chapter-note">Adjustment layers, curves, levels, masking workflow. (4:29)</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekAudio(2662,this)">
+          <span class="chapter-tc" style="color:#818cf8">44:21</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Ch 6 — Text, Shapes &amp; Creative Tools</div>
+            <div class="chapter-note">Type layers, paragraph/character panels, shape tools, creative filters. (9:57)</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekAudio(3260,this)">
+          <span class="chapter-tc" style="color:#818cf8">54:19</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Ch 7 — Exam Strategy &amp; Final Review</div>
+            <div class="chapter-note">Test-taking strategy, domain weighting, final tips. Play on exam week. (8:48)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="notes-card" style="border-radius:0;border-left:0;border-right:0;border-bottom:0;margin-top:0">
+      <div class="notes-kicker">Teacher Notes</div>
+      <div class="notes-body">
+        <strong>How to use this audio course:</strong> This 63-minute course is designed as a listen-along reference,
+        not a full-class video replacement. Suggested uses:<br><br>
+        • <strong>Warm-up listen:</strong> Play Ch 1 (10 min) on Week 12 Day 1 as an orientation.<br>
+        • <strong>Homework:</strong> Assign chapters to listen to before corresponding GMetrix practice.<br>
+        • <strong>Exam week review:</strong> Play Ch 7 Exam Strategy the day before the ACE exam (8 min).<br>
+        • <strong>Station rotation:</strong> Set up audio station with headphones — students listen to a chapter while others practice on GMetrix.<br><br>
+        <strong>Download for offline use:</strong> Use the Download MP3 button to save to USB or local drive.
+        Internet is required for streaming playback.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CERTIFICATION RESOURCES
+  ════════════════════════════════════════════ -->
+  <div class="section-head" style="margin-top:2.5rem">
+    <span class="section-head-label">Certification Resources</span>
+    <span class="section-head-line"></span>
+  </div>
+
+  <div class="cert-grid">
+    <div class="cert-card">
+      <div class="cert-card-title">GMetrix — ACE Practice Portal</div>
+      <div class="cert-card-sub">Live practice tests, domain scores, progress tracking</div>
+      <a href="https://www.gmetrix.net/" class="cert-link" target="_blank" rel="noopener">
+        gmetrix.net Login
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+    <div class="cert-card">
+      <div class="cert-card-title">GMetrix Support Center</div>
+      <div class="cert-card-sub">Help docs, setup guides, troubleshooting</div>
+      <a href="https://support.gmetrix.net/support/home" class="cert-link" target="_blank" rel="noopener">
+        support.gmetrix.net
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+    <div class="cert-card">
+      <div class="cert-card-title">ACE Study Guide</div>
+      <div class="cert-card-sub">Official Adobe Photoshop domain study materials</div>
+      <a href="https://support.gmetrix.net/support/solutions/folders/67000581285" class="cert-link" target="_blank" rel="noopener">
+        Study Guide
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+    <div class="cert-card">
+      <div class="cert-card-title">Checkpoint Tracker</div>
+      <div class="cert-card-sub">Log GMetrix attempt milestones and ACE prep checkpoints</div>
+      <a href="./planner.html#checkpointTracker" class="cert-link">
+        Open Tracker
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="cert-card">
+      <div class="cert-card-title">GD Slides — Weeks 12–18</div>
+      <div class="cert-card-sub">Daily lesson slides for Graphic Design</div>
+      <a href="./gd-slides.html" class="cert-link">
+        Open Slides
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="cert-card">
+      <div class="cert-card-title">GD Workbook — Campaign &amp; ACE</div>
+      <div class="cert-card-sub">Student workbook with campaign tasks and cert exercises</div>
+      <a href="./gd-workbook.html" class="cert-link">
+        Open Workbook
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div class="quick-links">
+    <a href="./video-gd.html" class="btn btn-indigo">ACE Video Player</a>
+    <a href="./gd-slides.html" class="btn">GD Slides</a>
+    <a href="./gd-workbook.html" class="btn">GD Workbook</a>
+    <a href="./planner.html?course=graphic-design" class="btn">Planner</a>
+    <a href="./video-ww-library.html" class="btn">WW Video Library</a>
+    <a href="./index.html" class="btn">Hub</a>
+  </div>
+
+</div><!-- /shell -->
+
+<script>
+/* ── Chapter toggle ── */
+function toggleChapters(id) {
+  const list = document.getElementById(id);
+  const tog  = document.getElementById(id + '-toggle');
+  const open = list.classList.toggle('open');
+  tog.classList.toggle('open', open);
+}
+
+/* ── Seek video ── */
+function seekVideo(vidId, seconds, el) {
+  const vid = document.getElementById(vidId);
+  if (!vid) return;
+  vid.currentTime = seconds;
+  vid.play().catch(() => {});
+  const card = el.closest('.chapters-list');
+  card.querySelectorAll('.chapter-item').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  vid.closest('.player-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/* ── Seek audio ── */
+function seekAudio(seconds, el) {
+  const audio = document.getElementById('audio-course');
+  if (!audio) return;
+  audio.currentTime = seconds;
+  audio.play().catch(() => {});
+  const card = el.closest('.chapters-list');
+  card.querySelectorAll('.chapter-item').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  updateAudioProgress(seconds);
+}
+
+/* ── Audio chapter progress bar ── */
+const AUDIO_CHAPTERS = [
+  { start: 0,    end: 655  },
+  { start: 655,  end: 1283 },
+  { start: 1283, end: 1638 },
+  { start: 1638, end: 1849 },
+  { start: 1849, end: 2393 },
+  { start: 2393, end: 2662 },
+  { start: 2662, end: 3260 },
+  { start: 3260, end: 3789 },
+];
+
+function buildProgressSegs() {
+  const wrap = document.getElementById('audio-progress-segs');
+  if (!wrap) return;
+  AUDIO_CHAPTERS.forEach((ch, i) => {
+    const seg = document.createElement('div');
+    seg.className = 'progress-seg';
+    seg.id = 'pseg-' + i;
+    seg.title = `Chapter ${i+1}`;
+    const chapters = document.querySelectorAll('#ch-audio .chapter-item');
+    seg.onclick = () => { if (chapters[i]) { seekAudio(ch.start, chapters[i]); } };
+    wrap.appendChild(seg);
+  });
+}
+
+function updateAudioProgress(currentTime) {
+  AUDIO_CHAPTERS.forEach((ch, i) => {
+    const seg = document.getElementById('pseg-' + i);
+    if (!seg) return;
+    if (currentTime >= ch.end) {
+      seg.classList.add('done');
+    } else if (currentTime >= ch.start) {
+      seg.style.background = 'rgba(99,102,241,0.55)';
+      seg.classList.remove('done');
+    } else {
+      seg.classList.remove('done');
+      seg.style.background = '';
+    }
+  });
+}
+
+const audioEl = document.getElementById('audio-course');
+if (audioEl) {
+  buildProgressSegs();
+  audioEl.addEventListener('timeupdate', () => updateAudioProgress(audioEl.currentTime));
+  audioEl.addEventListener('loadstart', () => {
+    document.getElementById('audio-status').textContent = 'Loading audio…';
+  });
+  audioEl.addEventListener('canplay', () => {
+    document.getElementById('audio-status').textContent =
+      'Streaming · 63 min · 8 chapters · Download MP3 for offline use.';
+  });
+  audioEl.addEventListener('error', () => {
+    document.getElementById('audio-status').textContent =
+      'Streaming failed. Check internet connection or use the Download MP3 button.';
+  });
+}
+
+/* ── File picker ── */
+document.querySelectorAll('.file-picker').forEach(input => {
+  input.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const vidId  = input.dataset.video;
+    const vid    = document.getElementById(vidId);
+    const dot    = document.getElementById(vidId + '-dot');
+    const status = document.getElementById(vidId + '-status');
+    if (!vid) return;
+    const url = URL.createObjectURL(file);
+    vid.src = url;
+    dot.className   = 'source-dot alt';
+    status.textContent = 'Local pick · ' + file.name;
+    document.getElementById('ace-fallback').style.display = 'none';
+  });
+});
+
+/* ── Reset video ── */
+function resetVideo(vidId, src) {
+  const vid    = document.getElementById(vidId);
+  const dot    = document.getElementById(vidId + '-dot');
+  const status = document.getElementById(vidId + '-status');
+  if (!vid) return;
+  vid.src = src;
+  dot.className   = 'source-dot ok';
+  status.textContent = 'Local file · ' + src.replace('./', '');
+}
+
+/* ── ACE video error handler ── */
+const aceVid = document.getElementById('ace-vid');
+const aceDot = document.getElementById('ace-vid-dot');
+const aceStatus = document.getElementById('ace-vid-status');
+if (aceVid) {
+  aceVid.addEventListener('error', () => {
+    aceDot.className = 'source-dot err';
+    aceStatus.textContent = 'MKV not supported — use Chrome/Edge or Pick file for MP4';
+    document.getElementById('ace-fallback').style.display = 'block';
+  });
+  aceVid.addEventListener('loadeddata', () => {
+    aceDot.className = 'source-dot ok';
+    document.getElementById('ace-fallback').style.display = 'none';
+  });
+}
+</script>
+
+</body>
+</html>
