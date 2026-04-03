@@ -1,0 +1,15 @@
+:root {
+  --app-sans: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  font-family: var(--app-sans);
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WW Slides — Basic Box · Mr. Burke</title>
+<link rel="stylesheet" href="./assets/tailwind.local.css"/>
+<link rel="stylesheet" href="./assets/classroom-base.css"/>
+<style>
+  body { font-family: var(--app-sans); background: #09090b; }
+  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
+  .slide-enter { animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1) both; }
+  @keyframes slideUp { from { opacity:0; transform:translateY(24px) scale(0.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+  .no-school { opacity: 0.4; }
+</style>
+</head>
+<body class="text-zinc-100 overflow-hidden">
+
+<div class="flex h-screen overflow-hidden" id="app">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="w-72 shrink-0 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed inset-y-0 left-0 z-50 transition-transform duration-300 -translate-x-full md:relative md:translate-x-0">
+    <div class="px-6 py-5 border-b border-zinc-800 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2 mb-0.5">
+          <svg class="text-amber-500" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          <h2 class="text-base font-black text-amber-400">Woodworking</h2>
+        </div>
+        <p class="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Basic Box Project</p>
+      </div>
+      <button id="closeSidebar" class="md:hidden text-zinc-400 hover:text-white p-1">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-5" id="navList"></div>
+    <div class="px-4 py-3 border-t border-zinc-800">
+      <a href="index.html" class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-white transition">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Back to Hub
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 flex flex-col min-w-0">
+    <!-- Header -->
+    <header class="h-14 flex items-center justify-between px-6 bg-zinc-900/40 backdrop-blur-md border-b border-zinc-800/50 shrink-0">
+      <button id="openSidebar" class="md:hidden p-2 text-zinc-400 hover:text-white">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="flex items-center gap-3">
+        <span id="weekBadge" class="px-3 py-1 bg-zinc-800 rounded-full text-xs font-bold text-zinc-300"></span>
+        <span id="dateBadge" class="text-zinc-500 text-sm font-medium"></span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="planner.html#checkpointTracker" class="hidden lg:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-300 hover:bg-emerald-500/20 transition">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h11"/></svg>
+          Checkpoints
+        </a>
+        <a href="video-ww.html" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-bold text-amber-300 hover:bg-amber-500/20 transition">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="9 7 17 12 9 17 9 7"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+          Video Resource
+        </a>
+        <span id="counterBadge" class="text-zinc-500 text-sm font-mono"></span>
+      </div>
+    </header>
+
+    <!-- Slide -->
+    <div class="flex-1 flex flex-col justify-center items-center px-8 md:px-16 py-12 max-w-6xl mx-auto w-full" id="slideArea"></div>
+
+    <!-- Footer Nav -->
+    <footer class="h-20 px-8 flex items-center justify-between border-t border-zinc-800/50 bg-zinc-900/20 shrink-0">
+      <button id="prevBtn" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition font-bold text-sm disabled:opacity-30 group" disabled>
+        <svg class="group-hover:-translate-x-1 transition-transform" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Previous
+      </button>
+      <div class="hidden md:flex gap-1 flex-wrap justify-center max-w-xs" id="dotNav"></div>
+      <button id="nextBtn" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white transition font-bold text-sm shadow-lg shadow-amber-900/50 group">
+        Next
+        <svg class="group-hover:translate-x-1 transition-transform" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </footer>
+  </main>
+</div>
+
+<!-- Sidebar overlay -->
+<div id="overlay" class="fixed inset-0 bg-black/60 z-40 hidden md:hidden" onclick="toggleSidebar(false)"></div>
+
+<script>
+const schedule = [
+  // WEEK 12
+  { wk:12, day:"Wed 4/1",  title:"Intro & Workflow",          task:"Introduction, constraints, and staggered workflow (Video: 0:00-1:45 | PDF: Pg 1-3)", intention:"We are learning to plan, prep stock, and stagger initial construction to avoid machine bottlenecks." },
+  { wk:12, day:"Thu 4/2",  title:"Sketches & Cut List",       task:"Sketches, dimensions, and cut list approval (Video: 1:45-2:30 | PDF: Pg 2-3)", intention:"We are learning to plan, prep stock, and stagger initial construction to avoid machine bottlenecks." },
+  { wk:12, day:"Fri 4/3",  title:"No School",                 task:"No School — Good Friday", intention:"", noSchool:true },
+  { wk:12, day:"Mon 4/6",  title:"Material & Crosscutting",   task:"Material selection and crosscutting to length (Video: 2:30-4:00 | PDF: Pg 2)", intention:"We are learning to plan, prep stock, and stagger initial construction to avoid machine bottlenecks." },
+  { wk:12, day:"Tue 4/7",  title:"Staggered Ops — Part 1",    task:"Group A: Edge-glue lids / Group B: Table saw width rips (Video: 4:00-5:15 | PDF: Pg 2 & 6)", intention:"We are learning to plan, prep stock, and stagger initial construction to avoid machine bottlenecks." },
+  { wk:12, day:"Wed 4/8",  title:"Staggered Ops — Part 2",    task:"Group B: Edge-glue lids / Group A: Table saw width rips (Video: 4:00-5:15 | PDF: Pg 2 & 6)", intention:"We are learning to plan, prep stock, and stagger initial construction to avoid machine bottlenecks." },
+  // WEEK 13
+  { wk:13, day:"Thu 4/9",  title:"Table Saw Rabbets 1",       task:"Table saw rabbet cuts — Sides and Ends (Video: 5:15-7:30 | PDF: Pg 4)", intention:"We are learning to execute complex joinery safely and calculate internal dimensions for bottom panels." },
+  { wk:13, day:"Fri 4/10", title:"Bottom Grooves",            task:"Table saw rabbet cuts — Bottom grooves on sides (Video: 7:30-9:00 | PDF: Pg 4)", intention:"We are learning to execute complex joinery safely and calculate internal dimensions for bottom panels." },
+  { wk:13, day:"Mon 4/13", title:"Internal Dimensions",       task:"Dry assembly, measure internal dimensions, cut bottom plywood panels (Video: 9:00-11:20 | PDF: Pg 5)", intention:"We are learning to execute complex joinery safely and calculate internal dimensions for bottom panels." },
+  { wk:13, day:"Tue 4/14", title:"Box Glue-Up",               task:"Box glue-up and clamping using strap or bar clamps (Video: 11:20-14:00)", intention:"We are learning to execute complex joinery safely and calculate internal dimensions for bottom panels." },
+  // WEEK 14
+  { wk:14, day:"Wed 4/15", title:"Clamp Removal",             task:"Remove box clamps, scrape glue squeeze-out", intention:"We are learning to finalize structural components and prepare surfaces." },
+  { wk:14, day:"Thu 4/16", title:"Lid Rabbet Lip",            task:"Cut/route rabbet lip on cured lid panels (Video: 14:00-16:30 | PDF: Pg 6)", intention:"We are learning to finalize structural components and prepare surfaces." },
+  { wk:14, day:"Fri 4/17", title:"Lid Fitting",               task:"Test fit lids; adjust friction fit (Video: 16:30-18:00)", intention:"We are learning to finalize structural components and prepare surfaces." },
+  { wk:14, day:"Mon 4/20", title:"Exterior Sanding",          task:"Surface preparation and orbital sanding — Exterior", intention:"We are learning to finalize structural components and prepare surfaces." },
+  { wk:14, day:"Tue 4/21", title:"Interior Sanding",          task:"Detail sanding (interior rabbets) and defect repair", intention:"We are learning to finalize structural components and prepare surfaces." },
+  // WEEK 15
+  { wk:15, day:"Wed 4/22", title:"Finish Demo",               task:"Finish preparation and application demonstration", intention:"We are learning to apply a finish safely and effectively to protect and enhance the project's appearance." },
+  { wk:15, day:"Thu 4/23", title:"1st Coat Finish",           task:"First coat application (Spray or wipe-on)", intention:"We are learning to apply a finish safely and effectively to protect and enhance the project's appearance." },
+  { wk:15, day:"Fri 4/24", title:"No School",                 task:"No Student Attendance — Institute Day", intention:"", noSchool:true },
+  { wk:15, day:"Mon 4/27", title:"Scuff Sanding",             task:"Curing and light scuff sanding", intention:"We are learning to apply a finish safely and effectively to protect and enhance the project's appearance." },
+  { wk:15, day:"Tue 4/28", title:"2nd Coat Finish",           task:"Second coat application", intention:"We are learning to apply a finish safely and effectively to protect and enhance the project's appearance." },
+  { wk:15, day:"Wed 4/29", title:"Final Curing",              task:"Final curing and shop cleanup", intention:"We are learning to apply a finish safely and effectively to protect and enhance the project's appearance." },
+  // WEEK 16
+  { wk:16, day:"Thu 4/30", title:"Peer Review",               task:"Project evaluation and peer review", intention:"We are learning to evaluate work and make targeted improvements based on reflection and feedback." },
+  { wk:16, day:"Fri 5/1",  title:"Targeted Improvements",    task:"Targeted improvements — Waxing lids, edge easing", intention:"We are learning to evaluate work and make targeted improvements based on reflection and feedback." },
+  { wk:16, day:"Mon 5/4",  title:"Final Polish",              task:"Final fit and finish polish", intention:"We are learning to evaluate work and make targeted improvements based on reflection and feedback." },
+  { wk:16, day:"Tue 5/5",  title:"Project Checkpoint",        task:"Project Checkpoint and written reflection", intention:"We are learning to evaluate work and make targeted improvements based on reflection and feedback." },
+  // WEEK 17
+  { wk:17, day:"Wed 5/6",  title:"Presentation Prep",        task:"Presentation preparation", intention:"We are learning to explain design choices and craftsmanship decisions using appropriate vocabulary." },
+  { wk:17, day:"Thu 5/7",  title:"Photography",              task:"Documentation and project photography", intention:"We are learning to explain design choices and craftsmanship decisions using appropriate vocabulary." },
+  { wk:17, day:"Fri 5/8",  title:"Studio Work",              task:"Studio work / Make-up day", intention:"We are learning to explain design choices and craftsmanship decisions using appropriate vocabulary." },
+  { wk:17, day:"Mon 5/11", title:"Presentations",            task:"Peer sharing presentations", intention:"We are learning to explain design choices and craftsmanship decisions using appropriate vocabulary." },
+  // WEEK 18
+  { wk:18, day:"Tue 5/12", title:"Shop Breakdown",           task:"Shop breakdown and tool maintenance", intention:"We are learning to review work and explore connections between professional practice and skills." },
+  { wk:18, day:"Wed 5/13", title:"Inventory & Take-Home",    task:"Inventory, cleaning, and project take-home", intention:"We are learning to review work and explore connections between professional practice and skills." },
+  { wk:18, day:"Thu 5/14", title:"Semester Wrap-Up",         task:"Semester wrap-up", intention:"We are learning to review work and explore connections between professional practice and skills." }
+];
+
+let current = 0;
+
+function renderSlide() {
+  const s = schedule[current];
+  const area = document.getElementById('slideArea');
+  document.getElementById('weekBadge').textContent = `Week ${s.wk}`;
+  document.getElementById('dateBadge').textContent = s.day;
+  document.getElementById('counterBadge').textContent = `${current+1} / ${schedule.length}`;
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').textContent = current === schedule.length-1 ? 'Start Over' : 'Next';
+  document.getElementById('nextBtn').onclick = () => {
+    if (current < schedule.length-1) { current++; } else { current = 0; }
+    renderSlide();
+  };
+
+  // Dots
+  const dots = document.getElementById('dotNav');
+  dots.innerHTML = '';
+  schedule.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = `h-1.5 rounded-full transition-all duration-300 cursor-pointer ${i===current ? 'w-6 bg-amber-500' : 'w-1.5 bg-zinc-700 hover:bg-zinc-500'}`;
+    d.onclick = () => { current = i; renderSlide(); };
+    dots.appendChild(d);
+  });
+
+  if (s.noSchool) {
+    area.innerHTML = `
+      <div class="slide-enter w-full space-y-8 text-center">
+        <span class="inline-block px-4 py-1 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-500 text-sm font-bold uppercase tracking-[0.2em]">No School</span>
+        <h1 class="text-6xl md:text-8xl font-black text-zinc-600 leading-none">${s.title}</h1>
+        <p class="text-zinc-500 text-2xl">${s.task}</p>
+      </div>`;
+    return;
+  }
+
+  area.innerHTML = `
+    <div class="slide-enter w-full space-y-10 text-center">
+      <div class="space-y-3">
+        <span class="inline-block px-4 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-bold uppercase tracking-[0.2em]">Today's Focus</span>
+        <h1 class="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">${s.title}</h1>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6 w-full text-left">
+        <div class="bg-zinc-900 border border-zinc-800 hover:border-amber-500/30 p-8 rounded-[2rem] shadow-2xl transition-all group">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="p-3 bg-amber-500/10 rounded-2xl group-hover:bg-amber-500/20 transition-colors">
+              <svg width="24" height="24" fill="none" stroke="#f59e0b" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 12h6M9 16h4"/></svg>
+            </div>
+            <h3 class="text-xl font-black text-white">Class Activities</h3>
+          </div>
+          <p class="text-xl text-zinc-300 leading-relaxed min-h-[8rem]">${s.task}</p>
+        </div>
+        <div class="bg-zinc-900 border border-zinc-800 hover:border-orange-500/30 p-8 rounded-[2rem] shadow-2xl transition-all group">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="p-3 bg-orange-500/10 rounded-2xl group-hover:bg-orange-500/20 transition-colors">
+              <svg width="24" height="24" fill="none" stroke="#f97316" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3 class="text-xl font-black text-white">Learning Intention</h3>
+          </div>
+          <p class="text-xl text-zinc-300 leading-relaxed italic min-h-[8rem]">"${s.intention}"</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+// Build sidebar nav
+function buildNav() {
+  const container = document.getElementById('navList');
+  const weeks = [...new Set(schedule.map(s=>s.wk))];
+  weeks.forEach(wk => {
+    const section = document.createElement('div');
+    section.className = 'space-y-1';
+    section.innerHTML = `<p class="text-[10px] font-black uppercase tracking-widest text-zinc-500 px-3 mb-2">Week ${wk}</p>`;
+    schedule.forEach((s,i) => {
+      if (s.wk !== wk) return;
+      const btn = document.createElement('button');
+      btn.id = `navBtn_${i}`;
+      btn.className = `w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${i===current ? 'bg-amber-600 text-white font-bold' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'}`;
+      btn.innerHTML = `<div class="flex items-center gap-2"><span class="text-[10px] opacity-60 w-12 shrink-0">${s.day}</span><span class="truncate">${s.title}</span></div>`;
+      btn.onclick = () => { current = i; renderSlide(); updateNav(); toggleSidebar(false); };
+      section.appendChild(btn);
+    });
+    container.appendChild(section);
+  });
+}
+
+function updateNav() {
+  schedule.forEach((_,i) => {
+    const btn = document.getElementById(`navBtn_${i}`);
+    if (!btn) return;
+    btn.className = `w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${i===current ? 'bg-amber-600 text-white font-bold' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'}`;
+  });
+}
+
+function toggleSidebar(open) {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('overlay');
+  if (open) { sb.classList.remove('-translate-x-full'); ov.classList.remove('hidden'); }
+  else { sb.classList.add('-translate-x-full'); ov.classList.add('hidden'); }
+}
+
+document.getElementById('prevBtn').onclick = () => { if (current > 0) { current--; renderSlide(); updateNav(); } };
+document.getElementById('openSidebar').onclick = () => toggleSidebar(true);
+document.getElementById('closeSidebar').onclick = () => toggleSidebar(false);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); if (current < schedule.length-1) current++; else current=0; renderSlide(); updateNav(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); if (current > 0) current--; renderSlide(); updateNav(); }
+});
+
+buildNav();
+renderSlide();
+</script>
+</body>
+</html>

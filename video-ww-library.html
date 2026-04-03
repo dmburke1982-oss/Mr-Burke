@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WW Video Library — Woodworking · Mr. Burke</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="stylesheet" href="./assets/tailwind.local.css" />
+  <link rel="stylesheet" href="./assets/classroom-base.css" />
+  <style>
+    :root {
+      --amber: #f59e0b;
+      --amber-dim: #92400e;
+      --amber-glow: rgba(245,158,11,0.12);
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --card: #16161f;
+      --border: rgba(255,255,255,0.07);
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --radius: 1rem;
+    }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; min-height:100vh; }
+
+    /* ── Layout ── */
+    .shell { max-width: 1100px; margin: 0 auto; padding: 0 1rem 3rem; }
+
+    /* ── Header bar ── */
+    .top-bar {
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(10,10,15,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .top-bar-title { font-weight: 900; font-size: 0.95rem; color: var(--text); }
+    .top-bar-sub   { font-size: 0.7rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      color: var(--muted); font-size: 0.75rem; font-weight: 700; text-decoration: none;
+      padding: 0.35rem 0.75rem; border-radius: 0.6rem; border: 1px solid var(--border);
+      background: var(--card); transition: color 0.15s, border-color 0.15s;
+    }
+    .back-link:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 0.2rem 0.6rem; border-radius: 9999px;
+      font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.18em;
+    }
+    .badge-amber { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+    .badge-slate { background: rgba(100,116,139,0.12); color: var(--muted); border: 1px solid rgba(100,116,139,0.2); }
+    .badge-emerald { background: rgba(52,211,153,0.1); color: #34d399; border: 1px solid rgba(52,211,153,0.2); }
+
+    /* ── Page intro ── */
+    .page-intro { padding: 1.75rem 0 1.25rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .page-kicker { font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; color: var(--amber); margin-bottom: 0.4rem; }
+    .page-title  { font-size: 1.7rem; font-weight: 900; color: var(--text); line-height: 1.15; margin: 0 0 0.5rem; }
+    .page-desc   { font-size: 0.82rem; color: var(--muted); line-height: 1.6; max-width: 660px; }
+
+    /* ── Video player card ── */
+    .player-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 0.75rem;
+    }
+    .player-header {
+      padding: 1rem 1.25rem 0.75rem;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .player-meta-title { font-weight: 900; font-size: 1rem; color: var(--text); margin-bottom: 0.2rem; }
+    .player-meta-sub   { font-size: 0.72rem; color: var(--muted); }
+    .player-wrap {
+      position: relative; background: #000;
+    }
+    .player-wrap video {
+      display: block; width: 100%; max-height: 480px; background: #000;
+    }
+    .player-footer {
+      padding: 0.75rem 1.25rem;
+      display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+    }
+    .source-badge { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: var(--muted); }
+    .source-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink:0; }
+    .source-dot.ok  { background: #34d399; }
+    .source-dot.alt { background: #f59e0b; }
+
+    /* ── File picker button ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 0.85rem; border-radius: 0.6rem; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text); font-size: 0.72rem; font-weight: 700;
+      cursor: pointer; text-decoration: none; transition: border-color 0.15s, background 0.15s;
+    }
+    .btn:hover { border-color: rgba(255,255,255,0.18); background: var(--card); }
+    .btn-amber { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.3); color: #fcd34d; }
+    .btn-amber:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); }
+
+    /* ── Chapters list ── */
+    .chapters-wrap { border-top: 1px solid var(--border); }
+    .chapters-head {
+      padding: 0.65rem 1.25rem; display: flex; align-items: center; gap: 0.6rem;
+      cursor: pointer; user-select: none;
+    }
+    .chapters-head:hover { background: rgba(255,255,255,0.02); }
+    .chapters-head-label { font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); flex:1; }
+    .chapters-toggle { font-size: 0.8rem; color: var(--muted); transition: transform 0.2s; }
+    .chapters-toggle.open { transform: rotate(180deg); }
+    .chapters-list { display: none; padding: 0 0.75rem 0.75rem; }
+    .chapters-list.open { display: block; }
+    .chapter-item {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.5rem 0.5rem; border-radius: 0.6rem; cursor: pointer;
+      transition: background 0.12s;
+    }
+    .chapter-item:hover { background: rgba(255,255,255,0.04); }
+    .chapter-item.active { background: var(--amber-glow); }
+    .chapter-tc { 
+      font-size: 0.68rem; font-weight: 900; font-family: ui-monospace, monospace;
+      color: var(--amber); flex-shrink: 0; min-width: 3rem; padding-top: 0.1rem;
+    }
+    .chapter-body { flex: 1; min-width: 0; }
+    .chapter-title { font-size: 0.8rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .chapter-note  { font-size: 0.7rem; color: var(--muted); margin-top: 0.15rem; line-height: 1.4; }
+
+    /* ── Teacher notes card ── */
+    .notes-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1rem 1.25rem; margin-top: 0.75rem;
+    }
+    .notes-kicker { font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 0.6rem; }
+    .notes-body { font-size: 0.8rem; color: #94a3b8; line-height: 1.65; }
+    .notes-body strong { color: var(--text); font-weight: 700; }
+
+    /* ── Section divider ── */
+    .section-head { margin: 1.75rem 0 0.75rem; display: flex; align-items: center; gap: 0.6rem; }
+    .section-head-label { font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.25em; color: var(--muted); }
+    .section-head-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ── Library directory cards ── */
+    .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 0.75rem; }
+    .lib-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 0.875rem;
+      padding: 1rem 1.1rem; transition: border-color 0.15s;
+    }
+    .lib-card:hover { border-color: rgba(255,255,255,0.14); }
+    .lib-card-title { font-weight: 800; font-size: 0.82rem; color: var(--text); margin-bottom: 0.25rem; }
+    .lib-card-count { font-size: 0.68rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .lib-card-list { list-style: none; margin: 0; padding: 0; }
+    .lib-card-list li {
+      font-size: 0.7rem; color: #94a3b8; padding: 0.2rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .lib-card-list li:last-child { border-bottom: none; }
+    .lib-card-more { font-size: 0.65rem; color: var(--muted); margin-top: 0.4rem; font-style: italic; }
+    .lib-link { display: inline-flex; align-items: center; gap: 0.3rem; color: var(--amber); font-size:0.7rem; font-weight:700; text-decoration:none; margin-top:0.6rem; }
+    .lib-link:hover { text-decoration: underline; }
+
+    /* ── Quick links bar ── */
+    .quick-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .page-title { font-size: 1.3rem; }
+      .player-header { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="./index.html" class="back-link">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    Hub
+  </a>
+  <div>
+    <div class="top-bar-sub">Woodworking</div>
+    <div class="top-bar-title">Video Library</div>
+  </div>
+  <div style="flex:1"></div>
+  <a href="./video-ww.html" class="btn">Basic Box Player</a>
+  <a href="./planner.html" class="btn">Planner</a>
+</div>
+
+<div class="shell">
+
+  <!-- PAGE INTRO -->
+  <div class="page-intro">
+    <div class="page-kicker">Woodworking · Weeks 12–18</div>
+    <h1 class="page-title">Video Resource Library</h1>
+    <p class="page-desc">
+      Four locally-available videos covering the Basic Box project, tape measure skills, and precision marking.
+      All videos are bundled with the hub — no internet required. Use chapter markers to jump to any cue point during class.
+    </p>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem">
+      <span class="badge badge-amber">4 Local Videos</span>
+      <span class="badge badge-slate">No Internet Required</span>
+      <span class="badge badge-emerald">Chapter Markers</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       VIDEO 1 — Basic Box
+  ════════════════════════════════════════════ -->
+  <div class="section-head">
+    <span class="section-head-label">Video 1 of 4 · Core Project</span>
+    <span class="section-head-line"></span>
+  </div>
+
+  <div class="player-card" id="card-v1">
+    <div class="player-header">
+      <div>
+        <div class="player-meta-title">How to Make a Basic Box — and Why You Need to Know How</div>
+        <div class="player-meta-sub">Woodworking Basics · 10:23 · MP4 · 55 MB</div>
+        <div style="margin-top:0.5rem;display:flex;gap:0.4rem;flex-wrap:wrap">
+          <span class="badge badge-amber">Core Project</span>
+          <span class="badge badge-slate">10:23</span>
+          <span class="badge badge-emerald">Local File Ready</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;flex-shrink:0">
+        <label class="btn btn-amber" title="Load a different video file">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Pick file
+          <input type="file" accept="video/*" class="file-picker" data-video="vid1" style="display:none" />
+        </label>
+        <button class="btn" onclick="resetVideo('vid1','./media/basic-box.mp4')">Reset</button>
+      </div>
+    </div>
+
+    <div class="player-wrap">
+      <video id="vid1" controls preload="metadata" src="./media/basic-box.mp4">
+        Your browser does not support the video element.
+      </video>
+    </div>
+
+    <div class="player-footer">
+      <div class="source-badge">
+        <span class="source-dot ok" id="vid1-dot"></span>
+        <span id="vid1-status">Local file · media/basic-box.mp4</span>
+      </div>
+    </div>
+
+    <!-- CHAPTERS -->
+    <div class="chapters-wrap">
+      <div class="chapters-head" onclick="toggleChapters('ch1')">
+        <span class="chapters-head-label">Chapter Markers</span>
+        <svg class="chapters-toggle" id="ch1-toggle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="chapters-list open" id="ch1">
+        <div class="chapter-item active" onclick="seekVideo('vid1',0,this)">
+          <span class="chapter-tc">0:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Introduction — Why the Basic Box?</div>
+            <div class="chapter-note">Project overview and fundamental reasoning — use during warm-up.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid1',105,this)">
+          <span class="chapter-tc">1:45</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Sketches, Cut List &amp; Material Prep</div>
+            <div class="chapter-note">Pair with workbook planning sheet. Students complete cut list before continuing.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid1',315,this)">
+          <span class="chapter-tc">5:15</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Rabbets, Grooves, Dry Fit &amp; Bottom Panel</div>
+            <div class="chapter-note">Core joinery — rabbets, groove sizing, dry-fit check, bottom panel sizing.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid1',500,this)">
+          <span class="chapter-tc">8:20</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Glue-Up Sequence</div>
+            <div class="chapter-note">Demonstrate glue application order and clamp placement before students start.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid1',600,this)">
+          <span class="chapter-tc">10:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Lid Lip, Friction-Fit &amp; Final Prep</div>
+            <div class="chapter-note">Lid fitting, friction adjustments, cleanup. Use as exit-ticket demo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEACHER NOTES -->
+    <div class="notes-card" style="border-radius:0;border-left:0;border-right:0;border-bottom:0;margin-top:0">
+      <div class="notes-kicker">Teacher Notes</div>
+      <div class="notes-body">
+        <strong>Before class:</strong> Confirm <code>media/basic-box.mp4</code> loads (green dot above).
+        Project video on classroom display. Open workbook in a second tab.<br><br>
+        <strong>Cue-point strategy:</strong> Pause at 1:45 — have students write their cut list.
+        Pause at 5:15 — check cut lists before anyone touches the saw.
+        Pause at 8:20 — demonstrate your glue sequence on the board or a scrap model.<br><br>
+        <strong>If file is missing:</strong> Use the "Pick file" button to load from USB or local folder.
+        The original filename was <em>How to make a basic box.webm</em>.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       VIDEO 2 — Tape Measure Basics
+  ════════════════════════════════════════════ -->
+  <div class="section-head">
+    <span class="section-head-label">Video 2 of 4 · Measuring Skills</span>
+    <span class="section-head-line"></span>
+  </div>
+
+  <div class="player-card" id="card-v2">
+    <div class="player-header">
+      <div>
+        <div class="player-meta-title">Learn How to Read Your Tape Measure!</div>
+        <div class="player-meta-sub">Measuring Basics · 9:52 · MP4 · 21 MB</div>
+        <div style="margin-top:0.5rem;display:flex;gap:0.4rem;flex-wrap:wrap">
+          <span class="badge badge-amber">Measuring Skills</span>
+          <span class="badge badge-slate">9:52</span>
+          <span class="badge badge-emerald">Local File Ready</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;flex-shrink:0">
+        <label class="btn btn-amber">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Pick file
+          <input type="file" accept="video/*" class="file-picker" data-video="vid2" style="display:none" />
+        </label>
+        <button class="btn" onclick="resetVideo('vid2','./media/tape-measure-basics.mp4')">Reset</button>
+      </div>
+    </div>
+    <div class="player-wrap">
+      <video id="vid2" controls preload="metadata" src="./media/tape-measure-basics.mp4">
+        Your browser does not support the video element.
+      </video>
+    </div>
+    <div class="player-footer">
+      <div class="source-badge">
+        <span class="source-dot ok" id="vid2-dot"></span>
+        <span id="vid2-status">Local file · media/tape-measure-basics.mp4</span>
+      </div>
+    </div>
+    <div class="chapters-wrap">
+      <div class="chapters-head" onclick="toggleChapters('ch2')">
+        <span class="chapters-head-label">Chapter Markers</span>
+        <svg class="chapters-toggle" id="ch2-toggle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="chapters-list open" id="ch2">
+        <div class="chapter-item active" onclick="seekVideo('vid2',0,this)">
+          <span class="chapter-tc">0:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Anatomy of a Tape Measure</div>
+            <div class="chapter-note">Parts and markings overview — hook, blade, fractions. Good warm-up starter.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid2',120,this)">
+          <span class="chapter-tc">2:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Reading Whole Inches &amp; Halves</div>
+            <div class="chapter-note">Largest marks — 1″, ½″. Confirm all students identify these before moving on.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid2',270,this)">
+          <span class="chapter-tc">4:30</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Quarters, Eighths &amp; Sixteenths</div>
+            <div class="chapter-note">Core woodworking fractions. Pair with cut-list practice on workbook.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid2',480,this)">
+          <span class="chapter-tc">8:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Hook Slop &amp; Inside Measurements</div>
+            <div class="chapter-note">Why the hook moves — intentional slop. Inside vs. outside measurements.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notes-card" style="border-radius:0;border-left:0;border-right:0;border-bottom:0;margin-top:0">
+      <div class="notes-kicker">Teacher Notes</div>
+      <div class="notes-body">
+        <strong>Suggested use:</strong> Show before students attempt their first cut list or measurement exercise.
+        Pause at 4:30 and have students write down 3 measurements from a scrap piece.
+        <br><br>
+        <strong>Pairs with:</strong> WW Workbook Page 1 — Measurement Practice. Consider using after basic-box.mp4 Intro section.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       VIDEO 3 — Tape Measure Tricks (13 min)
+  ════════════════════════════════════════════ -->
+  <div class="section-head">
+    <span class="section-head-label">Video 3 of 4 · Measuring Skills — Extended</span>
+    <span class="section-head-line"></span>
+  </div>
+
+  <div class="player-card" id="card-v3">
+    <div class="player-header">
+      <div>
+        <div class="player-meta-title">ALL Tape Measure Tricks Explained in 13 Minutes</div>
+        <div class="player-meta-sub">Measuring Tricks &amp; Tips · 12:57 · MP4 · 56 MB</div>
+        <div style="margin-top:0.5rem;display:flex;gap:0.4rem;flex-wrap:wrap">
+          <span class="badge badge-amber">Advanced Tips</span>
+          <span class="badge badge-slate">12:57</span>
+          <span class="badge badge-emerald">Local File Ready</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;flex-shrink:0">
+        <label class="btn btn-amber">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Pick file
+          <input type="file" accept="video/*" class="file-picker" data-video="vid3" style="display:none" />
+        </label>
+        <button class="btn" onclick="resetVideo('vid3','./media/tape-measure-tricks.mp4')">Reset</button>
+      </div>
+    </div>
+    <div class="player-wrap">
+      <video id="vid3" controls preload="metadata" src="./media/tape-measure-tricks.mp4">
+        Your browser does not support the video element.
+      </video>
+    </div>
+    <div class="player-footer">
+      <div class="source-badge">
+        <span class="source-dot ok" id="vid3-dot"></span>
+        <span id="vid3-status">Local file · media/tape-measure-tricks.mp4</span>
+      </div>
+    </div>
+    <div class="chapters-wrap">
+      <div class="chapters-head" onclick="toggleChapters('ch3')">
+        <span class="chapters-head-label">Chapter Markers</span>
+        <svg class="chapters-toggle" id="ch3-toggle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="chapters-list open" id="ch3">
+        <div class="chapter-item active" onclick="seekVideo('vid3',0,this)">
+          <span class="chapter-tc">0:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Hook Design &amp; Burn Inch</div>
+            <div class="chapter-note">Why the first inch is sometimes skipped — accuracy trick for repeated cuts.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid3',90,this)">
+          <span class="chapter-tc">1:30</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Black Diamond &amp; Stud Spacing Marks</div>
+            <div class="chapter-note">The mystery marks explained — layout speed for framing and sheet goods.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid3',255,this)">
+          <span class="chapter-tc">4:15</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Fractional Reading Practice</div>
+            <div class="chapter-note">Drill section — pause and quiz students on displayed measurements.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid3',480,this)">
+          <span class="chapter-tc">8:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Scribing, Story Sticks &amp; Transfer Marks</div>
+            <div class="chapter-note">Transferring measurements without numbers — useful for irregular pieces.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid3',660,this)">
+          <span class="chapter-tc">11:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Speed Tricks &amp; Wrap-Up</div>
+            <div class="chapter-note">One-handed lock, belt-clip draw, blade-read tricks. Good end-of-demo segment.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notes-card" style="border-radius:0;border-left:0;border-right:0;border-bottom:0;margin-top:0">
+      <div class="notes-kicker">Teacher Notes</div>
+      <div class="notes-body">
+        <strong>Best use:</strong> Use <em>after</em> Video 2 for students who need deeper practice, or as a full-class second-day follow-up.
+        The 4:15 segment works well as a quiz — pause and ask students to call out the measurement.
+        <br><br>
+        <strong>48-min tip:</strong> Play 0:00–4:15 (approx 4 min) as intro, then 4:15–8:00 during guided practice, and 8:00–end during independent work.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       VIDEO 4 — Marking & Measuring Tools (19 min)
+  ════════════════════════════════════════════ -->
+  <div class="section-head">
+    <span class="section-head-label">Video 4 of 4 · Precision Marking</span>
+    <span class="section-head-line"></span>
+  </div>
+
+  <div class="player-card" id="card-v4">
+    <div class="player-header">
+      <div>
+        <div class="player-meta-title">Mastering Accuracy — Marking and Measuring Tools Guide</div>
+        <div class="player-meta-sub">Precision Marking · 19:28 · MP4 · 94 MB</div>
+        <div style="margin-top:0.5rem;display:flex;gap:0.4rem;flex-wrap:wrap">
+          <span class="badge badge-amber">Precision Tools</span>
+          <span class="badge badge-slate">19:28</span>
+          <span class="badge badge-emerald">Local File Ready</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;flex-shrink:0">
+        <label class="btn btn-amber">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Pick file
+          <input type="file" accept="video/*" class="file-picker" data-video="vid4" style="display:none" />
+        </label>
+        <button class="btn" onclick="resetVideo('vid4','./media/marking-measuring-tools.mp4')">Reset</button>
+      </div>
+    </div>
+    <div class="player-wrap">
+      <video id="vid4" controls preload="metadata" src="./media/marking-measuring-tools.mp4">
+        Your browser does not support the video element.
+      </video>
+    </div>
+    <div class="player-footer">
+      <div class="source-badge">
+        <span class="source-dot ok" id="vid4-dot"></span>
+        <span id="vid4-status">Local file · media/marking-measuring-tools.mp4</span>
+      </div>
+    </div>
+    <div class="chapters-wrap">
+      <div class="chapters-head" onclick="toggleChapters('ch4')">
+        <span class="chapters-head-label">Chapter Markers</span>
+        <svg class="chapters-toggle" id="ch4-toggle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="chapters-list open" id="ch4">
+        <div class="chapter-item active" onclick="seekVideo('vid4',0,this)">
+          <span class="chapter-tc">0:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Intro — Why Accuracy Matters</div>
+            <div class="chapter-note">Sets the standard for precision work. Good lesson opener.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid4',120,this)">
+          <span class="chapter-tc">2:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Tape Measures &amp; Steel Rules</div>
+            <div class="chapter-note">Choosing the right tool for the measurement. Pairs with Videos 2 &amp; 3.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid4',360,this)">
+          <span class="chapter-tc">6:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Marking Knives, Pencils &amp; Gauges</div>
+            <div class="chapter-note">Line quality — knife vs. pencil and when each is appropriate.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid4',660,this)">
+          <span class="chapter-tc">11:00</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Squares — Try Square, Combination &amp; Speed Square</div>
+            <div class="chapter-note">Setting up, reading, and checking squares. Model this before layout day.</div>
+          </div>
+        </div>
+        <div class="chapter-item" onclick="seekVideo('vid4',930,this)">
+          <span class="chapter-tc">15:30</span>
+          <div class="chapter-body">
+            <div class="chapter-title">Layout Workflow — Marking a Part from Start to Finish</div>
+            <div class="chapter-note">Full demonstration — watch as a class then students replicate on their own piece.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notes-card" style="border-radius:0;border-left:0;border-right:0;border-bottom:0;margin-top:0">
+      <div class="notes-kicker">Teacher Notes</div>
+      <div class="notes-body">
+        <strong>Best use:</strong> Layout &amp; Material Prep day (Week 12, Day 2+). Play segments 0–2:00 and 6:00–11:00 as a mini-lesson.
+        Assign the 15:30 layout demo as a guided practice — students follow along with their own materials.
+        <br><br>
+        <strong>48-min breakdown:</strong> 0:00 opener (2 min) → 6:00 marking tools (5 min) → 11:00 squares (4 min) → 15:30 full demo (4 min) → students replicate (20+ min).
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       VIDEO LIBRARY DIRECTORY
+  ════════════════════════════════════════════ -->
+  <div class="section-head" style="margin-top:2.5rem">
+    <span class="section-head-label">Full Online Video Library</span>
+    <span class="section-head-line"></span>
+  </div>
+  <p style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem">
+    Internet-required external playlists — use as teacher reference, extension research, or supplemental homework.
+  </p>
+
+  <div class="lib-grid">
+
+    <div class="lib-card">
+      <div class="lib-card-title">Library 1 — Woodworking for Beginners</div>
+      <div class="lib-card-count">Steve Ramsey · 23 videos · YouTube</div>
+      <ul class="lib-card-list">
+        <li>2023 guide to tools &amp; supplies</li>
+        <li>The definitive guide to woodworking safety</li>
+        <li>7 Things to Get Started with a Table Saw</li>
+        <li>What kind of screw should I use?</li>
+        <li>How to Use a Power Drill and Impact Driver</li>
+      </ul>
+      <div class="lib-card-more">+18 more videos</div>
+      <a class="lib-link" href="https://www.youtube.com/@SteveRamsey-Woodworking" target="_blank" rel="noopener">
+        YouTube Channel
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+
+    <div class="lib-card">
+      <div class="lib-card-title">Library 2 — Project Tutorials</div>
+      <div class="lib-card-count">WoodWorkWeb · 102 videos · YouTube</div>
+      <ul class="lib-card-list">
+        <li>Making a Simple Wooden Storage Box</li>
+        <li>How to Make a Wooden Jewelry Box</li>
+        <li>How to Make a Cutting Board</li>
+        <li>How to Make Drawers — Dead Simple</li>
+        <li>Build a Box Joint Library Cupboard</li>
+      </ul>
+      <div class="lib-card-more">+97 more videos</div>
+      <a class="lib-link" href="https://www.youtube.com/@WoodWorkWeb" target="_blank" rel="noopener">
+        YouTube Channel
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+
+    <div class="lib-card">
+      <div class="lib-card-title">Library 3 — DIY &amp; Home Projects</div>
+      <div class="lib-card-count">Making Manzanita · 68 videos · YouTube</div>
+      <ul class="lib-card-list">
+        <li>How to Build an Entryway Bench</li>
+        <li>DIY Mudroom Lockers</li>
+        <li>How to Build a Cabinet with Shelves</li>
+        <li>How to Apply Edge Banding to Plywood</li>
+        <li>Wooden Bench Build with Upholstered Seat</li>
+      </ul>
+      <div class="lib-card-more">+63 more videos</div>
+      <a class="lib-link" href="https://www.youtube.com/@MakingManzanita" target="_blank" rel="noopener">
+        YouTube Channel
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+
+    <div class="lib-card">
+      <div class="lib-card-title">Library 4 — Beginner Shop Projects</div>
+      <div class="lib-card-count">Penalty Box Woodshop · 38 videos · YouTube</div>
+      <ul class="lib-card-list">
+        <li>Must-Have Tools for Beginners</li>
+        <li>How to Make a Simple Wooden Box with Hinges</li>
+        <li>Box Joints / Finger Joints — Easy Joinery</li>
+        <li>Dovetail Joints Made Easy</li>
+        <li>Tape Measure Tips and Tricks</li>
+      </ul>
+      <div class="lib-card-more">+33 more videos</div>
+      <a class="lib-link" href="https://www.youtube.com/@PenaltyBoxWoodshop" target="_blank" rel="noopener">
+        YouTube Channel
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+
+    <div class="lib-card">
+      <div class="lib-card-title">Library 5 — The Wood Whisperer</div>
+      <div class="lib-card-count">Marc Spagnuolo · YouTube Channel</div>
+      <ul class="lib-card-list">
+        <li>10 Easy Woodworking Projects</li>
+        <li>How to Make a Cross-Cut Sled</li>
+        <li>Arts &amp; Crafts Table (full build series)</li>
+        <li>Quick &amp; Easy Mortises</li>
+        <li>Shop Tour 2024</li>
+      </ul>
+      <a class="lib-link" href="https://www.youtube.com/@TheWoodWhisperer" target="_blank" rel="noopener">
+        YouTube Channel
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+
+    <div class="lib-card">
+      <div class="lib-card-title">Library 6 — Jigs, Tips &amp; Hacks</div>
+      <div class="lib-card-count">WoodWorkWeb · YouTube Channel</div>
+      <ul class="lib-card-list">
+        <li>5 Quick Table Saw Hacks</li>
+        <li>5 Quick Mitre Saw Hacks</li>
+        <li>How to Use a Wood Jointer</li>
+        <li>Pocket Hole Joinery</li>
+        <li>Tips for Buying Lumber</li>
+      </ul>
+      <a class="lib-link" href="https://www.youtube.com/@WoodWorkWeb" target="_blank" rel="noopener">
+        YouTube Channel
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+
+    <div class="lib-card">
+      <div class="lib-card-title">Library 7 — Wood &amp; Shop External</div>
+      <div class="lib-card-count">woodandshop.com · wwgoa.com</div>
+      <ul class="lib-card-list">
+        <li>Hand Planes, Saws &amp; Sharpening</li>
+        <li>Historic Beeswax &amp; Fuming Furniture</li>
+        <li>Anatomy of an End Table</li>
+        <li>Portable Moravian Workbench</li>
+        <li>Glue FAQs · Iron-on Banding Secrets</li>
+      </ul>
+      <a class="lib-link" href="https://woodandshop.com" target="_blank" rel="noopener">
+        woodandshop.com
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div class="quick-links">
+    <a href="./video-ww.html" class="btn btn-amber">Basic Box Player</a>
+    <a href="./ww-slides.html" class="btn">WW Slides</a>
+    <a href="./ww-workbook.html" class="btn">WW Workbook</a>
+    <a href="./planner.html?course=woodworking" class="btn">Planner</a>
+    <a href="./video-gd-library.html" class="btn">GD Video Library</a>
+    <a href="./index.html" class="btn">Hub</a>
+  </div>
+
+</div><!-- /shell -->
+
+<script>
+/* ── Chapter toggle ── */
+function toggleChapters(id) {
+  const list = document.getElementById(id);
+  const tog  = document.getElementById(id + '-toggle');
+  const open = list.classList.toggle('open');
+  tog.classList.toggle('open', open);
+}
+
+/* ── Seek video to timestamp ── */
+function seekVideo(vidId, seconds, el) {
+  const vid = document.getElementById(vidId);
+  if (!vid) return;
+  vid.currentTime = seconds;
+  vid.play().catch(() => {});
+  // Update active class
+  const card = el.closest('.chapters-list');
+  card.querySelectorAll('.chapter-item').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  // Scroll player into view
+  vid.closest('.player-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/* ── File picker ── */
+document.querySelectorAll('.file-picker').forEach(input => {
+  input.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const vidId  = input.dataset.video;
+    const vid    = document.getElementById(vidId);
+    const dot    = document.getElementById(vidId + '-dot');
+    const status = document.getElementById(vidId + '-status');
+    if (!vid) return;
+    const url = URL.createObjectURL(file);
+    vid.src = url;
+    dot.className   = 'source-dot alt';
+    status.textContent = 'Local pick · ' + file.name;
+  });
+});
+
+/* ── Reset video ── */
+function resetVideo(vidId, src) {
+  const vid    = document.getElementById(vidId);
+  const dot    = document.getElementById(vidId + '-dot');
+  const status = document.getElementById(vidId + '-status');
+  if (!vid) return;
+  vid.src = src;
+  dot.className   = 'source-dot ok';
+  status.textContent = 'Local file · ' + src.replace('./', '');
+}
+
+/* ── Video error handling — mark dot red ── */
+['vid1','vid2','vid3','vid4'].forEach(id => {
+  const vid = document.getElementById(id);
+  const dot = document.getElementById(id + '-dot');
+  const status = document.getElementById(id + '-status');
+  if (!vid) return;
+  vid.addEventListener('error', () => {
+    dot.className = 'source-dot';
+    dot.style.background = '#f87171';
+    status.textContent = 'File not found — use Pick file to load from USB';
+  });
+  vid.addEventListener('loadeddata', () => {
+    dot.className = 'source-dot ok';
+  });
+});
+</script>
+
+</body>
+</html>

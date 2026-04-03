@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WW Workbook — Basic Box · Mr. Burke</title>
+<link rel="stylesheet" href="./assets/tailwind.local.css"/>
+<link rel="stylesheet" href="./assets/classroom-base.css"/>
+<style>
+  body { font-family: var(--app-sans); }
+  .lined-area {
+    background-image: repeating-linear-gradient(transparent, transparent 31px, #e5e7eb 31px, #e5e7eb 32px);
+    line-height: 32px;
+    padding-top: 6px;
+  }
+  @media print {
+    .no-print { display: none !important; }
+    .page { page-break-after: always; box-shadow: none !important; }
+    body { background: white !important; }
+    .page-container { padding: 0 !important; }
+  }
+</style>
+</head>
+<body class="bg-gray-200 text-gray-900 min-h-screen">
+
+<!-- PRINT BUTTON -->
+<div class="no-print fixed top-4 right-4 z-50 flex gap-3">
+  <a href="index.html" class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2.5 rounded-lg shadow font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+    Hub
+  </a>
+  <a href="video-ww.html" class="flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-900 px-4 py-2.5 rounded-lg shadow font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="9 7 17 12 9 17 9 7"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+    Video Page
+  </a>
+  <a href="planner.html#checkpointTracker" class="flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-900 px-4 py-2.5 rounded-lg shadow font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h11"/></svg>
+    Checkpoints
+  </a>
+  <button onclick="window.print()" class="flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-6 py-2.5 rounded-lg shadow-xl font-bold text-sm transition">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Print Workbook
+  </button>
+</div>
+
+<div class="no-print max-w-4xl mx-auto pt-24 px-4">
+  <div class="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-sm">
+    <div>
+      <p class="text-[10px] font-black uppercase tracking-[0.3em] text-amber-700 mb-1">Teacher Shortcuts</p>
+      <p class="text-sm font-semibold text-gray-900">Open the woodworking video page or jump to the checkpoint tracker before students rotate into the next build step.</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <a href="video-ww.html" class="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="9 7 17 12 9 17 9 7"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+        Video Resource
+      </a>
+      <a href="planner.html#checkpointTracker" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h11"/></svg>
+        Checkpoints
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-4xl mx-auto py-8 px-4 space-y-8 page-container" id="workbook"></div>
+
+<script>
+const schedule = [
+  { day:"Wed 4/1",  title:"Intro & Staggered Workflow",        intention:"Plan, prep stock, and stagger initial construction to avoid machine bottlenecks.", tasks:["Watch Video: 0:00-1:45","Review PDF Pg 1-3","Acknowledge project constraints","Understand staggered workflow"], type:"text", prompt:"Explain why we are using a staggered workflow for the table saws and glue-up stations." },
+  { day:"Thu 4/2",  title:"Sketches & Dimensions",             intention:"Plan, prep stock, and stagger initial construction to avoid machine bottlenecks.", tasks:["Watch Video: 1:45-2:30","Review PDF Pg 2-3","Draw box sketch","Submit cut list for approval"], type:"sketch", prompt:"Draw your box below. Label all 6 parts and include dimensions. Mark rabbet locations." },
+  { day:"Mon 4/6",  title:"Material Prep & Crosscutting",      intention:"Plan, prep stock, and stagger initial construction to avoid machine bottlenecks.", tasks:["Watch Video: 2:30-4:00","Review PDF Pg 2","Select material","Crosscut pieces to length"], type:"text", prompt:"List the safety checks required before using the miter saw for crosscutting." },
+  { day:"Tue 4/7",  title:"Staggered Ops — Part 1",            intention:"Plan, prep stock, and stagger initial construction to avoid machine bottlenecks.", tasks:["Watch Video: 4:00-5:15","Review PDF Pg 2 & 6","Group A: Edge-glue lids","Group B: Table saw width rips"], type:"text", prompt:"If edge-gluing, what is the purpose of the packing tape on the cauls? If ripping, where should your push stick be located?" },
+  { day:"Wed 4/8",  title:"Staggered Ops — Part 2",            intention:"Plan, prep stock, and stagger initial construction to avoid machine bottlenecks.", tasks:["Group B: Edge-glue lids","Group A: Table saw width rips","Verify lids are curing","Verify box sides cut to final outer dimensions"], type:"text", prompt:"CHECKPOINT DAY. What adjustments (if any) did you have to make to your stock today to ensure squareness?" },
+  { day:"Thu 4/9",  title:"Table Saw Rabbets (Sides/Ends)",    intention:"Execute complex joinery safely and calculate internal dimensions for bottom panels.", tasks:["Watch Video: 5:15-7:30","Review PDF Pg 4","Set blade height to 50% of thickness","Cut rabbets on sides and ends"], type:"sketch", prompt:"Sketch a cross-section of your rabbet joint. Label the depth and width dimensions." },
+  { day:"Fri 4/10", title:"Bottom Grooves",                    intention:"Execute complex joinery safely and calculate internal dimensions for bottom panels.", tasks:["Watch Video: 7:30-9:00","Review PDF Pg 4","Adjust fence for bottom groove","Cut grooves on all side pieces"], type:"text", prompt:"Why is it dangerous to use the miter gauge AND the rip fence at the same time for a through-cut? Why is it safe for a rabbet?" },
+  { day:"Mon 4/13", title:"Internal Dimensions & Bottom Panel",intention:"Execute complex joinery safely and calculate internal dimensions for bottom panels.", tasks:["Watch Video: 9:00-11:20","Review PDF Pg 5","Dry assemble sides","Measure internal dimensions","Cut bottom plywood panel"], type:"sketch", prompt:"Show your math. Draw the dry-fit box and calculate the exact dimensions needed for the 1/2\" plywood base." },
+  { day:"Tue 4/14", title:"Box Glue-Up",                       intention:"Execute complex joinery safely and calculate internal dimensions for bottom panels.", tasks:["Watch Video: 11:20-14:00","Apply glue to side rabbets (not bottom groove)","Insert bottom panel to square box","Apply strap or bar clamps"], type:"text", prompt:"How much clamping pressure is required, and what visual indicator tells you that you have used enough glue?" },
+  { day:"Wed 4/15", title:"Clamp Removal & Cleanup",           intention:"Finalize structural components and prepare surfaces.", tasks:["Remove clamps carefully","Scrape dried glue squeeze-out","Inspect joints for gaps"], type:"text", prompt:"Why is it critical to remove all dried glue squeeze-out before sanding and finishing?" },
+  { day:"Thu 4/16", title:"Lid Rabbet Lip",                    intention:"Finalize structural components and prepare surfaces.", tasks:["Watch Video: 14:00-16:30","Review PDF Pg 6","Measure box opening","Cut/route rabbet lip on cured lid panel"], type:"text", prompt:"Explain your process for ensuring the lid lip fits perfectly into the box opening." },
+  { day:"Fri 4/17", title:"Lid Fit Adjustment",                intention:"Finalize structural components and prepare surfaces.", tasks:["Watch Video: 16:30-18:00","Test fit lid","Sand or shave lip for friction fit"], type:"text", prompt:"What is a 'friction fit', and why is it desirable for this specific lid design?" },
+  { day:"Mon 4/20", title:"Exterior Surface Prep",             intention:"Finalize structural components and prepare surfaces.", tasks:["Set up orbital sander","Sand exterior through grits (120, 150, 220)"], type:"text", prompt:"Explain the rule for moving through sandpaper grits. Why can't you skip directly from 80 to 220?" },
+  { day:"Tue 4/21", title:"Interior Detail Sanding",           intention:"Finalize structural components and prepare surfaces.", tasks:["Use sanding stick for rabbets","Hand sand interior","Repair defects","Reach 220 grit everywhere"], type:"text", prompt:"CHECKPOINT DAY. Did you find any defects? If so, how did you repair them today?" },
+  { day:"Wed 4/22", title:"Finish Prep & Demo",                intention:"Apply a finish safely and effectively to protect and enhance the project's appearance.", tasks:["Watch finishing demo","Remove all dust from project with tack cloth","Set up finishing station"], type:"text", prompt:"List the PPE (Personal Protective Equipment) required for the finishing station." },
+  { day:"Thu 4/23", title:"First Coat Application",            intention:"Apply a finish safely and effectively to protect and enhance the project's appearance.", tasks:["Apply first coat (Spray or Wipe-on)","Ensure even coverage","Clean finishing tools/station"], type:"text", prompt:"What techniques ensure you do not get drips or runs in your finish?" },
+  { day:"Mon 4/27", title:"Scuff Sanding",                     intention:"Apply a finish safely and effectively to protect and enhance the project's appearance.", tasks:["Verify first coat is fully cured","Lightly scuff sand with high-grit paper/pad","Remove dust"], type:"text", prompt:"What is the purpose of 'scuff sanding' between coats of finish?" },
+  { day:"Tue 4/28", title:"Second Coat Application",           intention:"Apply a finish safely and effectively to protect and enhance the project's appearance.", tasks:["Apply second coat","Ensure even coverage","Clean finishing station"], type:"text", prompt:"How did your application technique change (if at all) from the first coat to the second?" },
+  { day:"Wed 4/29", title:"Final Curing & Cleanup",            intention:"Apply a finish safely and effectively to protect and enhance the project's appearance.", tasks:["Move project to curing rack","Deep clean shop area","Organize finishing supplies"], type:"text", prompt:"While your project cures, list three shop maintenance tasks you completed today." },
+  { day:"Thu 4/30", title:"Evaluation & Peer Review",          intention:"Evaluate work and make targeted improvements based on reflection and feedback.", tasks:["Exchange box with peer","Complete peer evaluation rubric","Review feedback received"], type:"text", prompt:"What was the most useful piece of constructive feedback you received from your peer?" },
+  { day:"Fri 5/1",  title:"Targeted Improvements",            intention:"Evaluate work and make targeted improvements based on reflection and feedback.", tasks:["Apply paste wax to sliding lid tracks","Ease sharp edges if necessary","Address peer feedback"], type:"text", prompt:"How did applying wax change the function of the sliding lid?" },
+  { day:"Mon 5/4",  title:"Final Fit & Polish",               intention:"Evaluate work and make targeted improvements based on reflection and feedback.", tasks:["Final buffing","Verify lid slides smoothly","Final visual inspection"], type:"text", prompt:"If you were to build this box again, what is one structural change you would make?" },
+  { day:"Tue 5/5",  title:"Checkpoint & Reflection",           intention:"Evaluate work and make targeted improvements based on reflection and feedback.", tasks:["Submit project for final checkpoint","Begin written reflection"], type:"text", prompt:"CHECKPOINT DAY. Write your final project reflection. What are you most proud of regarding your craftsmanship?" },
+  { day:"Wed 5/6",  title:"Presentation Preparation",         intention:"Explain design choices and craftsmanship decisions using appropriate vocabulary.", tasks:["Review presentation guidelines","Draft talking points","Identify key vocabulary to use"], type:"text", prompt:"List three technical vocabulary words you will use during your presentation to describe your process." },
+  { day:"Thu 5/7",  title:"Documentation & Photography",       intention:"Explain design choices and craftsmanship decisions using appropriate vocabulary.", tasks:["Take high-quality photos of project","Document joinery details","Upload to portfolio"], type:"text", prompt:"Describe the specific angles or details you chose to photograph and why." },
+  { day:"Fri 5/8",  title:"Studio Work / Make-Up",            intention:"Explain design choices and craftsmanship decisions using appropriate vocabulary.", tasks:["Finalize presentation","Complete missing workbook pages","Assist peers"], type:"text", prompt:"How did you utilize this studio flex day?" },
+  { day:"Mon 5/11", title:"Peer Presentations",               intention:"Explain design choices and craftsmanship decisions using appropriate vocabulary.", tasks:["Deliver presentation","Listen to peer presentations","Ask constructive questions"], type:"text", prompt:"Note one interesting technique or design choice you saw in a classmate's presentation today." },
+  { day:"Tue 5/12", title:"Shop Breakdown & Maintenance",      intention:"Review work and explore connections between professional practice and skills.", tasks:["Clean assigned machines","Perform tool maintenance","Organize clamps and jigs"], type:"text", prompt:"Why is routine tool maintenance a critical part of professional woodworking?" },
+  { day:"Wed 5/13", title:"Inventory & Take-Home",             intention:"Review work and explore connections between professional practice and skills.", tasks:["Assist with shop inventory","Final sweep","Take project home"], type:"text", prompt:"What is the intended use for the box you built?" },
+  { day:"Thu 5/14", title:"Semester Wrap-Up",                  intention:"Review work and explore connections between professional practice and skills.", tasks:["Submit completed workbook","Final semester review"], type:"text", prompt:"What was your biggest takeaway from the Basic Box unit?" }
+];
+
+const wb = document.getElementById('workbook');
+
+// COVER PAGE
+const cover = document.createElement('div');
+cover.className = 'page bg-white p-12 shadow-md min-h-[10in] flex flex-col justify-center items-center';
+cover.innerHTML = `
+  <div class="w-20 h-20 rounded-full bg-amber-100 border-4 border-amber-500 flex items-center justify-center mb-8">
+    <svg width="36" height="36" fill="none" stroke="#d97706" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+  </div>
+  <h1 class="text-5xl font-black uppercase tracking-widest border-b-8 border-gray-900 pb-6 mb-8 text-center">Basic Box<br>Workbook</h1>
+  <p class="text-gray-500 font-bold uppercase tracking-widest text-sm mb-10">Woodworking · Weeks 12–18 · Spring 2026</p>
+  <div class="w-full max-w-md space-y-5 text-lg">
+    <div>
+      <label class="block font-bold mb-1 text-gray-600">Student Name:</label>
+      <input type="text" class="w-full border-b-4 border-gray-400 outline-none p-2 bg-gray-50"/>
+    </div>
+    <div>
+      <label class="block font-bold mb-1 text-gray-600">Class Period:</label>
+      <input type="text" class="w-full border-b-4 border-gray-400 outline-none p-2 bg-gray-50"/>
+    </div>
+    <div>
+      <label class="block font-bold mb-1 text-gray-600">Instructor:</label>
+      <div class="w-full border-b-4 border-gray-400 p-2 bg-gray-50 text-gray-700 font-medium">Mr. Burke</div>
+    </div>
+  </div>
+`;
+wb.appendChild(cover);
+
+// DAILY PAGES
+schedule.forEach((data, index) => {
+  const page = document.createElement('div');
+  page.className = 'page bg-white p-8 sm:p-12 shadow-md min-h-[10.5in] flex flex-col';
+
+  const sketchId = `sketch_${index}`;
+
+  page.innerHTML = `
+    <!-- Header -->
+    <div class="flex justify-between items-end border-b-4 border-gray-900 pb-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-black uppercase">${data.title}</h2>
+        <p class="font-bold text-gray-500 text-lg">${data.day}</p>
+      </div>
+      <p class="text-sm font-bold text-gray-400 uppercase tracking-wide">WWMM Basic Box</p>
+    </div>
+    <!-- Intention -->
+    <div class="bg-amber-50 p-4 border-l-4 border-amber-500 mb-6">
+      <span class="font-bold uppercase text-xs text-amber-700 block mb-1">Daily Intention:</span>
+      <p class="font-medium text-base leading-snug">${data.intention}</p>
+    </div>
+    <!-- Checklist -->
+    <div class="mb-6">
+      <h3 class="font-bold text-base mb-3 flex items-center gap-2">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Shop Checklist
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        ${data.tasks.map(t => `
+          <label class="flex items-start gap-3 p-2 bg-gray-50 rounded border border-gray-200 cursor-pointer hover:bg-gray-100">
+            <input type="checkbox" class="mt-0.5 w-5 h-5 accent-amber-600"/>
+            <span class="text-sm font-medium">${t}</span>
+          </label>
+        `).join('')}
+      </div>
+    </div>
+    <!-- Response Area -->
+    <div class="flex-grow flex flex-col mb-10">
+      <h3 class="font-bold text-base mb-1 uppercase border-b-2 border-gray-300 pb-2">Response / Sketch Area</h3>
+      <p class="italic text-gray-600 mb-3 text-sm">${data.prompt}</p>
+      ${data.type === 'sketch' ? `
+        <div class="relative border-2 border-dashed border-gray-400 bg-gray-50 flex-grow min-h-64 mb-2">
+          <canvas id="${sketchId}" class="w-full h-full cursor-crosshair touch-none absolute inset-0"></canvas>
+          <button onclick="clearSketch('${sketchId}')" class="no-print absolute bottom-2 right-2 bg-white border border-gray-300 px-3 py-1 rounded shadow hover:bg-gray-100 text-sm font-medium flex items-center gap-1 z-10">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 20H7L3 16l9-9 8 8-2 2z"/><path d="M6 11l5-5"/></svg> Clear
+          </button>
+        </div>
+      ` : `
+        <textarea class="lined-area w-full flex-grow min-h-48 border-2 border-gray-300 p-4 rounded outline-none focus:border-amber-500 resize-none text-base leading-8" style="background-image:repeating-linear-gradient(transparent,transparent 31px,#e5e7eb 31px,#e5e7eb 32px)"></textarea>
+      `}
+    </div>
+    <!-- Footer -->
+    <div class="mt-auto border-t-2 border-gray-900 pt-3 flex justify-between text-xs text-gray-400 font-bold uppercase">
+      <span>Carl Sandburg High School</span>
+      <span>Page ${index+1} of ${schedule.length}</span>
+    </div>
+  `;
+  wb.appendChild(page);
+
+  // Init canvas if sketch
+  if (data.type === 'sketch') {
+    requestAnimationFrame(() => initCanvas(sketchId));
+  }
+});
+
+// Canvas logic
+const canvases = {};
+function initCanvas(id) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  const container = canvas.parentElement;
+  canvas.width = container.offsetWidth * 2;
+  canvas.height = container.offsetHeight * 2;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(2, 2);
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#1f2937';
+  ctx.lineWidth = 2;
+  canvases[id] = { canvas, ctx, drawing: false };
+
+  const getPos = (e) => {
+    const r = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return [src.clientX - r.left, src.clientY - r.top];
+  };
+  canvas.addEventListener('mousedown', e => { const [x,y] = getPos(e); ctx.beginPath(); ctx.moveTo(x,y); canvases[id].drawing=true; });
+  canvas.addEventListener('mousemove', e => { if (!canvases[id].drawing) return; const [x,y] = getPos(e); ctx.lineTo(x,y); ctx.stroke(); });
+  canvas.addEventListener('mouseup', () => canvases[id].drawing=false);
+  canvas.addEventListener('mouseleave', () => canvases[id].drawing=false);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); const [x,y] = getPos(e); ctx.beginPath(); ctx.moveTo(x,y); canvases[id].drawing=true; }, {passive:false});
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!canvases[id].drawing) return; const [x,y] = getPos(e); ctx.lineTo(x,y); ctx.stroke(); }, {passive:false});
+  canvas.addEventListener('touchend', () => canvases[id].drawing=false);
+}
+
+function clearSketch(id) {
+  const c = canvases[id];
+  if (!c) return;
+  c.ctx.clearRect(0, 0, c.canvas.width, c.canvas.height);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Node modules
+react-hub/node_modules/
+react-hub-dist/
+react-hub-app/
+
+# Large video/media originals (keep only media/ folder)
+# Media folder is committed for serving
+
+# Large media files - served locally but not tracked in git
+media/

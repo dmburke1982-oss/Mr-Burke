@@ -1,0 +1,2243 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" style=""><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printable Teaching Planner — Mr. Burke</title>
+    <link rel="stylesheet" href="./assets/classroom-base.css">
+    <style>
+      :root {
+        --ink: #1f2a44;
+        --muted: #5b667a;
+        --line: #d9e0ea;
+        --soft-line: #edf1f5;
+        --paper: #ffffff;
+        --bg: #f4f7fb;
+        --plan: #dbeafe;
+        --teach: #dcfce7;
+        --assess: #fef3c7;
+        --systems: #ffe4e6;
+        --reflect: #e5e7eb;
+        --accent: #274c77;
+        --shadow: 0 14px 40px rgba(26, 39, 68, 0.08);
+        --radius: 18px;
+        --font: var(--app-sans);
+      }
+
+      body.dark {
+        --ink: #e8eefc;
+        --muted: #a8b3c7;
+        --line: rgba(148, 163, 184, 0.35);
+        --soft-line: rgba(148, 163, 184, 0.18);
+        --paper: #0b1220;
+        --bg: #070c16;
+        --accent: #8ab4ff;
+        --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+        --plan: rgba(59, 130, 246, 0.2);
+        --teach: rgba(34, 197, 94, 0.18);
+        --assess: rgba(245, 158, 11, 0.18);
+        --systems: rgba(244, 63, 94, 0.18);
+        --reflect: rgba(148, 163, 184, 0.18);
+      }
+
+      body.ink-saver {
+        --plan: #f5f7fb;
+        --teach: #f5f7fb;
+        --assess: #f5f7fb;
+        --systems: #f5f7fb;
+        --reflect: #f5f7fb;
+        --shadow: none;
+        --bg: #ffffff;
+      }
+
+      body.large-text {
+        font-size: 1.15rem;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Toolbar */
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        background: rgba(244, 247, 251, 0.95);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--soft-line);
+      }
+
+      body.dark .toolbar {
+        background: rgba(7, 12, 22, 0.9);
+      }
+
+      .toolbar-title {
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        color: var(--accent);
+        font-size: 15px;
+      }
+
+      button {
+        appearance: none;
+        border: 1px solid var(--line);
+        background: var(--paper);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: 0.2s ease;
+        font-family: var(--font);
+      }
+
+      button:hover {
+        border-color: var(--muted);
+        transform: translateY(-1px);
+      }
+
+      /* Page Structure */
+      .shell {
+        max-width: 980px;
+        margin: 22px auto 48px;
+        padding: 0 14px 24px;
+      }
+
+      .page {
+        width: 8.5in;
+        min-height: 11in;
+        margin: 0 auto 24px;
+        padding: 0.45in 0.5in 0.5in;
+        background: var(--paper);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+        page-break-after: always;
+        color: var(--ink);
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* Headers */
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .page-tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #1f2a44;
+        margin-bottom: 8px;
+      }
+
+      body.dark .page-tag {
+        color: #e8eefc;
+      }
+
+      .tag-plan {
+        background: var(--plan);
+      }
+      .tag-teach {
+        background: var(--teach);
+      }
+      .tag-assess {
+        background: var(--assess);
+      }
+      .tag-systems {
+        background: var(--systems);
+      }
+      .tag-reflect {
+        background: var(--reflect);
+      }
+
+      .page-title {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        color: var(--ink);
+      }
+
+      .page-subtitle {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+        font-weight: 500;
+      }
+
+      /* Layout Grids */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .split-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+      }
+      .cols-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .cols-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .cols-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      /* Components */
+      .card,
+      .soft-card {
+        border: 1px solid var(--soft-line);
+        border-radius: var(--radius);
+        padding: 16px;
+        background: var(--paper);
+      }
+
+      .soft-card {
+        background: var(--bg);
+        border-color: transparent;
+      }
+      body.dark .soft-card {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .hero {
+        border-radius: var(--radius);
+        overflow: hidden;
+        margin-bottom: 20px;
+        border: 1px solid var(--soft-line);
+      }
+
+      .hero-band {
+        background: linear-gradient(135deg, var(--plan), var(--teach), var(--assess));
+        padding: 24px;
+      }
+      body.dark .hero-band {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(34, 197, 94, 0.2), rgba(245, 158, 11, 0.2));
+      }
+
+      .hero h2 {
+        margin: 0;
+        font-size: 32px;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        color: #1f2a44;
+      }
+      .hero p {
+        margin: 10px 0 0;
+        font-weight: 600;
+        color: #334155;
+        max-width: 500px;
+      }
+      body.dark .hero h2,
+      body.dark .hero p {
+        color: #e8eefc;
+      }
+
+      .section-title {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 800;
+        color: var(--accent);
+        margin: 0 0 10px 0;
+      }
+
+      /* Forms */
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      input[type='text'],
+      input[type='date'],
+      input[type='number'],
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-family: inherit;
+        font-size: 13px;
+        background: var(--paper);
+        color: var(--ink);
+        transition: border-color 0.2s;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+
+      textarea {
+        min-height: 80px;
+        resize: vertical;
+        line-height: 1.4;
+      }
+
+      .checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      body.dark .chip {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* Tables */
+      .table-wrap {
+        border: 1px solid var(--soft-line);
+        border-radius: 14px;
+        overflow: hidden;
+        margin-top: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      th {
+        background: var(--bg);
+        padding: 10px;
+        text-align: left;
+        font-weight: 700;
+        font-size: 10px;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-bottom: 1px solid var(--line);
+      }
+      body.dark th {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      td {
+        border-bottom: 1px solid var(--soft-line);
+        padding: 0;
+        background: var(--paper);
+        vertical-align: top;
+      }
+      td:last-child {
+        border-right: none;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .cell-input,
+      .cell-textarea {
+        width: 100%;
+        border: none;
+        padding: 8px 10px;
+        background: transparent;
+        font-family: inherit;
+        font-size: 12px;
+        color: var(--ink);
+        outline: none;
+      }
+      .cell-textarea {
+        min-height: 38px;
+        resize: none;
+        overflow: hidden;
+      }
+
+      /* Specific Page Elements */
+      .footer-note {
+        position: absolute;
+        bottom: 0.5in;
+        left: 0.5in;
+        font-size: 10px;
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .page-num {
+        position: absolute;
+        bottom: 0.5in;
+        right: 0.5in;
+        font-size: 10px;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .toc-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .toc-section {
+        margin-bottom: 10px;
+      }
+      .toc-section h3 {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 8px;
+        font-weight: 800;
+      }
+      .toc-section ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .toc-section li {
+        font-size: 13px;
+        padding: 4px 0;
+        border-bottom: 1px dashed var(--soft-line);
+        color: var(--ink);
+      }
+
+      .seat-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .seat {
+        border: 1px dashed var(--muted);
+        border-radius: 8px;
+        padding: 4px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .seat input {
+        border: none;
+        text-align: center;
+        background: transparent;
+        font-size: 11px;
+        padding: 0;
+      }
+
+      .pod-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 15px;
+      }
+      .pod {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px;
+      }
+      .pod-title {
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 6px;
+        text-align: center;
+      }
+      .pod input {
+        border: none;
+        border-bottom: 1px solid var(--soft-line);
+        border-radius: 0;
+        padding: 4px;
+        font-size: 11px;
+        margin-bottom: 4px;
+      }
+
+      /* Print */
+      @media print {
+        .toolbar {
+          display: none;
+        }
+        .shell {
+          margin: 0;
+          padding: 0;
+          max-width: none;
+        }
+        .page {
+          margin: 0;
+          box-shadow: none;
+          border: none;
+          width: 100%;
+          min-height: 100vh;
+          border-radius: 0;
+          page-break-after: always;
+        }
+        body {
+          background: white;
+          -webkit-print-color-adjust: exact;
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 800px) {
+        .page {
+          width: 100%;
+          padding: 20px;
+          height: auto;
+          min-height: auto;
+        }
+        .grid-2,
+        .grid-3,
+        .grid-4,
+        .split,
+        .split-3,
+        .cols-2,
+        .cols-3,
+        .cols-4 {
+          grid-template-columns: 1fr;
+        }
+        .seat-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .pod-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body style="">
+    <div class="toolbar">
+  <div class="toolbar-left" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <button type="button" onclick="window.location.href='index.html'">Hub</button>
+    <button type="button" onclick="window.location.href='planner.html'">Live Planner</button>
+    <div>
+      <div class="toolbar-title">Printable Teaching Planner</div>
+      <div style="font-size:12px;color:var(--muted);font-weight:600">18-page companion planner with browser save, print controls, and hub-aware prefills.</div>
+    </div>
+  </div>
+  <div class="toolbar-right" style="display:flex;flex-wrap:wrap;gap:10px">
+    <button type="button" onclick="window.print()">Print / Save PDF</button>
+    <button type="button" onclick="toggleDark()">Dark Mode</button>
+    <button type="button" onclick="toggleInkSaver()">Ink Saver</button>
+    <button type="button" onclick="toggleLargeText()">Large Text</button>
+    <button type="button" onclick="syncFromHubPlanner(true)">Refresh From Live Planner</button>
+    <button type="button" onclick="clearPlanner()" style="color: #ef4444; border-color: #fecaca">Clear Data</button>
+  </div>
+</div>
+
+    <div class="shell">
+      <!-- PAGE 1: COVER -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-plan">Cover + Quick Start</span>
+            <h2 class="page-title">High School Teaching Planner</h2>
+            <p class="page-subtitle">Modern Planning, Assessment, and Classroom Systems</p>
+          </div>
+        </div>
+
+        <div class="hero">
+          <div class="hero-band">
+            <h2>Plan smarter.<br>Teach cleaner.<br>Track what matters.</h2>
+            <p>
+              A printable teacher-first planner built for long-range planning, daily instruction, assessment, classroom
+              systems, and reflection.
+            </p>
+          </div>
+        </div>
+
+        <div class="cols-3" style="margin-top: 24px">
+          <div class="field">
+            <label>Teacher Name</label><input type="text" data-save="p1_teacher" placeholder="Mr. Burke">
+          </div>
+          <div class="field">
+            <label>School</label><input type="text" data-save="p1_school" placeholder="Carl Sandburg High School">
+          </div>
+          <div class="field"><label>Course / Subject</label><input type="text" data-save="p1_course"></div>
+          <div class="field">
+            <label>Semester / Year</label><input type="text" data-save="p1_semester" placeholder="Fall 2026 / Spring 2027">
+          </div>
+          <div class="field">
+            <label>Grade Level(s)</label><input type="text" data-save="p1_grade" placeholder="9–12">
+          </div>
+          <div class="field">
+            <label>Class Period Length</label><input type="text" data-save="p1_period" placeholder="48 Minutes">
+          </div>
+        </div>
+
+        <div class="split" style="margin-top: 24px">
+          <div class="card">
+            <h3 class="section-title">How to Use This Planner</h3>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.6; color: var(--ink)">
+              <li>Start with the <strong>Semester Dashboard</strong>.</li>
+              <li>Build each unit with the <strong>Unit Planner</strong>.</li>
+              <li>Anchor weekly instruction on the <strong>Weekly Overview</strong>.</li>
+              <li>Use the <strong>Daily Lesson</strong> page only when more detail is needed.</li>
+              <li>Reflect weekly and adjust with the tracking pages.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Planning Priorities</h3>
+            <div class="checkbox-group">
+              <label class="chip"><input type="checkbox" data-save="p1_check1"> Clear learning targets</label>
+              <label class="chip"><input type="checkbox" data-save="p1_check2"> Success criteria</label>
+              <label class="chip"><input type="checkbox" data-save="p1_check3"> Checks for understanding</label>
+              <label class="chip"><input type="checkbox" data-save="p1_check4"> Intervention notes</label>
+              <label class="chip"><input type="checkbox" data-save="p1_check5"> Extension opportunities</label>
+              <label class="chip"><input type="checkbox" data-save="p1_check6"> Weekly reflection</label>
+            </div>
+            <div class="field" style="margin-top: 12px">
+              <label>Planning Style</label>
+              <select data-save="p1_style">
+                <option value="">Select...</option>
+                <option>Daily</option>
+                <option>Weekly</option>
+                <option>Unit</option>
+                <option>Hybrid</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-note">Designed for 18-week semesters · 90 instructional days · 48-minute class periods</div>
+        <div class="page-num">1</div>
+      </div>
+
+      <!-- PAGE 2: TOC -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-plan">Navigation</span>
+            <h2 class="page-title">Table of Contents</h2>
+            <p class="page-subtitle">A cleaner flow from long-range planning to reflection.</p>
+          </div>
+        </div>
+
+        <div class="toc-grid">
+          <div>
+            <div class="toc-section">
+              <h3>I. Long-Range Planning</h3>
+              <ul>
+                <li>Semester Dashboard</li>
+                <li>Unit Planner</li>
+              </ul>
+            </div>
+            <div class="toc-section">
+              <h3>II. Weekly and Daily Teaching</h3>
+              <ul>
+                <li>Weekly Planning Overview</li>
+                <li>Daily Lesson Planner</li>
+                <li>48-Minute Lesson Flow</li>
+                <li>Differentiation + Supports Planner</li>
+              </ul>
+            </div>
+            <div class="toc-section">
+              <h3>III. Assessment and Tracking</h3>
+              <ul>
+                <li>90-Day Pacing Guide A</li>
+                <li>90-Day Pacing Guide B</li>
+                <li>Assessment + Standards Tracker</li>
+                <li>Universal Rubric Builder</li>
+                <li>Grade Tracker</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="toc-section">
+              <h3>IV. Classroom Systems</h3>
+              <ul>
+                <li>Classroom Systems + Sub Plans</li>
+                <li>Seating + Behavior + Conferences</li>
+                <li>Family Communication Log</li>
+              </ul>
+            </div>
+            <div class="toc-section">
+              <h3>V. Student Support</h3>
+              <ul>
+                <li>Student Success Toolkit</li>
+              </ul>
+            </div>
+            <div class="toc-section">
+              <h3>VI. Reflection + Reference</h3>
+              <ul>
+                <li>Teacher Reflection + Quick Reference</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="split" style="margin-top: 30px">
+          <div class="card">
+            <h3 class="section-title">Color Key</h3>
+            <div class="checkbox-group">
+              <span class="chip" style="background: var(--plan); border-color: transparent">Planning</span>
+              <span class="chip" style="background: var(--teach); border-color: transparent">Instruction</span>
+              <span class="chip" style="background: var(--assess); border-color: transparent">Assessment</span>
+              <span class="chip" style="background: var(--systems); border-color: transparent">Systems</span>
+              <span class="chip" style="background: var(--reflect); border-color: transparent">Reflection</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Planner Goal</h3>
+            <textarea data-save="p2_goal" placeholder="Optional note about how you want to use this planner..." style="min-height: 50px"></textarea>
+          </div>
+        </div>
+
+        <div class="page-num">2</div>
+      </div>
+
+      <!-- PAGE 3: SEMESTER DASHBOARD -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-plan">Long-Range Planning</span>
+            <h2 class="page-title">Semester Dashboard</h2>
+            <p class="page-subtitle">
+              Plan the semester at a glance: units, assessments, key dates, reteach windows, and priorities.
+            </p>
+          </div>
+        </div>
+
+        <div class="cols-3">
+          <div class="field"><label>Semester Goal 1</label><input type="text" data-save="p3_goal1"></div>
+          <div class="field"><label>Semester Goal 2</label><input type="text" data-save="p3_goal2"></div>
+          <div class="field"><label>Semester Goal 3</label><input type="text" data-save="p3_goal3"></div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th width="5%">Wk</th>
+                <th width="12%">Dates</th>
+                <th width="18%">Unit / Theme</th>
+                <th width="20%">Priority Standard(s)</th>
+                <th width="15%">Major Assessment</th>
+                <th width="15%">Skills Focus</th>
+                <th width="15%">Flex/Reteach</th>
+              </tr>
+            </thead>
+            <tbody id="semester-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="split" style="margin-top: 14px">
+          <div class="soft-card">
+            <h3 class="section-title">Important Semester Dates</h3>
+            <div class="field"><label>Breaks / No School</label><input type="text" data-save="p3_breaks"></div>
+            <div class="field" style="margin-top: 8px">
+              <label>Testing Windows</label><input type="text" data-save="p3_testing">
+            </div>
+          </div>
+          <div class="soft-card">
+            <h3 class="section-title">Deadlines + Communication</h3>
+            <div class="field">
+              <label>Report Card / Grade Deadlines</label><input type="text" data-save="p3_grades">
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Family Communication Dates</label><input type="text" data-save="p3_family">
+            </div>
+          </div>
+        </div>
+
+        <div class="page-num">3</div>
+      </div>
+
+      <!-- PAGE 4: UNIT PLANNER -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-plan">Long-Range Planning</span>
+            <h2 class="page-title">Unit Planner</h2>
+            <p class="page-subtitle">
+              Build a clear, aligned unit using goals, evidence, and daily learning experiences.
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="section-title">Unit Snapshot</h3>
+          <div class="cols-3">
+            <div class="field"><label>Unit Title</label><input type="text" data-save="p4_title"></div>
+            <div class="field"><label>Course</label><input type="text" data-save="p4_course"></div>
+            <div class="field"><label>Dates</label><input type="text" data-save="p4_dates"></div>
+            <div class="field"><label>Length</label><input type="text" data-save="p4_len"></div>
+            <div class="field"><label>Standards</label><input type="text" data-save="p4_standards"></div>
+            <div class="field"><label>Essential Question</label><input type="text" data-save="p4_eq"></div>
+          </div>
+          <div class="cols-2" style="margin-top: 10px">
+            <div class="field">
+              <label>Enduring Understanding</label><textarea data-save="p4_enduring" style="min-height: 50px"></textarea>
+            </div>
+            <div class="field">
+              <label>Transfer Goal</label><textarea data-save="p4_transfer" style="min-height: 50px"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="split" style="margin-top: 14px">
+          <div class="card">
+            <h3 class="section-title">What Students Will Learn</h3>
+            <div class="field">
+              <label>Key Knowledge</label><textarea data-save="p4_know" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Key Skills</label><textarea data-save="p4_skills" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Academic Vocabulary</label><textarea data-save="p4_vocab" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Misconceptions / Gaps</label><textarea data-save="p4_gaps" style="min-height: 40px"></textarea>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Evidence of Learning</h3>
+            <div class="field">
+              <label>Summative Assessment</label><textarea data-save="p4_summative" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Formative / CFU</label><textarea data-save="p4_formative" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Success Criteria</label><textarea data-save="p4_success" style="min-height: 95px"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 14px">
+          <h3 class="section-title">Learning Plan</h3>
+          <div class="field">
+            <label>Lesson Sequence / Major Learning Experiences</label><textarea data-save="p4_seq" style="min-height: 100px"></textarea>
+          </div>
+          <div class="cols-3" style="margin-top: 10px">
+            <div class="field"><label>Resources / Materials</label><textarea data-save="p4_res"></textarea></div>
+            <div class="field"><label>Differentiation</label><textarea data-save="p4_diff"></textarea></div>
+            <div class="field"><label>Extension</label><textarea data-save="p4_ext"></textarea></div>
+          </div>
+        </div>
+
+        <div class="page-num">4</div>
+      </div>
+
+      <!-- PAGE 5: WEEKLY OVERVIEW -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-teach">Weekly Teaching</span>
+            <h2 class="page-title">Weekly Planning Overview</h2>
+            <p class="page-subtitle">
+              Plan the week at a glance with daily targets, activities, checks for understanding, and follow-up.
+            </p>
+          </div>
+        </div>
+
+        <div class="cols-4">
+          <div class="field"><label>Week Of</label><input type="text" data-save="p5_week"></div>
+          <div class="field"><label>Course / Unit</label><input type="text" data-save="p5_course"></div>
+          <div class="field"><label>Weekly Goal</label><input type="text" data-save="p5_goal"></div>
+          <div class="field"><label>Assessment</label><input type="text" data-save="p5_assess"></div>
+        </div>
+        <div class="field" style="margin-top: 10px">
+          <label>Materials / Copies Needed</label><input type="text" data-save="p5_materials">
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th width="10%">Day</th>
+                <th width="18%">Learning Target</th>
+                <th width="18%">Lesson Focus</th>
+                <th width="22%">Activity / Task</th>
+                <th width="16%">CFU</th>
+                <th width="16%">Homework</th>
+              </tr>
+            </thead>
+            <tbody id="weekly-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="cols-3" style="margin-top: 14px">
+          <div class="soft-card">
+            <h3 class="section-title">Students to Watch</h3>
+            <textarea data-save="p5_watch"></textarea>
+          </div>
+          <div class="soft-card">
+            <h3 class="section-title">Intervention Needs</h3>
+            <textarea data-save="p5_intervene"></textarea>
+          </div>
+          <div class="soft-card">
+            <h3 class="section-title">Extension Opps</h3>
+            <textarea data-save="p5_extend"></textarea>
+          </div>
+        </div>
+
+        <div class="split" style="margin-top: 14px">
+          <div class="field"><label>Family Contact Needed</label><input type="text" data-save="p5_family"></div>
+          <div class="field"><label>Friday Reflection</label><input type="text" data-save="p5_reflect"></div>
+        </div>
+
+        <div class="page-num">5</div>
+      </div>
+
+      <!-- PAGE 6: DAILY LESSON -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-teach">Daily Teaching</span>
+            <h2 class="page-title">Daily Lesson Planner</h2>
+            <p class="page-subtitle">
+              Use this page for lessons that need stronger structure, clearer checks for understanding, and intentional
+              follow-up.
+            </p>
+          </div>
+        </div>
+
+        <div class="cols-4">
+          <div class="field"><label>Date</label><input type="text" data-save="p6_date"></div>
+          <div class="field"><label>Course / Period</label><input type="text" data-save="p6_course"></div>
+          <div class="field"><label>Lesson Title</label><input type="text" data-save="p6_title"></div>
+          <div class="field"><label>Standard(s)</label><input type="text" data-save="p6_std"></div>
+        </div>
+
+        <div class="split" style="margin-top: 14px">
+          <div class="card">
+            <h3 class="section-title">Lesson Purpose</h3>
+            <div class="field">
+              <label>Learning Target</label><textarea data-save="p6_target" style="min-height: 50px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Success Criteria</label><textarea data-save="p6_success" style="min-height: 50px"></textarea>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Teaching Moves</h3>
+            <div class="field">
+              <label>Questions to Ask</label><textarea data-save="p6_questions" style="min-height: 50px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Likely Misconceptions</label><textarea data-save="p6_miscon" style="min-height: 50px"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 14px">
+          <h3 class="section-title">Lesson Sequence</h3>
+          <div class="split">
+            <div class="field">
+              <label>Warm-Up / Bell Ringer</label><textarea data-save="p6_warmup" style="min-height: 60px"></textarea>
+            </div>
+            <div class="field">
+              <label>Mini-Lesson / Instruction</label><textarea data-save="p6_mini" style="min-height: 60px"></textarea>
+            </div>
+          </div>
+          <div class="split" style="margin-top: 10px">
+            <div class="field">
+              <label>Guided Practice</label><textarea data-save="p6_guided" style="min-height: 60px"></textarea>
+            </div>
+            <div class="field">
+              <label>Independent Task</label><textarea data-save="p6_indep" style="min-height: 60px"></textarea>
+            </div>
+          </div>
+          <div class="field" style="margin-top: 10px">
+            <label>Exit Ticket / Closing Check</label><textarea data-save="p6_exit" style="min-height: 40px"></textarea>
+          </div>
+        </div>
+
+        <div class="cols-4" style="margin-top: 14px">
+          <div class="field">
+            <label>Materials Needed</label><textarea data-save="p6_mat" style="min-height: 60px"></textarea>
+          </div>
+          <div class="field">
+            <label>Accommodations</label><textarea data-save="p6_accom" style="min-height: 60px"></textarea>
+          </div>
+          <div class="field">
+            <label>Extension</label><textarea data-save="p6_ext" style="min-height: 60px"></textarea>
+          </div>
+          <div class="field">
+            <label>Follow-Up</label><textarea data-save="p6_follow" style="min-height: 60px"></textarea>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top: 14px">
+          <label>Homework / Next Step</label><input type="text" data-save="p6_hw">
+        </div>
+
+        <div class="page-num">6</div>
+      </div>
+
+      <!-- PAGE 7: 48-MIN FLOW -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-teach">Timed Lesson Design</span>
+            <h2 class="page-title">48-Minute Lesson Flow</h2>
+            <p class="page-subtitle">
+              Plan a full class period with purposeful pacing, visible learning, and a clear closing check.
+            </p>
+          </div>
+        </div>
+
+        <div class="cols-3">
+          <div class="field"><label>Date</label><input type="text" data-save="p7_date"></div>
+          <div class="field"><label>Course / Period</label><input type="text" data-save="p7_course"></div>
+          <div class="field"><label>Lesson / Topic</label><input type="text" data-save="p7_topic"></div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th width="12%">Time</th>
+                <th width="15%">Block</th>
+                <th width="20%">Teacher Actions</th>
+                <th width="20%">Student Actions</th>
+                <th width="15%">Materials</th>
+                <th width="18%">Evidence</th>
+              </tr>
+            </thead>
+            <tbody id="flow-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="split" style="margin-top: 14px">
+          <div class="card">
+            <h3 class="section-title">Lesson Priorities</h3>
+            <div class="field">
+              <label>Most Important Part</label><textarea data-save="p7_imp" style="min-height: 50px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>If Time Runs Short, Cut This</label><textarea data-save="p7_cut" style="min-height: 50px"></textarea>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Follow-Up</h3>
+            <div class="field">
+              <label>Students to Conference With</label><textarea data-save="p7_conf" style="min-height: 50px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Follow-Up for Next Class</label><textarea data-save="p7_next" style="min-height: 50px"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-num">7</div>
+      </div>
+
+      <!-- PAGE 8: DIFF -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-teach">Differentiation</span>
+            <h2 class="page-title">Differentiation + Supports Planner</h2>
+            <p class="page-subtitle">
+              Plan supports, scaffolds, and extensions before teaching so all students can access the lesson.
+            </p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="field"><label>Lesson / Unit</label><input type="text" data-save="p8_unit"></div>
+          <div class="field"><label>Date(s)</label><input type="text" data-save="p8_dates"></div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th width="15%">Planning Area</th>
+                <th width="22%">Core for All</th>
+                <th width="22%">Support / Scaffold</th>
+                <th width="22%">Extension</th>
+                <th width="19%">IEP / 504 / ELL</th>
+              </tr>
+            </thead>
+            <tbody id="diff-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="cols-3" style="margin-top: 14px">
+          <div class="soft-card">
+            <h3 class="section-title">Needing Follow-Up</h3>
+            <textarea data-save="p8_follow"></textarea>
+          </div>
+          <div class="soft-card">
+            <h3 class="section-title">Small Group Plan</h3>
+            <textarea data-save="p8_group"></textarea>
+          </div>
+          <div class="soft-card">
+            <h3 class="section-title">Assistive Tools</h3>
+            <textarea data-save="p8_tools"></textarea>
+          </div>
+        </div>
+
+        <div class="split" style="margin-top: 14px">
+          <div class="field">
+            <label>Success for Struggling Learners?</label><textarea data-save="p8_success_strug" style="min-height: 40px"></textarea>
+          </div>
+          <div class="field">
+            <label>Extension for Advanced Learners?</label><textarea data-save="p8_success_adv" style="min-height: 40px"></textarea>
+          </div>
+        </div>
+
+        <div class="page-num">8</div>
+      </div>
+
+      <!-- PAGE 9: PACING A -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-assess">Pacing</span>
+            <h2 class="page-title">90-Day Pacing Guide A</h2>
+            <p class="page-subtitle">Track instruction across the semester (Days 1–45).</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th width="8%">Day</th>
+                <th width="12%">Date</th>
+                <th width="25%">Unit / Topic</th>
+                <th width="25%">Focus Skill / Standard</th>
+                <th width="15%">Assess/CFU</th>
+                <th width="15%">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="pacing-a-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="field" style="margin-top: 14px">
+          <label>Mid-Semester Notes</label>
+          <textarea data-save="p9_notes" style="min-height: 60px"></textarea>
+        </div>
+
+        <div class="page-num">9</div>
+      </div>
+
+      <!-- PAGE 10: PACING B -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-assess">Pacing</span>
+            <h2 class="page-title">90-Day Pacing Guide B</h2>
+            <p class="page-subtitle">Track instruction across the semester (Days 46–90).</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th width="8%">Day</th>
+                <th width="12%">Date</th>
+                <th width="25%">Unit / Topic</th>
+                <th width="25%">Focus Skill / Standard</th>
+                <th width="15%">Assess/CFU</th>
+                <th width="15%">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="pacing-b-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="cols-3" style="margin-top: 14px">
+          <div class="field">
+            <label>Days Lost / Changes</label><textarea data-save="p10_lost" style="min-height: 60px"></textarea>
+          </div>
+          <div class="field">
+            <label>Needed Reteaching</label><textarea data-save="p10_reteach" style="min-height: 60px"></textarea>
+          </div>
+          <div class="field">
+            <label>Moved Faster</label><textarea data-save="p10_fast" style="min-height: 60px"></textarea>
+          </div>
+        </div>
+
+        <div class="page-num">10</div>
+      </div>
+
+      <!-- PAGE 11: ASSESSMENT TRACKER -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-assess">Assessment</span>
+            <h2 class="page-title">Assessment + Standards Tracker</h2>
+            <p class="page-subtitle">Track mastery by student and standard.</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="field"><label>Course / Period</label><input type="text" data-save="p11_course"></div>
+          <div class="field"><label>Unit / Time Frame</label><input type="text" data-save="p11_unit"></div>
+        </div>
+        <div style="font-size: 11px; color: var(--muted); margin-top: 6px; font-weight: 600">
+          Key: 4 Exceeds, 3 Meets, 2 Approaching, 1 Beginning, 0 Not Yet
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th width="18%">Student</th>
+                <th width="20%">Standard / Skill</th>
+                <th width="8%">F1</th>
+                <th width="8%">F2</th>
+                <th width="10%">Quiz</th>
+                <th width="10%">Major</th>
+                <th width="8%">Mast.</th>
+                <th width="8%">Ret?</th>
+                <th width="10%">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="tracker-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="cols-4" style="margin-top: 14px">
+          <div class="card">
+            <h3 class="section-title">To Reteach</h3>
+            <textarea data-save="p11_reteach" class="cell-textarea"></textarea>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Intervention</h3>
+            <textarea data-save="p11_intervene" class="cell-textarea"></textarea>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Extension</h3>
+            <textarea data-save="p11_extend" class="cell-textarea"></textarea>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Next Move</h3>
+            <textarea data-save="p11_next" class="cell-textarea"></textarea>
+          </div>
+        </div>
+
+        <div class="page-num">11</div>
+      </div>
+
+      <!-- PAGE 12: RUBRIC -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-assess">Assessment</span>
+            <h2 class="page-title">Universal Rubric Builder</h2>
+            <p class="page-subtitle">Build any rubric for any assignment.</p>
+          </div>
+        </div>
+
+        <div class="cols-3">
+          <div class="field"><label>Assignment</label><input type="text" data-save="p12_assign"></div>
+          <div class="field"><label>Course / Period</label><input type="text" data-save="p12_course"></div>
+          <div class="field"><label>Points Possible</label><input type="text" data-save="p12_points"></div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th width="20%">Criteria</th>
+                <th width="18%">Exceeds (4)</th>
+                <th width="18%">Meets (3)</th>
+                <th width="18%">Approaching (2)</th>
+                <th width="18%">Beginning (1)</th>
+                <th width="8%">Pts</th>
+              </tr>
+            </thead>
+            <tbody id="rubric-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="split" style="margin-top: 14px">
+          <div class="card">
+            <h3 class="section-title">Feedback</h3>
+            <div class="field">
+              <label>Strengths</label><textarea data-save="p12_str" style="min-height: 50px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Next Step</label><textarea data-save="p12_next" style="min-height: 50px"></textarea>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Revision</h3>
+            <div class="checkbox-group" style="margin-bottom: 8px">
+              <label class="chip"><input type="checkbox" data-save="p12_rev_allow"> Revision Allowed</label>
+            </div>
+            <div class="field">
+              <label>Revision Plan / Requirements</label><textarea data-save="p12_rev_plan" style="min-height: 85px"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-num">12</div>
+      </div>
+
+      <!-- PAGE 13: GRADE TRACKER -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-assess">Grading</span>
+            <h2 class="page-title">Grade Tracker</h2>
+            <p class="page-subtitle">Monitor student performance across up to 8 assessments.</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="field"><label>Course / Period</label><input type="text" data-save="p13_course"></div>
+          <div class="field"><label>Quarter / Unit</label><input type="text" data-save="p13_quarter"></div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th width="20%">Student Name</th>
+                <th width="7%">A1</th>
+                <th width="7%">A2</th>
+                <th width="7%">A3</th>
+                <th width="7%">A4</th>
+                <th width="7%">A5</th>
+                <th width="7%">A6</th>
+                <th width="7%">A7</th>
+                <th width="7%">A8</th>
+                <th width="7%">Miss?</th>
+                <th width="7%">Avg</th>
+                <th width="10%">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="grade-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="cols-3" style="margin-top: 14px">
+          <div class="field">
+            <label>Below Passing</label><textarea data-save="p13_fail" style="min-height: 50px"></textarea>
+          </div>
+          <div class="field">
+            <label>Missing Work Needed</label><textarea data-save="p13_miss" style="min-height: 50px"></textarea>
+          </div>
+          <div class="field">
+            <label>Reassess Needed</label><textarea data-save="p13_reassess" style="min-height: 50px"></textarea>
+          </div>
+        </div>
+
+        <div class="page-num">13</div>
+      </div>
+
+      <!-- PAGE 14: SYSTEMS -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-systems">Classroom Systems</span>
+            <h2 class="page-title">Classroom Systems + Sub Plans</h2>
+            <p class="page-subtitle">Document your classroom routines and emergency sub procedures in one place.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="section-title">Emergency Contact Info</h3>
+          <div class="split">
+            <div class="field"><label>Teacher</label><input type="text" data-save="p14_teacher"></div>
+            <div class="field"><label>Room</label><input type="text" data-save="p14_room"></div>
+            <div class="field"><label>Admin</label><input type="text" data-save="p14_admin"></div>
+            <div class="field"><label>Dept Chair</label><input type="text" data-save="p14_chair"></div>
+            <div class="field"><label>Main Office</label><input type="text" data-save="p14_office"></div>
+            <div class="field"><label>Bell Schedule</label><input type="text" data-save="p14_bell"></div>
+          </div>
+        </div>
+
+        <div class="split" style="margin-top: 14px">
+          <div class="card">
+            <h3 class="section-title">Procedures</h3>
+            <div class="field">
+              <label>Attendance</label><textarea data-save="p14_att" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 6px">
+              <label>Student Helpers</label><textarea data-save="p14_help" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 6px">
+              <label>Rules / Expectations</label><textarea data-save="p14_rules" style="min-height: 40px"></textarea>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Emergency / Sub</h3>
+            <div class="field">
+              <label>Bathroom / Passes</label><textarea data-save="p14_pass" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 6px">
+              <label>Tech Procedure</label><textarea data-save="p14_tech" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 6px">
+              <label>Backup Activity</label><textarea data-save="p14_backup" style="min-height: 40px"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 14px">
+          <h3 class="section-title">Weekly Systems</h3>
+          <div class="table-wrap" style="margin-top: 5px">
+            <table>
+              <thead>
+                <tr>
+                  <th width="15%">Period/Course</th>
+                  <th width="25%">Start Routine</th>
+                  <th width="20%">Materials</th>
+                  <th width="20%">End Routine</th>
+                  <th width="20%">Tech Notes</th>
+                </tr>
+              </thead>
+              <tbody id="system-rows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="page-num">14</div>
+      </div>
+
+      <!-- PAGE 15: SEATING -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-systems">Management</span>
+            <h2 class="page-title">Seating + Behavior + Conferences</h2>
+            <p class="page-subtitle">Map your room, note behavioral patterns, and log student conferences.</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="card">
+            <h3 class="section-title">Seating: Rows</h3>
+            <div class="seat-grid" id="seat-grid"></div>
+            <h3 class="section-title" style="margin-top: 20px">Seating: Pods</h3>
+            <div class="pod-grid" id="pod-grid"></div>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Behavior / Conference Log</h3>
+            <div class="table-wrap" style="margin-top: 5px">
+              <table>
+                <thead>
+                  <tr>
+                    <th width="15%">Date</th>
+                    <th width="20%">Student</th>
+                    <th width="25%">Concern</th>
+                    <th width="20%">Action</th>
+                    <th width="20%">Result</th>
+                  </tr>
+                </thead>
+                <tbody id="behavior-rows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-num">15</div>
+      </div>
+
+      <!-- PAGE 16: FAMILY LOG -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-systems">Communication</span>
+            <h2 class="page-title">Family Communication Log</h2>
+            <p class="page-subtitle">Document every contact with families.</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="field"><label>Course / Period</label><input type="text" data-save="p16_course"></div>
+          <div class="checkbox-group" style="padding-top: 20px">
+            <span class="chip">Phone</span> <span class="chip">Email</span> <span class="chip">In-Person</span>
+            <span class="chip">Positive</span> <span class="chip">Concern</span>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th width="10%">Date</th>
+                <th width="15%">Student</th>
+                <th width="15%">Family</th>
+                <th width="10%">Method</th>
+                <th width="15%">Reason</th>
+                <th width="20%">Summary</th>
+                <th width="15%">Outcome</th>
+              </tr>
+            </thead>
+            <tbody id="family-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="split" style="margin-top: 14px">
+          <div class="field">
+            <label>Families to Follow Up</label><textarea data-save="p16_follow" style="min-height: 50px"></textarea>
+          </div>
+          <div class="field">
+            <label>Positive Contacts Made</label><textarea data-save="p16_pos" style="min-height: 50px"></textarea>
+          </div>
+        </div>
+
+        <div class="page-num">16</div>
+      </div>
+
+      <!-- PAGE 17: STUDENT TOOLKIT -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-systems">Student Support</span>
+            <h2 class="page-title">Student Success Toolkit</h2>
+            <p class="page-subtitle">
+              Student-facing tools for goal setting, study planning, reflection, and writing support.
+            </p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="card">
+            <h3 class="section-title">A. Goal Setting</h3>
+            <div class="split">
+              <div class="field"><label>Name</label><input type="text" data-save="p17_name"></div>
+              <div class="field"><label>Date</label><input type="text" data-save="p17_date"></div>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>My Goal</label><textarea data-save="p17_goal" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Why It Matters</label><textarea data-save="p17_why" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Action Steps</label>
+              <input type="text" data-save="p17_act1" placeholder="1." style="margin-bottom: 4px">
+              <input type="text" data-save="p17_act2" placeholder="2." style="margin-bottom: 4px">
+              <input type="text" data-save="p17_act3" placeholder="3.">
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="section-title">B. Study Plan</h3>
+            <div class="field"><label>Topic</label><input type="text" data-save="p17_topic"></div>
+            <div class="field" style="margin-top: 8px">
+              <label>What I Know</label><textarea data-save="p17_know" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>What to Practice</label><textarea data-save="p17_prac" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Strategy</label><textarea data-save="p17_strat" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Ready?</label>
+              <div class="checkbox-group">
+                <span class="chip">Yes</span> <span class="chip">Almost</span> <span class="chip">No</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="split" style="margin-top: 14px">
+          <div class="card">
+            <h3 class="section-title">C. Reflection</h3>
+            <div class="field">
+              <label>I Understand Best When...</label><textarea data-save="p17_und" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>I Still Need Help With...</label><textarea data-save="p17_help" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>My Next Step Is...</label><textarea data-save="p17_next" style="min-height: 40px"></textarea>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="section-title">D. Writing Support</h3>
+            <div class="field"><label>Prompt/Topic</label><input type="text" data-save="p17_prompt"></div>
+            <div class="field" style="margin-top: 8px">
+              <label>Main Idea</label><textarea data-save="p17_main" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Evidence</label><textarea data-save="p17_ev" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Explanation</label><textarea data-save="p17_exp" style="min-height: 40px"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-num">17</div>
+      </div>
+
+      <!-- PAGE 18: REFLECTION -->
+      <div class="page">
+        <div class="page-header">
+          <div>
+            <span class="page-tag tag-reflect">Reflection + Reference</span>
+            <h2 class="page-title">Teacher Reflection + Quick Reference</h2>
+            <p class="page-subtitle">Close the week with intentional reflection.</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="card">
+            <h3 class="section-title">Weekly Reflection</h3>
+            <div class="field"><label>Week Of</label><input type="text" data-save="p18_week"></div>
+            <div class="field" style="margin-top: 8px">
+              <label>What Worked Well?</label><textarea data-save="p18_well" style="min-height: 60px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>What Needs Adjustment?</label><textarea data-save="p18_adj" style="min-height: 60px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Students needing attention?</label><textarea data-save="p18_stud" style="min-height: 60px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Needs Reteaching?</label><textarea data-save="p18_ret" style="min-height: 60px"></textarea>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="section-title">Stop / Start / Continue</h3>
+            <div class="field">
+              <label>Stop</label><textarea data-save="p18_stop" style="min-height: 60px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Start</label><textarea data-save="p18_start" style="min-height: 60px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Continue</label><textarea data-save="p18_cont" style="min-height: 60px"></textarea>
+            </div>
+
+            <h3 class="section-title" style="margin-top: 20px">Professional Growth</h3>
+            <div class="field"><label>Current Goal</label><input type="text" data-save="p18_goal"></div>
+            <div class="field" style="margin-top: 8px">
+              <label>Action This Week</label><textarea data-save="p18_act" style="min-height: 40px"></textarea>
+            </div>
+            <div class="field" style="margin-top: 8px">
+              <label>Evidence</label><textarea data-save="p18_ev" style="min-height: 40px"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="cols-4" style="margin-top: 14px">
+          <div class="soft-card">
+            <h3 class="section-title">Bloom's</h3>
+            <p style="font-size: 11px">Remember, Understand, Apply, Analyze, Evaluate, Create</p>
+          </div>
+          <div class="soft-card">
+            <h3 class="section-title">DOK Levels</h3>
+            <p style="font-size: 11px">1. Recall<br>2. Skill/Concept<br>3. Strat. Thinking<br>4. Ext. Thinking</p>
+          </div>
+          <div class="soft-card">
+            <h3 class="section-title">Exit Tickets</h3>
+            <p style="font-size: 11px">3-2-1, Muddiest Point, One Word, Quiz, Drawing</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'cteHubPrintablePlanner_v1';
+  const PREFS_KEY = 'cteHubPrintablePlannerPrefs_v1';
+  const HUB_PLANNER_KEY = 'cteHubPlanner_v3';
+  const DEFAULT_YEAR = 2026;
+  const COURSE_MAP = {
+    ww: {
+      route: 'ww',
+      query: 'woodworking',
+      name: 'Woodworking',
+      courseLabel: 'Woodworking — Basic Box Construction',
+      unit: 'Basic Box Construction',
+      semester: 'Spring 2026',
+      grades: '9–12'
+    },
+    gd: {
+      route: 'gd',
+      query: 'graphicDesign',
+      name: 'Graphic Design',
+      courseLabel: 'Graphic Design — Campaign + ACE',
+      unit: 'Campaign Branding + ACE',
+      semester: 'Spring 2026',
+      grades: '9–12'
+    }
+  };
+
+  const FLOW_BLUEPRINT = [
+    { time: '0-5 min', block: 'Launch / Warm-Up' },
+    { time: '5-12 min', block: 'Mini-Lesson' },
+    { time: '12-20 min', block: 'Model / Guided Practice' },
+    { time: '20-38 min', block: 'Work Time' },
+    { time: '38-45 min', block: 'Conference / Feedback' },
+    { time: '45-48 min', block: 'Exit Check / Closure' }
+  ];
+
+  const DIFF_BLUEPRINT = [
+    'Learning Target',
+    'Input / Mini-Lesson',
+    'Guided Practice',
+    'Independent Task',
+    'Product / Assessment'
+  ];
+
+  function pacingRow(dayNumber, group) {
+    const index = dayNumber - 1;
+    return `
+      <tr>
+        <td><input type="text" data-save="${group}_${index}_day" aria-label="Pacing day ${dayNumber} day" value="${dayNumber}"></td>
+        <td><input type="text" data-save="${group}_${index}_date" aria-label="Pacing day ${dayNumber} date"></td>
+        <td><textarea data-save="${group}_${index}_unit" class="cell-textarea" aria-label="Pacing day ${dayNumber} unit"></textarea></td>
+        <td><textarea data-save="${group}_${index}_skill" class="cell-textarea" aria-label="Pacing day ${dayNumber} skill"></textarea></td>
+        <td><textarea data-save="${group}_${index}_cfu" class="cell-textarea" aria-label="Pacing day ${dayNumber} assessment"></textarea></td>
+        <td><textarea data-save="${group}_${index}_notes" class="cell-textarea" aria-label="Pacing day ${dayNumber} notes"></textarea></td>
+      </tr>`;
+  }
+
+  const ROW_CONFIGS = [
+    {
+      id: 'semester-rows',
+      count: 18,
+      buildRow: (index) => `
+        <tr>
+          <td><input type="text" data-save="sem_${index}_wk" aria-label="Semester row ${index + 1} week"></td>
+          <td><input type="text" data-save="sem_${index}_dates" aria-label="Semester row ${index + 1} dates"></td>
+          <td><textarea data-save="sem_${index}_unit" class="cell-textarea" aria-label="Semester row ${index + 1} unit"></textarea></td>
+          <td><textarea data-save="sem_${index}_standards" class="cell-textarea" aria-label="Semester row ${index + 1} standards"></textarea></td>
+          <td><textarea data-save="sem_${index}_assessment" class="cell-textarea" aria-label="Semester row ${index + 1} assessment"></textarea></td>
+          <td><textarea data-save="sem_${index}_skills" class="cell-textarea" aria-label="Semester row ${index + 1} skills"></textarea></td>
+          <td><textarea data-save="sem_${index}_reteach" class="cell-textarea" aria-label="Semester row ${index + 1} reteach"></textarea></td>
+        </tr>`
+    },
+    {
+      id: 'weekly-rows',
+      count: 5,
+      buildRow: (index) => `
+        <tr>
+          <td><input type="text" data-save="week_${index}_day" aria-label="Weekly row ${index + 1} day"></td>
+          <td><textarea data-save="week_${index}_target" class="cell-textarea" aria-label="Weekly row ${index + 1} learning target"></textarea></td>
+          <td><textarea data-save="week_${index}_focus" class="cell-textarea" aria-label="Weekly row ${index + 1} lesson focus"></textarea></td>
+          <td><textarea data-save="week_${index}_task" class="cell-textarea" aria-label="Weekly row ${index + 1} activity"></textarea></td>
+          <td><textarea data-save="week_${index}_cfu" class="cell-textarea" aria-label="Weekly row ${index + 1} cfu"></textarea></td>
+          <td><textarea data-save="week_${index}_homework" class="cell-textarea" aria-label="Weekly row ${index + 1} homework"></textarea></td>
+        </tr>`
+    },
+    {
+      id: 'flow-rows',
+      count: FLOW_BLUEPRINT.length,
+      buildRow: (index) => `
+        <tr>
+          <td><input type="text" data-save="flow_${index}_time" aria-label="Flow row ${index + 1} time" value="${FLOW_BLUEPRINT[index].time}"></td>
+          <td><input type="text" data-save="flow_${index}_block" aria-label="Flow row ${index + 1} block" value="${FLOW_BLUEPRINT[index].block}"></td>
+          <td><textarea data-save="flow_${index}_teacher" class="cell-textarea" aria-label="Flow row ${index + 1} teacher actions"></textarea></td>
+          <td><textarea data-save="flow_${index}_student" class="cell-textarea" aria-label="Flow row ${index + 1} student actions"></textarea></td>
+          <td><textarea data-save="flow_${index}_materials" class="cell-textarea" aria-label="Flow row ${index + 1} materials"></textarea></td>
+          <td><textarea data-save="flow_${index}_evidence" class="cell-textarea" aria-label="Flow row ${index + 1} evidence"></textarea></td>
+        </tr>`
+    },
+    {
+      id: 'diff-rows',
+      count: DIFF_BLUEPRINT.length,
+      buildRow: (index) => `
+        <tr>
+          <td><input type="text" data-save="diff_${index}_area" aria-label="Differentiation row ${index + 1} area" value="${DIFF_BLUEPRINT[index]}"></td>
+          <td><textarea data-save="diff_${index}_core" class="cell-textarea" aria-label="Differentiation row ${index + 1} core"></textarea></td>
+          <td><textarea data-save="diff_${index}_support" class="cell-textarea" aria-label="Differentiation row ${index + 1} support"></textarea></td>
+          <td><textarea data-save="diff_${index}_extension" class="cell-textarea" aria-label="Differentiation row ${index + 1} extension"></textarea></td>
+          <td><textarea data-save="diff_${index}_access" class="cell-textarea" aria-label="Differentiation row ${index + 1} access"></textarea></td>
+        </tr>`
+    },
+    { id: 'pacing-a-rows', count: 45, buildRow: (index) => pacingRow(index + 1, 'paceA') },
+    { id: 'pacing-b-rows', count: 45, buildRow: (index) => pacingRow(index + 46, 'paceB') },
+    {
+      id: 'tracker-rows',
+      count: 10,
+      buildRow: (index) => `
+        <tr>
+          <td><input type="text" data-save="tracker_${index}_student"></td>
+          <td><input type="text" data-save="tracker_${index}_skill"></td>
+          <td><input type="text" data-save="tracker_${index}_f1"></td>
+          <td><input type="text" data-save="tracker_${index}_f2"></td>
+          <td><input type="text" data-save="tracker_${index}_quiz"></td>
+          <td><input type="text" data-save="tracker_${index}_major"></td>
+          <td><input type="text" data-save="tracker_${index}_mast"></td>
+          <td><input type="text" data-save="tracker_${index}_ret"></td>
+          <td><textarea data-save="tracker_${index}_notes" class="cell-textarea"></textarea></td>
+        </tr>`
+    },
+    {
+      id: 'rubric-rows',
+      count: 6,
+      buildRow: (index) => `
+        <tr>
+          <td><input type="text" data-save="rubric_${index}_criteria"></td>
+          <td><textarea data-save="rubric_${index}_4" class="cell-textarea"></textarea></td>
+          <td><textarea data-save="rubric_${index}_3" class="cell-textarea"></textarea></td>
+          <td><textarea data-save="rubric_${index}_2" class="cell-textarea"></textarea></td>
+          <td><textarea data-save="rubric_${index}_1" class="cell-textarea"></textarea></td>
+          <td><input type="text" data-save="rubric_${index}_pts"></td>
+        </tr>`
+    },
+    {
+      id: 'grade-rows',
+      count: 18,
+      buildRow: (index) => `
+        <tr>
+          <td><input type="text" data-save="grade_${index}_student"></td>
+          ${Array.from({ length: 8 }, (_, scoreIndex) => `<td><input type="text" data-save="grade_${index}_a${scoreIndex + 1}"></td>`).join('')}
+          <td><input type="text" data-save="grade_${index}_miss"></td>
+          <td><input type="text" data-save="grade_${index}_avg"></td>
+          <td><textarea data-save="grade_${index}_notes" class="cell-textarea"></textarea></td>
+        </tr>`
+    },
+    {
+      id: 'system-rows',
+      count: 6,
+      buildRow: (index) => `
+        <tr>
+          <td><input type="text" data-save="systems_${index}_course"></td>
+          <td><textarea data-save="systems_${index}_start" class="cell-textarea"></textarea></td>
+          <td><textarea data-save="systems_${index}_materials" class="cell-textarea"></textarea></td>
+          <td><textarea data-save="systems_${index}_end" class="cell-textarea"></textarea></td>
+          <td><textarea data-save="systems_${index}_tech" class="cell-textarea"></textarea></td>
+        </tr>`
+    },
+    {
+      id: 'behavior-rows',
+      count: 8,
+      buildRow: (index) => `
+        <tr>
+          <td><input type="text" data-save="behavior_${index}_date"></td>
+          <td><input type="text" data-save="behavior_${index}_student"></td>
+          <td><textarea data-save="behavior_${index}_concern" class="cell-textarea"></textarea></td>
+          <td><textarea data-save="behavior_${index}_action" class="cell-textarea"></textarea></td>
+          <td><textarea data-save="behavior_${index}_result" class="cell-textarea"></textarea></td>
+        </tr>`
+    },
+    {
+      id: 'family-rows',
+      count: 8,
+      buildRow: (index) => `
+        <tr>
+          <td><input type="text" data-save="family_${index}_date"></td>
+          <td><input type="text" data-save="family_${index}_student"></td>
+          <td><input type="text" data-save="family_${index}_family"></td>
+          <td><input type="text" data-save="family_${index}_method"></td>
+          <td><input type="text" data-save="family_${index}_reason"></td>
+          <td><textarea data-save="family_${index}_summary" class="cell-textarea"></textarea></td>
+          <td><textarea data-save="family_${index}_outcome" class="cell-textarea"></textarea></td>
+        </tr>`
+    }
+  ];
+
+  function resolveCourseParam(value) {
+    return value === 'graphicDesign' || value === 'gd' ? 'gd' : 'ww';
+  }
+
+  function serialiseCourseParam(value) {
+    return value === 'gd' ? 'graphicDesign' : 'woodworking';
+  }
+
+  function normalizeDateParam(value) {
+    return /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? value : '';
+  }
+
+  function readRoute() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      course: resolveCourseParam(params.get('course')),
+      week: Number.parseInt(params.get('week') || '', 10) || '',
+      date: normalizeDateParam(params.get('date'))
+    };
+  }
+
+  const route = readRoute();
+
+  function safeParse(storageKey, fallback) {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : fallback;
+    } catch (err) {
+      return fallback;
+    }
+  }
+
+  function saveJson(storageKey, value) {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(value));
+    } catch (err) {
+      // localStorage can fail in locked-down school browsers.
+    }
+  }
+
+  function getPlannerState() {
+    return safeParse(STORAGE_KEY, {});
+  }
+
+  function savePlannerState() {
+    const data = {};
+    document.querySelectorAll('[data-save]').forEach((field) => {
+      const key = field.dataset ? field.dataset.save : '';
+      if (!key) return;
+      data[key] = field.type === 'checkbox' ? field.checked : field.value;
+    });
+    saveJson(STORAGE_KEY, data);
+  }
+
+  function applyPlannerState() {
+    const state = getPlannerState();
+    document.querySelectorAll('[data-save]').forEach((field) => {
+      const key = field.dataset ? field.dataset.save : '';
+      if (!key || !(key in state)) return;
+      if (field.type === 'checkbox') field.checked = Boolean(state[key]);
+      else field.value = state[key];
+    });
+  }
+
+  function bindAutosave() {
+    const onChange = () => {
+      autoResizeAll();
+      savePlannerState();
+    };
+    document.addEventListener('input', onChange);
+    document.addEventListener('change', onChange);
+  }
+
+  function autoResize(textarea) {
+    if (!(textarea instanceof HTMLTextAreaElement)) return;
+    textarea.style.height = 'auto';
+    textarea.style.height = `${Math.max(textarea.scrollHeight, 38)}px`;
+  }
+
+  function autoResizeAll() {
+    document.querySelectorAll('textarea').forEach(autoResize);
+  }
+
+  function renderTableRows() {
+    ROW_CONFIGS.forEach((config) => {
+      const body = document.getElementById(config.id);
+      if (!body) return;
+      body.innerHTML = Array.from({ length: config.count }, (_, index) => config.buildRow(index)).join('');
+    });
+  }
+
+  function renderSeatMaps() {
+    const seatGrid = document.getElementById('seat-grid');
+    const podGrid = document.getElementById('pod-grid');
+    if (seatGrid) {
+      seatGrid.innerHTML = Array.from({ length: 25 }, (_, index) => `
+        <label class="seat" aria-label="Row seat ${index + 1}">
+          <input type="text" data-save="seat_${index}" placeholder="${index + 1}">
+        </label>
+      `).join('');
+    }
+    if (podGrid) {
+      podGrid.innerHTML = Array.from({ length: 6 }, (_, podIndex) => `
+        <div class="pod">
+          <div class="pod-title">Pod ${podIndex + 1}</div>
+          ${Array.from({ length: 4 }, (_, seatIndex) => `
+            <input type="text" data-save="pod_${podIndex}_${seatIndex}" aria-label="Pod ${podIndex + 1} seat ${seatIndex + 1}" placeholder="Seat ${seatIndex + 1}">
+          `).join('')}
+        </div>
+      `).join('');
+    }
+  }
+
+  function readPrefs() {
+    return safeParse(PREFS_KEY, {});
+  }
+
+  function savePrefs() {
+    saveJson(PREFS_KEY, {
+      dark: document.body.classList.contains('dark'),
+      inkSaver: document.body.classList.contains('ink-saver'),
+      largeText: document.body.classList.contains('large-text')
+    });
+  }
+
+  function applyPrefs() {
+    const prefs = readPrefs();
+    document.body.classList.toggle('dark', Boolean(prefs.dark));
+    document.body.classList.toggle('ink-saver', Boolean(prefs.inkSaver));
+    document.body.classList.toggle('large-text', Boolean(prefs.largeText));
+  }
+
+  window.toggleDark = function toggleDark() {
+    document.body.classList.toggle('dark');
+    savePrefs();
+  };
+
+  window.toggleInkSaver = function toggleInkSaver() {
+    document.body.classList.toggle('ink-saver');
+    savePrefs();
+  };
+
+  window.toggleLargeText = function toggleLargeText() {
+    document.body.classList.toggle('large-text');
+    savePrefs();
+    autoResizeAll();
+  };
+
+  window.clearPlanner = function clearPlanner() {
+    if (!window.confirm('Clear all saved printable planner data on this device?')) return;
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (err) {}
+    document.querySelectorAll('[data-save]').forEach((field) => {
+      if (field.type === 'checkbox') field.checked = false;
+      else field.value = '';
+    });
+    applyHubDefaults();
+    syncFromHubPlanner(true);
+    autoResizeAll();
+  };
+
+  function fieldHasValue(field) {
+    if (!field) return false;
+    return field.type === 'checkbox' ? field.checked : String(field.value || '').trim() !== '';
+  }
+
+  function fillField(key, value, options = {}) {
+    const field = document.querySelector(`[data-save="${key}"]`);
+    if (!field) return;
+    const { force = false } = options;
+    if (!force && fieldHasValue(field)) return;
+    if (field.type === 'checkbox') field.checked = Boolean(value);
+    else field.value = value || '';
+  }
+
+  function courseMeta(courseKey) {
+    return COURSE_MAP[courseKey] || COURSE_MAP.ww;
+  }
+
+  function applyHubDefaults() {
+    const meta = courseMeta(route.course);
+    fillField('p1_teacher', 'Mr. Burke');
+    fillField('p1_school', 'Carl Sandburg High School');
+    fillField('p1_course', meta.courseLabel);
+    fillField('p1_semester', meta.semester);
+    fillField('p1_grade', meta.grades);
+    fillField('p1_period', '48 Minutes');
+    fillField('p4_course', meta.courseLabel);
+    fillField('p5_course', meta.courseLabel);
+    fillField('p6_course', meta.courseLabel);
+    fillField('p7_course', meta.courseLabel);
+    fillField('p11_course', meta.courseLabel);
+    fillField('p12_course', meta.courseLabel);
+    fillField('p13_course', meta.courseLabel);
+    fillField('p13_quarter', meta.semester);
+    fillField('p16_course', meta.courseLabel);
+    fillField('p4_title', meta.unit);
+  }
+
+  function parsePlannerDayToIso(label) {
+    const match = String(label || '').match(/\b(\d{1,2})\/(\d{1,2})\b/);
+    if (!match) return '';
+    const month = Number.parseInt(match[1], 10);
+    const day = Number.parseInt(match[2], 10);
+    const date = new Date(DEFAULT_YEAR, month - 1, day);
+    if (Number.isNaN(date.getTime())) return '';
+    const year = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${year}-${mm}-${dd}`;
+  }
+
+  function plannerDateRange(days) {
+    if (!days.length) return '';
+    const first = days[0].day;
+    const last = days[days.length - 1].day;
+    return first === last ? first : `${first} - ${last}`;
+  }
+
+  function weeklyGoalFromDays(days) {
+    const titles = days.filter((day) => !day.holiday).slice(0, 3).map((day) => day.title);
+    return titles.join(' • ');
+  }
+
+  function buildWeekSummaries(days, courseKey) {
+    const grouped = new Map();
+    days.forEach((day) => {
+      const key = String(day.wk || '');
+      if (!key) return;
+      if (!grouped.has(key)) grouped.set(key, []);
+      grouped.get(key).push(day);
+    });
+
+    [...grouped.entries()].forEach(([week, weekDays], index) => {
+      const nonHoliday = weekDays.filter((day) => !day.holiday);
+      fillField(`sem_${index}_wk`, week);
+      fillField(`sem_${index}_dates`, plannerDateRange(weekDays));
+      fillField(`sem_${index}_unit`, courseMeta(courseKey).unit);
+      fillField(`sem_${index}_skills`, nonHoliday.slice(0, 3).map((day) => day.title).join(' • '));
+    });
+  }
+
+  function fillWeeklyOverview(days, courseKey, weekNumber) {
+    fillField('p5_week', weekNumber ? `Week ${weekNumber}` : '');
+    fillField('p5_course', courseMeta(courseKey).courseLabel);
+    fillField('p5_goal', weeklyGoalFromDays(days));
+    days.slice(0, 5).forEach((day, index) => {
+      fillField(`week_${index}_day`, day.day);
+      fillField(`week_${index}_target`, day.objective || day.wgllt || '');
+      fillField(`week_${index}_focus`, day.title || '');
+      fillField(`week_${index}_task`, day.task || '');
+      fillField(`week_${index}_cfu`, day.exitCheck || day.wgllt || '');
+    });
+  }
+
+  function fillDailyLesson(day, courseKey) {
+    if (!day) return;
+    fillField('p6_date', day.day || '');
+    fillField('p6_course', courseMeta(courseKey).courseLabel);
+    fillField('p6_title', day.title || '');
+    fillField('p6_target', day.objective || '');
+    fillField('p6_success', day.wgllt || '');
+    fillField('p6_warmup', day.warmup || '');
+    fillField('p6_mini', day.miniLesson || '');
+    fillField('p6_guided', day.task || '');
+    fillField('p6_indep', day.task || '');
+    fillField('p6_mat', day.materials || '');
+    fillField('p6_exit', day.exitCheck || '');
+    fillField('p6_follow', day.notes || '');
+
+    fillField('p7_date', day.day || '');
+    fillField('p7_course', courseMeta(courseKey).courseLabel);
+    fillField('p7_topic', day.title || '');
+
+    fillField('flow_0_teacher', day.warmup || '');
+    fillField('flow_0_student', day.warmup ? 'Complete warm-up and activate prior knowledge.' : '');
+    fillField('flow_1_teacher', day.miniLesson || '');
+    fillField('flow_1_student', day.miniLesson ? 'Listen, annotate, and ask clarifying questions.' : '');
+    fillField('flow_2_teacher', day.task || '');
+    fillField('flow_2_student', day.task ? 'Practice with support and feedback.' : '');
+    fillField('flow_3_teacher', day.task || '');
+    fillField('flow_3_student', day.task ? 'Work independently or in teams on the task.' : '');
+    fillField('flow_3_materials', day.materials || '');
+    fillField('flow_4_teacher', day.notes || '');
+    fillField('flow_4_student', day.notes ? 'Conference and revise.' : '');
+    fillField('flow_5_teacher', day.exitCheck || '');
+    fillField('flow_5_student', day.exitCheck ? 'Show evidence of learning before dismissal.' : '');
+    fillField('flow_5_evidence', day.wgllt || '');
+  }
+
+  function fillPacing(days) {
+    days.forEach((day, index) => {
+      const prefix = index < 45 ? 'paceA' : 'paceB';
+      const row = index < 45 ? index : index - 45;
+      fillField(`${prefix}_${row}_date`, day.day || '');
+      fillField(`${prefix}_${row}_unit`, day.title || '');
+      fillField(`${prefix}_${row}_skill`, day.objective || day.wgllt || '');
+      fillField(`${prefix}_${row}_cfu`, day.exitCheck || '');
+      fillField(`${prefix}_${row}_notes`, day.notes || '');
+    });
+  }
+
+  window.syncFromHubPlanner = function syncFromHubPlanner(force = false) {
+    const savedState = safeParse(HUB_PLANNER_KEY, null);
+    applyHubDefaults();
+    if (!savedState || !Array.isArray(savedState[route.course])) {
+      autoResizeAll();
+      if (force) savePlannerState();
+      return;
+    }
+
+    const courseDays = savedState[route.course];
+    const weekDays = route.week ? courseDays.filter((day) => Number(day.wk) === Number(route.week)) : courseDays.slice(0, 5);
+    const targetDay = route.date
+      ? courseDays.find((day) => parsePlannerDayToIso(day.day) === route.date)
+      : weekDays.find((day) => !day.holiday) || courseDays.find((day) => !day.holiday);
+
+    buildWeekSummaries(courseDays, route.course);
+    fillWeeklyOverview(weekDays, route.course, route.week);
+    fillDailyLesson(targetDay, route.course);
+    fillPacing(courseDays);
+
+    if (force) savePlannerState();
+    autoResizeAll();
+  };
+
+  function updateRouteForPrintablePlanner() {
+    const params = new URLSearchParams(window.location.search);
+    params.set('course', serialiseCourseParam(route.course));
+    if (route.week) params.set('week', String(route.week));
+    if (route.date) params.set('date', route.date);
+    const query = params.toString();
+    window.history.replaceState({}, '', `${window.location.pathname}${query ? `?${query}` : ''}`);
+  }
+
+  renderTableRows();
+  renderSeatMaps();
+  applyPrefs();
+  applyPlannerState();
+  applyHubDefaults();
+  window.syncFromHubPlanner(false);
+  bindAutosave();
+  autoResizeAll();
+  updateRouteForPrintablePlanner();
+})();
+</script>
+
+</body></html>

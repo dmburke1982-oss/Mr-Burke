@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Master Lesson Planner — Mr. Burke</title>
+<link rel="stylesheet" href="./assets/tailwind.local.css"/>
+<link rel="stylesheet" href="./assets/classroom-base.css"/>
+<style>
+  body { font-family: var(--app-sans); background: #020617; }
+  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+  .fade-in { animation: fi 0.3s ease both; }
+  @keyframes fi { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+  @media print {
+    .no-print { display:none !important; }
+    body { background:white !important; color:black !important; }
+    .print-table { font-size: 10px; }
+    #checkpointTracker { display:none !important; }
+  }
+</style>
+</head>
+<body class="text-slate-100 min-h-screen">
+
+<!-- HEADER -->
+<header class="no-print sticky top-0 z-40 border-b border-slate-800 bg-slate-900/70 backdrop-blur-md px-6 py-4">
+  <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 flex-wrap">
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      </a>
+      <div>
+        <h1 class="text-sm font-black uppercase tracking-tight text-white">Master Lesson Planner</h1>
+        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest" id="syncLabel">Auto-saved to browser</p>
+      </div>
+    </div>
+    <div class="flex gap-2 bg-slate-800/60 p-1 rounded-xl">
+      <button id="wwTab" onclick="switchCourse('ww')" class="px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition bg-amber-600 text-white shadow">Woodworking</button>
+      <button id="gdTab" onclick="switchCourse('gd')" class="px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition text-slate-400 hover:text-white">Graphic Design</button>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="openPrintablePlanner()" class="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-emerald-300 hover:text-white transition border border-emerald-500/30 rounded-xl bg-emerald-500/10">Printable Planner</button>
+      <button onclick="window.print()" class="p-2 text-slate-400 hover:text-white transition" title="Print">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      </button>
+      <button onclick="resetCourse()" class="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-red-400 transition border border-slate-700 rounded-xl">Reset</button>
+    </div>
+  </div>
+</header>
+
+<!-- VIEWS -->
+<section id="checkpointTracker" class="max-w-7xl mx-auto px-6 pt-6 no-print">
+  <div class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-6 md:p-8 space-y-6">
+    <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="text-[10px] font-black uppercase tracking-[0.35em] text-emerald-400 mb-2">Checkpoint Tracker</p>
+        <h2 class="text-2xl md:text-3xl font-black text-white tracking-tight">Weeks 12, 13, and 16 at a glance</h2>
+        <p class="text-sm text-slate-400 mt-2 max-w-3xl">Use this lightweight tracker to mark milestone readiness and capture evidence for both courses. Saved locally in this browser.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="https://www.gmetrix.net/" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-sm font-bold text-indigo-300 hover:bg-indigo-500/20 transition">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Open GMetrix
+        </a>
+        <button id="checkpointResetBtn" type="button" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm font-bold text-slate-200 hover:text-white transition">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/></svg>
+          Reset Checkpoints
+        </button>
+      </div>
+    </div>
+    <div id="checkpointTables" class="grid grid-cols-1 xl:grid-cols-2 gap-6"></div>
+  </div>
+</section>
+
+<div id="gridView" class="max-w-7xl mx-auto px-6 py-8 pb-24 space-y-14 fade-in"></div>
+
+<!-- EDIT PANEL (hidden by default) -->
+<div id="editPanel" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md overflow-y-auto no-print" onclick="if (event.target === this) closeEdit()">
+  <div class="max-w-4xl mx-auto p-6 py-12">
+    <button onclick="closeEdit()" class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-white transition mb-8">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Grid
+    </button>
+    <div class="bg-slate-900 border border-slate-800 rounded-[2.5rem] p-8 md:p-12 shadow-2xl space-y-8" id="editContent"></div>
+  </div>
+</div>
+
+<!-- PRINT VIEW -->
+<div id="printView" class="hidden print:block p-8 text-black text-[11px]"></div>
+
+<script>
+// ─────────────────────────────────────────
+// 1. FULL SCHEDULE DATA
+// ─────────────────────────────────────────
+const WEEKS_META = {
+  12: "Plan, prep stock, and stagger initial construction to avoid machine bottlenecks.",
+  13: "Execute complex joinery safely and calculate internal dimensions for bottom panels.",
+  14: "Finalize structural components and prepare surfaces.",
+  15: "Apply a finish safely and effectively to protect and enhance the project's appearance.",
+  16: "Evaluate work and make targeted improvements based on reflection and feedback.",
+  17: "Explain design choices and craftsmanship decisions using appropriate vocabulary.",
+  18: "Review work and explore connections between professional practice and skills."
+};
+
+const GD_WEEKS_META = {
+  12: "Create promotional graphics that maintain a consistent brand identity across multiple pieces.",
+  13: "Introduce the certification platform, analyze design work, and use feedback to improve clarity.",
+  14: "Organize work professionally and build foundational Photoshop certification skills.",
+  15: "Refine design concepts and apply advanced technical skills for certification.",
+  16: "Complete and package work while targeting weak areas for the certification exam.",
+  17: "Execute certification exams and reflect on the design process.",
+  18: "Explore how graphic design skills relate to real-world applications and professional pathways."
+};
+
+const wwSchedule = [
+  { wk:12, day:"Wed 4/1",  title:"Intro & Workflow",          task:"Introduction, constraints, and staggered workflow (Video: 0:00-1:45 | PDF: Pg 1-3)", wgllt:"Workflow diagram completed; Group A/B understood." },
+  { wk:12, day:"Thu 4/2",  title:"Sketches & Cut List",       task:"Sketches, dimensions, and cut list approval (Video: 1:45-2:30 | PDF: Pg 2-3)", wgllt:"3-view sketch with accurate dimensions and teacher approval." },
+  { wk:12, day:"Fri 4/3",  title:"No School",                 task:"No School (Good Friday)", wgllt:"—", holiday:true },
+  { wk:12, day:"Mon 4/6",  title:"Material & Crosscutting",   task:"Material selection and crosscutting to length (Video: 2:30-4:00 | PDF: Pg 2)", wgllt:"Materials selected and accurately crosscut to rough lengths safely." },
+  { wk:12, day:"Tue 4/7",  title:"Staggered Ops - Pt 1",      task:"Group A: Edge-glue lids / Group B: Table saw width rips (Video: 4:00-5:15 | PDF: Pg 2 & 6)", wgllt:"Lids glued/clamped; Stock ripped to final width safely." },
+  { wk:12, day:"Wed 4/8",  title:"Staggered Ops - Pt 2",      task:"Group B: Edge-glue lids / Group A: Table saw width rips (Video: 4:00-5:15)", wgllt:"Both groups completed initial prep; lids curing." },
+  { wk:13, day:"Thu 4/9",  title:"Table Saw Rabbets 1",       task:"Table saw rabbet cuts - Sides and Ends (Video: 5:15-7:30 | PDF: Pg 4)", wgllt:"Clean, accurate rabbet cuts on all side and end pieces." },
+  { wk:13, day:"Fri 4/10", title:"Bottom Grooves",            task:"Table saw rabbet cuts - Bottom grooves on sides (Video: 7:30-9:00 | PDF: Pg 4)", wgllt:"Bottom grooves cut safely and aligned perfectly." },
+  { wk:13, day:"Mon 4/13", title:"Internal Dimensions",       task:"Dry assembly, measure internal dimensions, cut bottom plywood panels (Video: 9:00-11:20 | PDF: Pg 5)", wgllt:"Box dry-fits perfectly; bottom panel cut to correct internal dimensions." },
+  { wk:13, day:"Tue 4/14", title:"Box Glue-Up",               task:"Box glue-up and clamping using strap or bar clamps (Video: 11:20-14:00)", wgllt:"Box is glued, squared, and securely clamped with even pressure." },
+  { wk:14, day:"Wed 4/15", title:"Clamp Removal",             task:"Remove box clamps, scrape glue squeeze-out", wgllt:"Clamps removed safely; all squeeze-out scraped clean." },
+  { wk:14, day:"Thu 4/16", title:"Lid Rabbet Lip",            task:"Cut/route rabbet lip on cured lid panels (Video: 14:00-16:30 | PDF: Pg 6)", wgllt:"Lid rabbet lip routed cleanly without tear-out." },
+  { wk:14, day:"Fri 4/17", title:"Lid Fitting",               task:"Test fit lids; adjust friction fit (Video: 16:30-18:00)", wgllt:"Lid fits with a smooth, consistent friction fit." },
+  { wk:14, day:"Mon 4/20", title:"Exterior Sanding",          task:"Surface preparation and orbital sanding (Exterior)", wgllt:"Exterior uniformly sanded through all grits." },
+  { wk:14, day:"Tue 4/21", title:"Interior Sanding",          task:"Detail sanding (interior rabbets) and defect repair", wgllt:"Interior rabbets smooth and defects repaired." },
+  { wk:15, day:"Wed 4/22", title:"Finish Demo",               task:"Finish preparation and application demonstration", wgllt:"Clear understanding of safe finishing techniques." },
+  { wk:15, day:"Thu 4/23", title:"1st Coat Finish",           task:"First coat application (Spray or wipe-on)", wgllt:"First coat applied evenly with no drips." },
+  { wk:15, day:"Fri 4/24", title:"No School",                 task:"No Student Attendance (Institute Day)", wgllt:"—", holiday:true },
+  { wk:15, day:"Mon 4/27", title:"Scuff Sanding",             task:"Curing and light scuff sanding", wgllt:"Surface is lightly scuff-sanded and feels smooth." },
+  { wk:15, day:"Tue 4/28", title:"2nd Coat Finish",           task:"Second coat application", wgllt:"Second coat applied flawlessly for a durable finish." },
+  { wk:15, day:"Wed 4/29", title:"Final Curing",              task:"Final curing and shop cleanup", wgllt:"Workspace completely clean and projects curing." },
+  { wk:16, day:"Thu 4/30", title:"Peer Review",               task:"Project evaluation and peer review", wgllt:"Constructive, actionable feedback provided." },
+  { wk:16, day:"Fri 5/1",  title:"Targeted Improvements",    task:"Targeted improvements (Waxing lids, edge easing)", wgllt:"Lids are waxed for smooth operation." },
+  { wk:16, day:"Mon 5/4",  title:"Final Polish",              task:"Final fit and finish polish", wgllt:"Project meets all structural requirements." },
+  { wk:16, day:"Tue 5/5",  title:"Project Checkpoint",        task:"Project Checkpoint and written reflection", wgllt:"Thoughtful reflection completed and submitted." },
+  { wk:17, day:"Wed 5/6",  title:"Presentation Prep",        task:"Presentation preparation", wgllt:"Design choices and craftsmanship prepared to present." },
+  { wk:17, day:"Thu 5/7",  title:"Photography",              task:"Documentation and project photography", wgllt:"High-quality, well-lit photos taken for portfolio." },
+  { wk:17, day:"Fri 5/8",  title:"Studio Work",              task:"Studio work / Make-up day", wgllt:"All final touches or make-up work finished." },
+  { wk:17, day:"Mon 5/11", title:"Presentations",            task:"Peer sharing presentations", wgllt:"Confident presentation using correct terminology." },
+  { wk:18, day:"Tue 5/12", title:"Shop Breakdown",           task:"Shop breakdown and tool maintenance", wgllt:"Organized shop space and maintained tools." },
+  { wk:18, day:"Wed 5/13", title:"Inventory & Take-Home",    task:"Inventory, cleaning, and project take-home", wgllt:"Finished box goes home." },
+  { wk:18, day:"Thu 5/14", title:"Wrap-Up",                  task:"Semester wrap-up", wgllt:"Semester wrapped up smoothly." }
+];
+
+const gdSchedule = [
+  { wk:12, day:"Wed 4/1",  title:"Brand Identity Intro",     task:"Campaign piece planning & brand identity introduction", wgllt:"Moodboard with 5+ references and style guide drafted." },
+  { wk:12, day:"Thu 4/2",  title:"Album Cover Studio",       task:"Album cover production studio", wgllt:"300dpi setup with clear visual hierarchy." },
+  { wk:12, day:"Fri 4/3",  title:"No School",               task:"No School (Good Friday)", wgllt:"—", holiday:true },
+  { wk:12, day:"Mon 4/6",  title:"Merch Production",         task:"Merchandise and sticker production", wgllt:"Vector outlines created for die-cuts." },
+  { wk:12, day:"Tue 4/7",  title:"Consistency Check",        task:"Consistency check across pieces", wgllt:"Visual theme linked across cover and merch." },
+  { wk:12, day:"Wed 4/8",  title:"Export Checkpoint",        task:"Export and checkpoint submission", wgllt:"Exported album cover and one merch graphic." },
+  { wk:13, day:"Thu 4/9",  title:"GMetrix Setup",            task:"GMetrix Introduction & Account Setup (GD1 & GD2)", wgllt:"Login successful and baseline test started." },
+  { wk:13, day:"Fri 4/10", title:"Peer Critique",            task:"Peer critique on promotional graphics", wgllt:"Critique notes recorded for revision." },
+  { wk:13, day:"Mon 4/13", title:"Revision Studio",          task:"Revision studio based on feedback", wgllt:"Key feedback points addressed in PSD." },
+  { wk:13, day:"Tue 4/14", title:"Final Revisions",          task:"Final revisions, export check, and reflection submission", wgllt:"Revision checkpoint met." },
+  { wk:14, day:"Wed 4/15", title:"File Organization",        task:"Asset collection and file organization", wgllt:"Files structured and assets collected." },
+  { wk:14, day:"Thu 4/16", title:"Portfolio Layout",         task:"Portfolio layout preparation", wgllt:"Portfolio grid and placeholders set." },
+  { wk:14, day:"Fri 4/17", title:"ACE Baseline",             task:"GMetrix Practice, ACE Baseline Test, & Video Q1-Q8 (0:03-2:10)", wgllt:"Baseline score recorded in logbook." },
+  { wk:14, day:"Mon 4/20", title:"Layout Review",            task:"Layout review & distribute Supplementary Study Guide", wgllt:"Study guide reviewed and layouts checked." },
+  { wk:14, day:"Tue 4/21", title:"Layers/Masks Practice",    task:"GMetrix Practice: Layers/Masks & Video Q9-Q16 (2:11-4:18)", wgllt:"Layers/Masks practice tests completed." },
+  { wk:15, day:"Wed 4/22", title:"Concept Expansion",        task:"Concept expansion for target audiences", wgllt:"Expanded concepts documented." },
+  { wk:15, day:"Thu 4/23", title:"Refinement Studio",        task:"Refinement studio work", wgllt:"Technical refinements made in Photoshop." },
+  { wk:15, day:"Fri 4/24", title:"No School",               task:"No Student Attendance (Institute Day)", wgllt:"—", holiday:true },
+  { wk:15, day:"Mon 4/27", title:"Typography Practice",      task:"GMetrix Practice: Adjustments/Typography & Video Q17-Q25 (4:19-6:42)", wgllt:"Typography domain practice complete." },
+  { wk:15, day:"Tue 4/28", title:"Peer Check",               task:"Peer check and refinement studio", wgllt:"Final peer check completed." },
+  { wk:15, day:"Wed 4/29", title:"Practice Exam",            task:"GMetrix Practice Exam, Video Q26-Q33 (6:43-8:50), & Video Answer Key", wgllt:"Practice exam completed." },
+  { wk:16, day:"Thu 4/30", title:"Export Packaging",         task:"Proofing, formatting, and export packaging", wgllt:"Final packaging exported correctly." },
+  { wk:16, day:"Fri 5/1",  title:"Targeted Review",         task:"Targeted Review: GMetrix weak areas & Video Answer Key deep dive", wgllt:"Weak domains targeted and reviewed." },
+  { wk:16, day:"Mon 5/4",  title:"Final Submission",         task:"Final project submission and packaging", wgllt:"Project portfolio submitted." },
+  { wk:16, day:"Tue 5/5",  title:"Exam Strategy",            task:"Exam strategy and final testing interface review", wgllt:"Exam strategy finalized." },
+  { wk:17, day:"Wed 5/6",  title:"EXAM DAY 1",               task:"GD1: Official Practice Exam | GD2: Adobe Photoshop Certification Exam", wgllt:"Exam session 1 completed." },
+  { wk:17, day:"Thu 5/7",  title:"EXAM DAY 2",               task:"GD1: Finish Practice | GD2: Finish Certification", wgllt:"Exam session 2 completed." },
+  { wk:17, day:"Fri 5/8",  title:"Exam Reflection",          task:"Written reflection on design process and exam experience", wgllt:"Reflection completed." },
+  { wk:17, day:"Mon 5/11", title:"Portfolio Sharing",        task:"Peer sharing and documentation of final portfolio", wgllt:"Portfolio shared and documented." },
+  { wk:18, day:"Tue 5/12", title:"Industry Pathways",        task:"Industry exploration and professional pathways", wgllt:"Pathway research completed." },
+  { wk:18, day:"Wed 5/13", title:"Workspace Archive",        task:"Digital workspace cleanup, archive, and backup", wgllt:"Archives backed up." },
+  { wk:18, day:"Thu 5/14", title:"Wrap-Up",                  task:"Semester wrap-up", wgllt:"Semester finished." }
+];
+
+// ─────────────────────────────────────────
+// 2. PREFILL DATA (must be before STATE)
+// ─────────────────────────────────────────
+const wwPrefill = {
+  'Wed 4/1': {
+    objective: "Students will be able to explain the staggered workflow system and identify their Group A or B assignment for the unit.",
+    materials: "Video (0:00-1:45) · PDF Pg 1-3 · Whiteboard / projector · Group assignment list · Workbook Pg 1",
+    warmup: "Quick Write (5 min): 'What is one thing that could go wrong if 20 students all tried to use the table saw at the same time?' Share out 2-3 responses.",
+    miniLesson: "Direct Instruction (15 min): Introduce the Basic Box project — show a finished example. Explain the staggered A/B workflow: why we stagger glue-ups and machine time. Show Pg 1-3 of PDF on projector. Post Group A/B assignments. Play Video 0:00-1:45. Check for understanding: 'What is your group and what does your group do first?'",
+    exitCheck: "Workbook Pg 1 Exit Prompt: 'Explain in your own words why we are using a staggered workflow for the table saws and glue-up stations.' Collected or reviewed before dismissal.",
+    notes: "Take attendance before video. Confirm Group A/B list is posted near machines. Remind students: no tools today — this is a planning and orientation day.",
+    status: 'locked'
+  },
+  'Thu 4/2': {
+    objective: "Students will be able to produce an approved 3-view sketch of their box with accurate dimensions labeled on all 6 parts and rabbet locations marked.",
+    materials: "Video (1:45-2:30) · PDF Pg 2-3 · Graph paper or workbook sketch page · Pencil, ruler · Sample cut list template · Teacher approval stamp or initials",
+    warmup: "Pair Share (5 min): Partners exchange workbooks from yesterday and read each other's staggered workflow explanation. One volunteer shares. Bridge: 'Today we go from concept to cut list.'",
+    miniLesson: "Direct Instruction / Demo (15 min): Play Video 1:45-2:30. Walk through PDF Pg 2-3 on projector — identify all 6 box parts (2 sides, 2 ends, 1 bottom, 1 lid). Model a correct 3-view sketch on the board: front, side, top views with dimension lines. Show where rabbets will be cut (mark with an 'R'). Demonstrate how to fill out the cut list table (part name, quantity, length, width, thickness).",
+    exitCheck: "Teacher approves cut list before end of class. Stamp or initial the workbook sketch page. Students without approval must finish before Thur 4/9 machine day. Workbook prompt: 'Are your dimensions consistent across all 3 views? Circle YES or NO and explain.'",
+    notes: "Circulate during studio time — prioritize students who struggle with orthographic drawing. Allow tablet/phone for reference photos of box joints. Target: every student leaves with an initialed cut list.",
+    status: 'locked'
+  }
+};
+
+// Pre-filled lesson plans for GD 4/1 and 4/2
+const gdPrefill = {
+  'Wed 4/1': {
+    objective: "Students will be able to identify the core elements of a brand identity (color palette, typography, tone, visual style) and apply them to a campaign planning document for their album cover project.",
+    materials: "Workbook campaign planning sheet · Photoshop (or Illustrator) on student workstations · Projector for brand identity examples · Reference: at least 3 professional album covers for moodboard",
+    warmup: "Visual Warm-Up (5 min): Show 3 albums side-by-side (e.g. Kendrick, Taylor Swift, Olivia Rodrigo). Ask: 'Without reading the name — what mood or audience does each brand communicate? How do you know?' Discuss color, type, imagery.",
+    miniLesson: "Direct Instruction (15 min): Define brand identity — the consistent visual language across ALL pieces of a campaign (cover, merch, stickers, ads). Walk through the Campaign Planning Worksheet on projector. Model filling in: target audience, message/mood, color palette, visual style. Show a completed moodboard example. Introduce the 3-deliverable set: album cover + merch item + sticker. Students begin filling out their own planning sheets and moodboard.",
+    exitCheck: "Workbook Campaign Planning Sheet submitted or photographed at end of class. Must include: artist/album name, target audience, mood, color palette, and at least one concept sketch started. Verbal check: 'Tell me your vibe in one sentence.'",
+    notes: "GD1: Focus on completing the planning sheet and getting a solid concept. GD2: Expect planning sheet done quickly — push them to start a rough Photoshop layout by end of period. Remind both: moodboard references = 5 minimum.",
+    status: 'locked'
+  },
+  'Thu 4/2': {
+    objective: "Students will be able to set up a print-ready Photoshop document (300dpi, correct dimensions) and begin constructing a visual hierarchy for their album cover using non-destructive layer techniques.",
+    materials: "Photoshop on all workstations · Student moodboard / planning sheet from 4/1 · Reference: album cover dimensions (3000×3000px at 300dpi) · Smart Object demo file · Workbook reflection page",
+    warmup: "Show & Tell (5 min): 3 volunteers share their campaign concept from yesterday in one sentence. Class votes: 'Thumbs up if the concept sounds visually strong.' Brief feedback — teacher models one round of constructive critique language.",
+    miniLesson: "Direct Instruction / Screen Share (15 min): Open Photoshop live. Demo setup: File > New > 3000×3000px, 300dpi, RGB, 8-bit. Name file correctly: LastName_AlbumCover_v1.psd. Show layer naming and grouping best practices. Demo: place background image as Smart Object (not rasterized). Demo: one Adjustment Layer (Hue/Sat or Curves) clipped to image. Key principle: 'Never flatten, never erase — always mask.' Students work independently for remaining ~25 min.",
+    exitCheck: "End-of-class screen check: teacher or peer confirms (1) correct document setup (300dpi), (2) at least one Smart Object placed, (3) at least one layer group named. Workbook prompt: 'What is one non-destructive technique you used today and why does it matter?'",
+    notes: "Watch for students who flatten or rasterize — redirect immediately. GD2 should be further along in composition; push them toward a readable visual hierarchy. Save remind at 5 min before bell — save as PSD to Drive.",
+    status: 'locked'
+  }
+};
+
+// ─────────────────────────────────────────
+// 3. STATE
+// ─────────────────────────────────────────
+const plannerRoute = readPlannerRoute();
+let activeCourse = plannerRoute.course;
+let state = loadState();
+let editingId = null;
+let hasAppliedInitialRouteFocus = false;
+
+function loadState() {
+  const fallback = buildDefaultState();
+  const saved = localStorage.getItem('cteHubPlanner_v3');
+  if (!saved) return fallback;
+
+  try {
+    const parsed = JSON.parse(saved);
+    if (isValidState(parsed)) return parsed;
+    setSyncMessage('Recovered from invalid saved planner data');
+  } catch (err) {
+    setSyncMessage('Recovered from unreadable saved planner data');
+  }
+  return fallback;
+}
+
+function initCourse(src) {
+  return src.map((s, i) => {
+    const prefill = (src === wwSchedule ? wwPrefill : gdPrefill)[s.day] || {};
+    return {
+      id: `D${i}`, ...s,
+      objective: prefill.objective || '',
+      materials: prefill.materials || '',
+      warmup: prefill.warmup || '',
+      miniLesson: prefill.miniLesson || '',
+      exitCheck: prefill.exitCheck || '',
+      notes: prefill.notes || '',
+      status: s.holiday ? 'holiday' : (prefill.status || 'draft')
+    };
+  });
+}
+
+function buildDefaultState() {
+  return { ww: initCourse(wwSchedule), gd: initCourse(gdSchedule) };
+}
+
+function isValidState(candidate) {
+  return !!candidate
+    && typeof candidate === 'object'
+    && Array.isArray(candidate.ww)
+    && Array.isArray(candidate.gd)
+    && candidate.ww.length === wwSchedule.length
+    && candidate.gd.length === gdSchedule.length;
+}
+
+function save() {
+  try {
+    localStorage.setItem('cteHubPlanner_v3', JSON.stringify(state));
+    setSyncMessage('Saved ' + new Date().toLocaleTimeString());
+  } catch (err) {
+    setSyncMessage('Save blocked in this browser');
+  }
+}
+
+function current() { return state[activeCourse]; }
+function weeksMeta() { return activeCourse === 'ww' ? WEEKS_META : GD_WEEKS_META; }
+function themeColor() { return activeCourse === 'ww' ? 'amber' : 'indigo'; }
+
+function readPlannerRoute() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    course: resolveCourseParam(params.get('course')),
+    week: parseWeekParam(params.get('week')),
+    date: normalizeDateParam(params.get('date'))
+  };
+}
+
+function resolveCourseParam(value) {
+  if (value === 'graphicDesign' || value === 'gd') return 'gd';
+  return 'ww';
+}
+
+function parseWeekParam(value) {
+  const num = Number(value);
+  return Number.isInteger(num) && num > 0 ? num : null;
+}
+
+function normalizeDateParam(value) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? value : null;
+}
+
+function serialiseCourseParam(value) {
+  return value === 'gd' ? 'graphicDesign' : 'woodworking';
+}
+
+function updatePlannerRoute(next = {}) {
+  const params = new URLSearchParams(window.location.search);
+  const nextCourse = next.course ?? activeCourse;
+  const nextWeek = Object.prototype.hasOwnProperty.call(next, 'week') ? next.week : plannerRoute.week;
+  const nextDate = Object.prototype.hasOwnProperty.call(next, 'date') ? next.date : plannerRoute.date;
+
+  params.set('course', serialiseCourseParam(nextCourse));
+  if (nextWeek) params.set('week', String(nextWeek));
+  else params.delete('week');
+  if (nextDate) params.set('date', nextDate);
+  else params.delete('date');
+
+  const query = params.toString();
+  const nextUrl = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash || ''}`;
+  window.history.replaceState({}, '', nextUrl);
+
+  plannerRoute.course = resolveCourseParam(params.get('course'));
+  plannerRoute.week = parseWeekParam(params.get('week'));
+  plannerRoute.date = normalizeDateParam(params.get('date'));
+}
+
+function plannerDayLabelFromIso(isoDate) {
+  if (!isoDate) return '';
+  const date = new Date(`${isoDate}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return '';
+  const weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
+  return `${weekday} ${date.getMonth() + 1}/${date.getDate()}`;
+}
+
+// ─────────────────────────────────────────
+// 4. RENDER GRID
+// ─────────────────────────────────────────
+const colorMap = { amber: { badge:'bg-amber-600', dot:'bg-amber-500', text:'text-amber-400', border:'border-amber-500/40', ring:'ring-amber-500' }, indigo: { badge:'bg-indigo-600', dot:'bg-indigo-500', text:'text-indigo-400', border:'border-indigo-500/40', ring:'ring-indigo-500' } };
+
+function renderGrid() {
+  const c = colorMap[themeColor()];
+  const grid = document.getElementById('gridView');
+  const routeDayLabel = plannerDayLabelFromIso(plannerRoute.date);
+  let focusTarget = null;
+  grid.innerHTML = '';
+  const weeks = [...new Set(current().map(d => d.wk))];
+  weeks.forEach(wk => {
+    const sec = document.createElement('section');
+    sec.className = 'space-y-4 fade-in';
+    if (!hasAppliedInitialRouteFocus && plannerRoute.week === wk) {
+      sec.classList.add('rounded-[2rem]', 'ring-1', 'ring-slate-700', 'p-4');
+      focusTarget = sec;
+    }
+    const meta = weeksMeta()[wk] || '';
+    sec.innerHTML = `
+      <div class="flex items-end justify-between border-b border-slate-800 pb-3">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-[0.4em] ${c.text}">Module ${wk}</span>
+          <p class="text-sm font-semibold text-slate-400 mt-0.5 max-w-2xl leading-snug">${meta}</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4" id="week_${wk}"></div>
+    `;
+    grid.appendChild(sec);
+    const row = sec.querySelector(`#week_${wk}`);
+    current().filter(d => d.wk === wk).forEach(day => {
+      const card = document.createElement('div');
+      const isHoliday = day.holiday;
+      card.className = `h-44 p-4 rounded-2xl border flex flex-col transition-all duration-200 ${isHoliday ? 'opacity-30 grayscale border-slate-800 bg-slate-900/30' : `bg-slate-900 border-slate-800 hover:${c.border} hover:-translate-y-1 hover:shadow-xl cursor-pointer group`}`;
+      card.dataset.dayLabel = day.day;
+      if (!hasAppliedInitialRouteFocus && routeDayLabel && day.day === routeDayLabel) {
+        card.classList.add('ring-2', 'ring-indigo-500', 'shadow-xl');
+        focusTarget = card;
+      }
+      card.innerHTML = `
+        <span class="text-[9px] font-bold text-slate-500 mb-1">${esc(day.day)}</span>
+        <h3 class="text-sm font-black text-white leading-snug group-hover:${c.text} transition-colors line-clamp-2">${esc(day.title)}</h3>
+        <p class="text-[10px] text-slate-400 mt-2 line-clamp-3 italic flex-grow">${formatPlannerText(day.objective || day.task)}</p>
+        <div class="flex items-center justify-between mt-auto pt-2 border-t border-slate-800">
+          <div class="w-2 h-2 rounded-full ${day.status==='locked'?'bg-blue-500':day.status==='done'?'bg-emerald-500':'bg-slate-700'}"></div>
+          <span class="text-[8px] font-black uppercase text-slate-600">${esc(day.status)}</span>
+        </div>
+      `;
+      if (!isHoliday) card.onclick = () => openEdit(day.id);
+      row.appendChild(card);
+    });
+  });
+  // Build print view
+  buildPrintView();
+  if (!hasAppliedInitialRouteFocus) {
+    hasAppliedInitialRouteFocus = true;
+    if (focusTarget) {
+      requestAnimationFrame(() => {
+        focusTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// 4. EDIT PANEL
+// ─────────────────────────────────────────
+function openEdit(id) {
+  editingId = id;
+  const day = current().find(d => d.id === id);
+  const c = colorMap[themeColor()];
+  const content = document.getElementById('editContent');
+  content.innerHTML = `
+    <div class="flex items-center gap-3 mb-2">
+      <span class="text-[10px] font-black uppercase tracking-widest bg-slate-800 text-slate-400 px-3 py-1 rounded-full">${day.day}</span>
+      <span class="text-[10px] font-black uppercase tracking-widest ${c.text}">Module ${day.wk}</span>
+    </div>
+    <input id="ef_title" value="${esc(day.title)}" class="w-full bg-transparent border-none p-0 text-4xl font-black text-white focus:ring-0 outline-none mb-8"/>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      ${editField('ef_objective','Learning Objective', day.objective, 'Describe the student-facing learning target...')}
+      ${editField('ef_wgllt','Success Criteria (WGLL)', day.wgllt, 'What does success look like today?', true)}
+      ${editField('ef_task','Studio Task', day.task, 'Daily task from master schedule...', false, true)}
+      ${editField('ef_warmup','Warm-Up / Hook', day.warmup, 'Engagement activity or question...')}
+      ${editField('ef_miniLesson','Direct Instruction / Demo Plan', day.miniLesson, 'Teacher-led instruction notes...')}
+      ${editField('ef_materials','Materials & Resources', day.materials, 'What is needed today?')}
+      ${editField('ef_exitCheck','Exit Check / Reflection', day.exitCheck, 'How will you check for understanding?')}
+      ${editField('ef_notes','Teacher Notes', day.notes, 'Private planning notes...')}
+    </div>
+    <div class="flex items-center gap-3 mt-8 pt-6 border-t border-slate-800">
+      <button onclick="saveEdit()" class="flex-1 py-3.5 rounded-xl ${c.badge} text-white font-black uppercase tracking-widest text-sm hover:opacity-90 transition">Save Changes</button>
+      <button onclick="toggleStatus()" class="px-6 py-3.5 rounded-xl border border-slate-700 text-slate-400 hover:text-white font-black uppercase tracking-widest text-[10px] transition" id="statusBtn">${statusLabel(day.status)}</button>
+    </div>
+  `;
+  document.getElementById('editPanel').classList.remove('hidden');
+}
+
+function editField(id, label, value, placeholder, highlight=false, full=false) {
+  const c = colorMap[themeColor()];
+  const colSpan = full ? 'md:col-span-2' : '';
+  const bg = highlight ? 'bg-white/5 border border-slate-700/50' : 'bg-slate-800/60';
+  const lbl = highlight ? `${c.text}` : 'text-slate-500';
+  return `
+    <div class="space-y-2 ${colSpan}">
+      <label class="text-[10px] font-black uppercase tracking-[0.2em] ${lbl}">${label}</label>
+      <textarea id="${id}" placeholder="${placeholder}" class="${bg} w-full border-none rounded-2xl p-4 text-sm font-medium outline-none focus:ring-2 focus:ring-slate-600 min-h-[90px] transition resize-none text-slate-200">${esc(value)}</textarea>
+    </div>`;
+}
+
+function saveEdit() {
+  const day = current().find(d => d.id === editingId);
+  if (!day) return;
+  ['title','objective','wgllt','task','warmup','miniLesson','materials','exitCheck','notes'].forEach(k => {
+    const el = document.getElementById(`ef_${k}`);
+    if (el) day[k] = el.value;
+  });
+  if (day.status === 'draft' && day.objective.trim()) day.status = 'ready';
+  save();
+  closeEdit();
+  renderGrid();
+}
+
+function toggleStatus() {
+  const day = current().find(d => d.id === editingId);
+  if (!day) return;
+  const seq = ['draft','ready','locked','done'];
+  const idx = seq.indexOf(day.status);
+  day.status = seq[(idx+1)%seq.length];
+  document.getElementById('statusBtn').textContent = statusLabel(day.status);
+  save();
+}
+
+function statusLabel(s) {
+  return { draft:'Mark Ready', ready:'Lock Plan', locked:'Mark Done', done:'Reset Draft' }[s] || 'Set Status';
+}
+
+function closeEdit() {
+  document.getElementById('editPanel').classList.add('hidden');
+  editingId = null;
+}
+
+// ─────────────────────────────────────────
+// 5. COURSE SWITCHER
+// ─────────────────────────────────────────
+function openPrintablePlanner() {
+  const params = new URLSearchParams();
+  params.set('course', serialiseCourseParam(activeCourse));
+  if (plannerRoute.week) params.set('week', String(plannerRoute.week));
+  if (plannerRoute.date) params.set('date', plannerRoute.date);
+  const query = params.toString();
+  window.location.href = `teaching-planner.html${query ? `?${query}` : ''}`;
+}
+
+function syncCourseTabs() {
+  const wwTab = document.getElementById('wwTab');
+  const gdTab = document.getElementById('gdTab');
+  if (activeCourse === 'ww') {
+    wwTab.className = 'px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition bg-amber-600 text-white shadow';
+    gdTab.className = 'px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition text-slate-400 hover:text-white';
+  } else {
+    gdTab.className = 'px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition bg-indigo-600 text-white shadow';
+    wwTab.className = 'px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition text-slate-400 hover:text-white';
+  }
+}
+
+function switchCourse(c) {
+  if (activeCourse === c) return;
+  activeCourse = c;
+  hasAppliedInitialRouteFocus = false;
+  updatePlannerRoute({ course: c });
+  syncCourseTabs();
+  renderGrid();
+}
+
+function resetCourse() {
+  if (!confirm(`Reset ${activeCourse.toUpperCase()} planner? All edits will be lost.`)) return;
+  state[activeCourse] = initCourse(activeCourse === 'ww' ? wwSchedule : gdSchedule);
+  save();
+  renderGrid();
+}
+
+// ─────────────────────────────────────────
+// 6. PRINT VIEW
+// ─────────────────────────────────────────
+function buildPrintView() {
+  const pv = document.getElementById('printView');
+  const courseName = activeCourse === 'ww' ? 'Woodworking: Basic Box Construction' : 'Graphic Design: Campaign & ACE';
+  const meta = weeksMeta();
+  const weeks = [...new Set(current().map(d => d.wk))];
+  pv.innerHTML = `
+    <div class="border-b-2 border-black pb-4 mb-8 flex justify-between items-end">
+      <div><h1 class="text-2xl font-bold uppercase tracking-widest">Curriculum Master Plan</h1><h2 class="text-lg font-semibold text-gray-700">${courseName}</h2></div>
+      <div class="text-right text-sm text-gray-500"><div>Spring 2026 · Mr. Burke</div><div>Carl Sandburg High School</div></div>
+    </div>
+    ${weeks.map(wk => `
+      <div class="mb-10">
+        <h3 class="font-bold underline text-sm mb-2 uppercase">Week ${wk}: ${meta[wk]||''}</h3>
+        <table class="w-full border-collapse border border-gray-400 print-table">
+          <thead><tr class="bg-gray-100">
+            <th class="p-2 border border-gray-400 w-[12%] text-left">Date</th>
+            <th class="p-2 border border-gray-400 w-[20%] text-left">Title / Objective</th>
+            <th class="p-2 border border-gray-400 w-[35%] text-left">Task / Activities</th>
+            <th class="p-2 border border-gray-400 w-[33%] text-left">WGLL (Success Criteria)</th>
+          </tr></thead>
+          <tbody>
+            ${current().filter(d=>d.wk===wk).map(d=>`
+              <tr class="border-b border-gray-300">
+                <td class="p-2 border border-gray-300 font-bold text-xs">${esc(d.day)}</td>
+                <td class="p-2 border border-gray-300"><strong>${esc(d.title)}</strong><br/><span class="text-[9px] text-gray-500">${formatPlannerText(d.objective)}</span></td>
+                <td class="p-2 border border-gray-300 text-[10px]">${formatPlannerText(d.task)}${d.miniLesson?`<br/><em>Demo: ${formatPlannerText(d.miniLesson)}</em>`:''}</td>
+                <td class="p-2 border border-gray-300 text-[10px]">${formatPlannerText(d.wgllt)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ─────────────────────────────────────────
+// 7. UTILS
+// ─────────────────────────────────────────
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function formatPlannerText(s) { return esc(s).replace(/\r?\n/g, '<br/>'); }
+function setSyncMessage(message) {
+  document.getElementById('syncLabel').textContent = message;
+}
+
+// INIT — patch prefill into any existing saved state that has blank fields
+function applyPrefillPatch() {
+  const patchMap = { ww: wwPrefill, gd: gdPrefill };
+  ['ww','gd'].forEach(course => {
+    const prefills = patchMap[course];
+    state[course].forEach(day => {
+      const pf = prefills[day.day];
+      if (!pf) return;
+      if (!day.objective) day.objective = pf.objective;
+      if (!day.materials) day.materials = pf.materials;
+      if (!day.warmup)    day.warmup    = pf.warmup;
+      if (!day.miniLesson) day.miniLesson = pf.miniLesson;
+      if (!day.exitCheck)  day.exitCheck  = pf.exitCheck;
+      if (!day.notes)      day.notes      = pf.notes;
+      if (day.status === 'draft' && pf.status) day.status = pf.status;
+    });
+  });
+  save();
+}
+
+const CHECKPOINT_STORAGE_KEY = 'cteHubCheckpointTracker_v1';
+const checkpointBlueprint = [
+  {
+    title: 'Woodworking',
+    accent: 'amber',
+    items: [
+      { id: 'ww_w12', week: '12', label: 'Workflow + Cut List', detail: 'Sketches approved, cut lists checked, and staggered workflow understood.' },
+      { id: 'ww_w13', week: '13', label: 'Joinery + Glue-Up', detail: 'Rabbets, bottom panel math, and box glue-up completed safely.' },
+      { id: 'ww_w16', week: '16', label: 'Review + Reflection', detail: 'Peer review, targeted improvements, and project reflection finished.' }
+    ]
+  },
+  {
+    title: 'Graphic Design',
+    accent: 'indigo',
+    items: [
+      { id: 'gd_w12', week: '12', label: 'Brand Consistency Export', detail: 'Album cover and merch pieces align visually and export cleanly.' },
+      { id: 'gd_w13', week: '13', label: 'GMetrix Setup + Revision', detail: 'Student login works, critique is recorded, and revision checkpoint is met.' },
+      { id: 'gd_w16', week: '16', label: 'Targeted Review Readiness', detail: 'Weak-area review, packaging, and exam strategy prep are ready.' }
+    ]
+  }
+];
+
+function buildCheckpointDefaults() {
+  const out = {};
+  checkpointBlueprint.forEach(group => {
+    group.items.forEach(item => {
+      out[item.id] = { status: 'not-started', note: '' };
+    });
+  });
+  return out;
+}
+
+function loadCheckpointState() {
+  try {
+    const raw = localStorage.getItem(CHECKPOINT_STORAGE_KEY);
+    if (!raw) return buildCheckpointDefaults();
+    return { ...buildCheckpointDefaults(), ...JSON.parse(raw) };
+  } catch (err) {
+    return buildCheckpointDefaults();
+  }
+}
+
+let checkpointState = loadCheckpointState();
+
+function saveCheckpointState() {
+  try {
+    localStorage.setItem(CHECKPOINT_STORAGE_KEY, JSON.stringify(checkpointState));
+  } catch (err) {
+    setSyncMessage('Checkpoint save blocked in this browser');
+  }
+}
+
+function checkpointAccent(accent) {
+  return accent === 'amber'
+    ? {
+        pill: 'bg-amber-500/10 border-amber-500/20 text-amber-300',
+        focus: 'focus:border-amber-500 focus:ring-amber-500/30'
+      }
+    : {
+        pill: 'bg-indigo-500/10 border-indigo-500/20 text-indigo-300',
+        focus: 'focus:border-indigo-500 focus:ring-indigo-500/30'
+      };
+}
+
+function checkpointStatusTone(status) {
+  if (status === 'done') return 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20';
+  if (status === 'in-progress') return 'bg-amber-500/10 text-amber-300 border border-amber-500/20';
+  return 'bg-slate-800 text-slate-300 border border-slate-700';
+}
+
+function renderCheckpointTables() {
+  const mount = document.getElementById('checkpointTables');
+  if (!mount) return;
+  mount.innerHTML = checkpointBlueprint.map(group => {
+    const accent = checkpointAccent(group.accent);
+    return `
+      <section class="rounded-[2rem] border border-slate-800 bg-slate-950 p-5 md:p-6">
+        <div class="flex items-center justify-between gap-3 mb-5">
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-[0.35em] text-slate-500 mb-2">${group.title} milestones</p>
+            <h3 class="text-xl font-black text-white">${group.title}</h3>
+          </div>
+          <span class="px-3 py-1.5 rounded-full border text-xs font-black uppercase tracking-[0.25em] ${accent.pill}">Weeks 12 · 13 · 16</span>
+        </div>
+        <div class="space-y-3">
+          ${group.items.map(item => {
+            const entry = checkpointState[item.id] || { status: 'not-started', note: '' };
+            const safeNote = (entry.note || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return `
+              <div class="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+                <div class="flex flex-col gap-3">
+                  <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                    <div>
+                      <div class="flex items-center gap-2 flex-wrap">
+                        <span class="px-2.5 py-1 rounded-full bg-slate-800 text-[10px] font-black uppercase tracking-[0.25em] text-slate-300">Week ${item.week}</span>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.25em] ${checkpointStatusTone(entry.status)}">${entry.status.replace('-', ' ')}</span>
+                      </div>
+                      <h4 class="text-base font-black text-white mt-3">${item.label}</h4>
+                      <p class="text-sm text-slate-400 mt-1">${item.detail}</p>
+                    </div>
+                    <label class="text-xs font-black uppercase tracking-[0.25em] text-slate-500">
+                      Status
+                      <select data-checkpoint-id="${item.id}" data-field="status" class="mt-2 w-full md:w-44 rounded-xl bg-slate-950 border border-slate-700 text-slate-100 px-3 py-2 text-sm font-semibold outline-none focus:ring-2 ${accent.focus}">
+                        <option value="not-started" ${entry.status === 'not-started' ? 'selected' : ''}>Not started</option>
+                        <option value="in-progress" ${entry.status === 'in-progress' ? 'selected' : ''}>In progress</option>
+                        <option value="done" ${entry.status === 'done' ? 'selected' : ''}>Done</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label class="text-xs font-black uppercase tracking-[0.25em] text-slate-500">
+                    Evidence / notes
+                    <textarea data-checkpoint-id="${item.id}" data-field="note" rows="2" class="mt-2 w-full rounded-2xl bg-slate-950 border border-slate-700 text-slate-100 px-4 py-3 text-sm font-medium outline-none focus:ring-2 ${accent.focus}" placeholder="What did students complete or what still needs attention?">${safeNote}</textarea>
+                  </label>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </section>
+    `;
+  }).join('');
+}
+
+document.addEventListener('input', (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) return;
+  const checkpointId = target.dataset ? target.dataset.checkpointId : '';
+  const field = target.dataset ? target.dataset.field : '';
+  if (!checkpointId || !field) return;
+  checkpointState[checkpointId] = checkpointState[checkpointId] || { status: 'not-started', note: '' };
+  checkpointState[checkpointId][field] = target.value;
+  saveCheckpointState();
+  if (field === 'status') renderCheckpointTables();
+});
+
+document.addEventListener('click', (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) return;
+  const btn = target.closest('#checkpointResetBtn');
+  if (!btn) return;
+  if (!confirm('Reset all checkpoint statuses and notes?')) return;
+  checkpointState = buildCheckpointDefaults();
+  saveCheckpointState();
+  renderCheckpointTables();
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !document.getElementById('editPanel').classList.contains('hidden')) {
+    closeEdit();
+  }
+});
+
+updatePlannerRoute({ course: activeCourse, week: plannerRoute.week, date: plannerRoute.date });
+applyPrefillPatch();
+renderCheckpointTables();
+syncCourseTabs();
+renderGrid();
+</script>
+</body>
+</html>
